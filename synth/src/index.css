@@ -20,8 +20,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
-  background: rgb(153,103,240);
-  background: radial-gradient(circle, rgba(153,103,240,1) 0%, rgba(226,223,232,1) 100%);
+  background: rgb(0,0,0);
+background: -moz-radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(117,183,236,1) 100%);
+background: -webkit-radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(117,183,236,1) 100%);
+background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(117,183,236,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#75b7ec",GradientType=1);
 }
 
 header {
