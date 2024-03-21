@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./LoginSignup.css";
+import './index.css';
 
 
 
@@ -61,9 +61,20 @@ const LoginSignup = () => {
     };
 
     return (
-        <div className='container'>
-            <div className='home-button'>
-                <button className='home-button'>Home</button>
+
+        <div className='glass'>
+            <div className="home-button">
+            <button className="home-button">Home</button>
+        </div>
+            <div className="header">
+                <div className="text">{action}</div>
+                <div className="underline"></div>
+            </div>
+            {action === "Sign Up" ? (
+            <div className="options-banner">
+                <div className="option">Listener</div>
+                <div className="option">Artist</div>
+                <div className="option">Admin</div>
             </div>
             <div className='header'>
                 <div className='text'>{action}</div>
