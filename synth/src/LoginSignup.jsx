@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import "./LoginSignup.css";
 
 
 const LoginSignup = () => {
@@ -7,7 +6,7 @@ const LoginSignup = () => {
     const [action,setAction] = useState("Sign Up");
 
     return (
-        <div className='container'>
+        <div className='glass'>
             <div className="home-button">
             <button className="home-button">Home</button>
         </div>
