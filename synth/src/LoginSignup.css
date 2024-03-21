@@ -63,7 +63,7 @@
 
 .forgot-password{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     width: 480px; /* Width should match the input width */
     margin: auto; /* Center horizontally */
@@ -123,7 +123,10 @@ forgot-password span{
     align-items: center;
     margin-top: 20px;
     width: 600px;
+    width: 480px;
+    margin: auto;
 }
+
 
 .option {
     background-color: #5a1ab3;
@@ -131,6 +134,7 @@ forgot-password span{
     padding: 10px 20px;
     cursor: pointer;
     flex: 1;
+    text-align: center;
 }
 
 .option:hover {
