@@ -1,6 +1,6 @@
 const Home = () => {
     return (
-        <div className="home">
+        <div className="hover">
             <header>Synth</header>
         </div>
     );

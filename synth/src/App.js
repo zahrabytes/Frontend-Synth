@@ -1,8 +1,10 @@
 import './index.css';
 import Home from './Home.js';
 import LoginSignup from './LoginSignup.jsx';
+import ArtistProfile from './ArtistProfile.js';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AlbumAdd from './AlbumAdd.js';
 
 function App() {
   return (
@@ -15,6 +17,12 @@ function App() {
             </Route>
             <Route path="/Login">
               <LoginSignup />
+            </Route>
+            <Route path="/Artist">
+              <ArtistProfile />
+            </Route>
+            <Route path ="/Create-Album">
+              <AlbumAdd />
             </Route>
           </Switch>
         </div>
