@@ -20,16 +20,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
-  background: rgb(0,0,0);
-  background: -moz-radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(117,183,236,1) 100%);
-  background: -webkit-radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(117,183,236,1) 100%);
-  background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(117,183,236,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#75b7ec",GradientType=1);
+  background: rgb(140,178,209);
+  background: -moz-radial-gradient(circle, rgba(140,178,209,1) 0%, rgba(211,222,231,1) 56%, rgba(140,178,209,1) 100%);
+  background: -webkit-radial-gradient(circle, rgba(140,178,209,1) 0%, rgba(211,222,231,1) 56%, rgba(140,178,209,1) 100%);
+  background: radial-gradient(circle, rgba(140,178,209,1) 0%, rgba(211,222,231,1) 56%, rgba(140,178,209,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8cb2d1",endColorstr="#8cb2d1",GradientType=1);
 }
 
 header {
   font-family: 'Audiowide', cursive;
-  color: white;
+  color: black;
   font-size: 100px;
   padding: 20px;
   font-weight: bold;
@@ -124,13 +124,14 @@ code {
   padding-left: 30px;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 9px;
   width: 100%;
   margin-top: 30px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .text{
