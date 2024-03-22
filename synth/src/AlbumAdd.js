@@ -47,25 +47,38 @@ const AlbumAdd = () => {
     return (
         <div>
             <subheader>Add new album</subheader>
-            <div className='left-align-container'>
+            <div className='flex-container'>
+                <div className='left-align-container'>
+                        <div className="glass-album-page">
+                            <div onClick= {handleImageClick}>
+                                {image ? <img src={URL.createObjectURL(image)} alt="" className="img-display-after" /> 
+                                : <img src="./upload image.png" alt="" className="img-display-before" />}
+                                <input 
+                                type="file" 
+                                ref = {inputRef} 
+                                onChange={handleImageChange} 
+                                style={{display: "none"}}/>
+                            </div>
+                        </div>
                     <div className="glass-album-page">
-                        <div onClick= {handleImageClick}>
-                            {image ? <img src={URL.createObjectURL(image)} alt="" /> 
-                            : <img src="./upload image.png" alt="" className="img-display-after" />}
-                            <input 
-                            type="file" 
-                            ref = {inputRef} 
-                            onChange={handleImageChange} 
-                            style={{display: "none"}}/>
+                        <input type="text" placeholder="artist name" onChange={handleChange} name="artistName" />
+                        <input type="text" placeholder='album name' onChange={handleChange} name='albumName' />
+                        <input type="text" placeholder='genre' onChange={handleChange} name='genre' />
+                        <input type="text" placeholder='YYYY-MM-DD' onChange={handleChange} name='releaseDate' />
+                        <input type="text" placeholder='cover url' onChange={handleChange} name='cover' />
+                        <button className='formButton' /*onClick={handleClick}*/>Publish Album</button>
+                    </div>
+                </div>
+                <div className='right-align-container'>
+                    <div className="glass-album-page">
+                        <div className='song-flex-container'>
+                            <input type="text" placeholder="song name" onChange={handleChange} name="artistName" />
+                            <button>Add Song</button>
                         </div>
                     </div>
-                <div className="glass-album-page">
-                    <input type="text" placeholder="artist name" onChange={handleChange} name="artistName" />
-                    <input type="text" placeholder='album name' onChange={handleChange} name='albumName' />
-                    <input type="text" placeholder='genre' onChange={handleChange} name='genre' />
-                    <input type="text" placeholder='YYYY-MM-DD' onChange={handleChange} name='releaseDate' />
-                    <input type="text" placeholder='cover url' onChange={handleChange} name='cover' />
-                    <button className='formButton' /*onClick={handleClick}*/>Add</button>
+                    <div className="glass-album-page">
+                        
+                    </div>
                 </div>
             </div>
         </div>

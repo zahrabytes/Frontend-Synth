@@ -20,11 +20,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
-  background: rgb(140,178,209);
-  background: -moz-radial-gradient(circle, rgba(140,178,209,1) 0%, rgba(211,222,231,1) 56%, rgba(140,178,209,1) 100%);
-  background: -webkit-radial-gradient(circle, rgba(140,178,209,1) 0%, rgba(211,222,231,1) 56%, rgba(140,178,209,1) 100%);
-  background: radial-gradient(circle, rgba(140,178,209,1) 0%, rgba(211,222,231,1) 56%, rgba(140,178,209,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8cb2d1",endColorstr="#8cb2d1",GradientType=1);
+  background: rgb(10,48,79);
+background: -moz-radial-gradient(circle, rgba(10,48,79,1) 0%, rgba(245,251,255,1) 100%);
+background: -webkit-radial-gradient(circle, rgba(10,48,79,1) 0%, rgba(245,251,255,1) 100%);
+background: radial-gradient(circle, rgba(10,48,79,1) 0%, rgba(245,251,255,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a304f",endColorstr="#f5fbff",GradientType=1);
 }
 
 header {
@@ -84,45 +84,61 @@ code {
   padding-bottom: 30px;
 }
 
-.glass-album-page{
+.glass-album-page {
   display: flex;
   flex-direction: column;
   margin: auto;
-  width: 600px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  width: 400px;
+  background: rgba(255, 255, 255, 0.3); /* Adjust the opacity to make it more milky white */
+  backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+  -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
   border-radius: 20px;
-  border:1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  padding-bottom: 30px;
-  padding-top: 30px;
-  padding-right: 30px;
-  padding-left: 30px;
+  padding: 30px;
+  margin-bottom: 10px;
 }
 
 .left-align-container {
   display: grid;
   justify-content: start; /* Align content to the start (left) */
+  padding-left: 100px;
 }
 
+.right-align-container {
+  display: grid;
+  justify-content: end; /* Align content to the end (right) */
+  padding-right: 100px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between; /* Space items evenly along the main axis */
+  align-items: flex-start; /* Align items to the start (top) of the cross axis */
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.song-flex-container {
+  display: flex;
+  align-items: flex-start; /* Align items to the start (top) of the cross axis */
+  padding: 5px;
+}
 
 .glass {
   display: flex;
   flex-direction: column;
   margin: auto;
   width: 600px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.3); /* Adjust the opacity to make it more milky white */
+  backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+  -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
   border-radius: 20px;
-  border:1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  padding-bottom: 30px;
-  padding-top: 30px;
-  padding-right: 30px;
-  padding-left: 30px;
+  padding: 30px;
 }
+
 
 .header {
   display: flex;
@@ -293,18 +309,14 @@ forgot-password span{
     border-radius: 5px;
 }
 
-.image-upload-button:hover {
-    background-color: #3e8e41;
-}
-
 .img-display-before {
-    height: 200px;
-    width: 200px;
-    margin-left: 35px;
+  height: 200px;
+  width: 200px;
+  margin-left: 35px;
 }
 
 .img-display-after {
-    height: 200px;
-    width: 200px;
-    border-radius: 100%;
+  height: 200px;
+  width: 200px;
+  border-radius: 30px;
 }
