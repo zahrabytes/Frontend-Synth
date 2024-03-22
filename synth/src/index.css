@@ -81,7 +81,7 @@ code {
 }
 
 .text{
-  color: #7e44e3;
+  color: #4476e3;
   font-size: 48px;
   font-weight: 700;
 }
@@ -89,7 +89,7 @@ code {
 .underline{
   width: 61px;
   height: 6px;
-  background: #7e44e3;
+  background: #4476e3;
   border-radius: 9px;
 }
 
@@ -116,7 +116,7 @@ code {
 
 .input input{
   height: 50px;
-  width: 400px;
+  width: 300px;
   background: transparent;
   border:none;
   outline: none;
@@ -136,12 +136,14 @@ code {
 }
 
 forgot-password span{
-  color: #5a1ab3;
+  color: #1a4ab3;
   cursor: pointer;
 }
 
+
 .submit-container{
   display: flex;
+  justify-content: center;
   gap: 30px;
   margin: 60px auto;
 }
@@ -153,7 +155,7 @@ forgot-password span{
   width: 220px;
   height: 59px;
   color: #fff;
-  background: #5a1ab3;
+  background: #1a4ab3;
   border-radius: 50px;
   font-size: 19px;
   font-weight: 700;
@@ -172,7 +174,7 @@ forgot-password span{
 }
 
 .home-button button {
-  background: #5a1ab3;
+  background: #1a4ab3;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -185,11 +187,12 @@ forgot-password span{
   justify-content: space-around;
   align-items: center;
   margin-top: 20px;
-  width: 600px;
+  width: 480px;
+  margin: auto;
 }
 
 .option {
-  background-color: #5a1ab3;
+  background-color: #1a5cb3;
   color: white;
   padding: 10px 20px;
   cursor: pointer;
@@ -197,6 +200,9 @@ forgot-password span{
 }
 
 .option:hover {
-  background-color: #421187;
+  background-color: #113687;
 }
 
+.option:select {
+  background-color: #113687;
+}

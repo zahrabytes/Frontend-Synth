@@ -1,132 +1,138 @@
 import React, { useState } from 'react';
 import './index.css';
 
-
-
 const LoginSignup = () => {
-    
     const [action, setAction] = useState('Sign Up');
-    const [name, setName] = useState('');
+    const [selectedOption, setSelectedOption] = useState('');
+    const [fname, setFname] = useState('');
+    const [lname, setLname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [users, setUsers] = useState([]);
+    const [dob, setDob] = useState('');
 
-    const handleActionToggle = () => {
-        setAction(action === 'Sign Up' ? 'Login' : 'Sign Up');
+    const handleOptionSelect = (option) => {
+        setSelectedOption(option);
     };
 
-    const handleSignUp = async () => {
-        try {
-            const response = await fetch('/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                }),
-            });
-            if (response.ok) {
-                console.log('User signed up successfully');
-            } else {
-                console.error('Failed to sign up');
-            }
-        } catch (error) {
-            console.error('Error:', error);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Validate form submission
+        if (!selectedOption) {
+            alert('Please select an account type.');
+            return;
         }
-    };
-
-    const handleLogin = async () => {
-        try {
-            const response = await fetch('/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    password,
-                }),
-            });
-            if (response.ok) {
-                console.log('User logged in successfully');
-            } else {
-                console.error('Failed to log in');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        // Proceed with form submission
+        console.log('Form submitted:', fname, lname, email, password, dob, selectedOption);
+        // Add logic to send form data to server for sign-up
     };
 
     return (
-
         <div className='glass'>
             <div className="home-button">
-            <button className="home-button">Home</button>
-        </div>
+                <button className="home-button">Home</button>
+            </div>
             <div className="header">
                 <div className="text">{action}</div>
                 <div className="underline"></div>
             </div>
             {action === "Sign Up" ? (
-            <div className="options-banner">
-                <div className="option">Listener</div>
-                <div className="option">Artist</div>
-                <div className="option">Admin</div>
-            </div>
-            <div className='header'>
-                <div className='text'>{action}</div>
-                <div className='underline'></div>
-            </div>
-            {action === 'Sign Up' && (
-                <div className='options-banner'>
-                    <div className='option'>Listener</div>
-                    <div className='option'>Artist</div>
-                    <div className='option'>Admin</div>
+                <div className="options-banner">
+                    <div
+                        className={`option ${selectedOption === 'Listener' ? 'selected' : ''}`}
+                        onClick={() => handleOptionSelect('Listener')}
+                    >
+                        Listener
+                    </div>
+                    <div
+                        className={`option ${selectedOption === 'Artist' ? 'selected' : ''}`}
+                        onClick={() => handleOptionSelect('Artist')}
+                    >
+                        Artist
+                    </div>
+                    <div
+                        className={`option ${selectedOption === 'Admin' ? 'selected' : ''}`}
+                        onClick={() => handleOptionSelect('Admin')}
+                    >
+                        Admin
+                    </div>
                 </div>
-            )}
-            <div className='inputs'>
-                {action === 'Sign Up' && (
-                    <div className='input'>
-                        <img src='' alt='' />
-                        <input type='text' placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
+            ) : null}
+            <form onSubmit={handleSubmit}>
+                <div className="inputs">
+                    {action === "Login" ? null : (
+                        <div className="input">
+                            <img src="" alt="" />
+                            <input
+                                type="text"
+                                placeholder="First Name"
+                                value={fname}
+                                onChange={(e) => setFname(e.target.value)}
+                            />
+                        </div>
+                    )}
+                    {action === "Login" ? null : (
+                        <div className="input">
+                            <img src="" alt="" />
+                            <input
+                                type="text"
+                                placeholder="Last Name"
+                                value={lname}
+                                onChange={(e) => setLname(e.target.value)}
+                            />
+                        </div>
+                    )}
+                    <div className="input">
+                        <img src="" alt="" />
+                        <input
+                            type="email"
+                            placeholder="Email Id"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className="input">
+                        <img src="" alt="" />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    {action === "Login" ? null : (
+                        <div className="input">
+                            <img src="" alt="" />
+                            <input
+                                type="date"
+                                placeholder="Date of Birth"
+                                value={dob}
+                                onChange={(e) => setDob(e.target.value)}
+                            />
+                        </div>
+                    )}
+                </div>
+                {action === "Sign Up" ? null : (
+                    <div className="forgot-password">
+                        Lost Password? <span>Click Here!</span>
                     </div>
                 )}
-
-                <div className='input'>
-                    <img src='' alt='' />
-                    <input type='email' placeholder='Email Id' value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div className='input'>
-                    <img src='' alt='' />
-                    <input type='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
-            </div>
-            {action === 'Sign Up' && (
-                <div className='submit-container'>
-                    <div className='submit' onClick={handleSignUp}>
+                <div className="submit-container">
+                    <div
+                        className={action === "Login" ? "submit gray" : "submit"}
+                        onClick={() => setAction("Sign Up")}
+                    >
                         Sign Up
                     </div>
-                    <div className='submit gray' onClick={handleActionToggle}>
+                    <div
+                        className={action === "Sign Up" ? "submit gray" : "submit"}
+                        onClick={() => setAction("Login")}
+                    >
                         Login
                     </div>
                 </div>
-            )}
-            {action === 'Login' && (
-                <div className='submit-container'>
-                    <div className='submit' onClick={handleLogin}>
-                        Login
-                    </div>
-                    <div className='submit gray' onClick={handleActionToggle}>
-                        Sign Up
-                    </div>
-                </div>
-            )}
+            </form>
         </div>
     );
 };
 
-
-export default LoginSignup
+export default LoginSignup;
