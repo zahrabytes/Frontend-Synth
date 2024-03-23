@@ -8,6 +8,21 @@
     padding-bottom: 30px;
 }
 
+.glass {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 200px;
+    width: 600px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border:1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    padding-bottom: 30px;
+  }
+
 .header{
     display: flex;
     flex-direction: column;
@@ -63,7 +78,7 @@
 
 .forgot-password{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     width: 480px; /* Width should match the input width */
     margin: auto; /* Center horizontally */
@@ -123,7 +138,10 @@ forgot-password span{
     align-items: center;
     margin-top: 20px;
     width: 600px;
+    width: 480px;
+    margin: auto;
 }
+
 
 .option {
     background-color: #5a1ab3;
@@ -131,8 +149,10 @@ forgot-password span{
     padding: 10px 20px;
     cursor: pointer;
     flex: 1;
+    text-align: center;
 }
 
 .option:hover {
     background-color: #421187;
 }
+
