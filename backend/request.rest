@@ -1,0 +1,24 @@
+# POST request to register an artist
+POST http://localhost:8800/users/artist
+Content-Type: application/json
+
+{
+    "fname": "John",
+    "lname": "Doe",
+    "artistName": "JDoe",
+    "email": "johndoe@example.com",
+    "password": "password123",
+    "DoB": "1990-01-01"
+}
+
+###
+
+# Unsuccessful login request (invalid password)
+POST http://localhost:8800/login/artist
+Content-Type: application/json
+
+{
+    "email": "johndoe@example.com",
+    "password": "password123",
+    "userType": "artist"
+}
