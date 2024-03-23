@@ -26,10 +26,14 @@ const LoginSignup = () => {
         // Proceed with form submission
         console.log('Form submitted:', fname, lname, email, password, dob, selectedOption);
         // Add logic to send form data to server for sign-up
-        if (true /* replace with actual authentication logic */) {
-            history.push('/User-Home');
-        }
+
     };
+
+    const handleLoginClick = () => {
+        // Redirect to user-home page
+        history.push('/user-home');
+    };
+
 
     return (
         <div className='glass'>
@@ -130,7 +134,7 @@ const LoginSignup = () => {
                     </div>
                     <div
                         className={action === "Sign Up" ? "submit gray" : "submit"}
-                        onClick={() => setAction("Login")}
+                        onClick={handleLoginClick}
                     >
                         Login
                     </div>
