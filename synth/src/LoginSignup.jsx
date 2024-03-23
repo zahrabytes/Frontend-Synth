@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import './index.css';
 
-<<<<<<< HEAD
-
-const LoginSignup = () => {
-
-    const [action,setAction] = useState("Sign Up");
-=======
 const LoginSignup = () => {
     const [action, setAction] = useState('Sign Up');
     const [selectedOption, setSelectedOption] = useState('');
@@ -31,7 +25,6 @@ const LoginSignup = () => {
         console.log('Form submitted:', fname, lname, email, password, dob, selectedOption);
         // Add logic to send form data to server for sign-up
     };
->>>>>>> kevin
 
     return (
         <div className='glass'>
@@ -43,39 +36,6 @@ const LoginSignup = () => {
                 <div className="underline"></div>
             </div>
             {action === "Sign Up" ? (
-<<<<<<< HEAD
-            <div className="options-banner">
-                <div className="option">Listener</div>
-                <div className="option">Artist</div>
-                <div className="option">Admin</div>
-            </div>
-        ) : null}
-            <div className="inputs">
-                {action==="Login"?<div></div>:<div className="input">
-                <img src="" alt="" />
-                <input type="text" placeholder="Name"/>
-            </div>}
-            
-            <div className="input">
-                <img src="" alt="" />
-                <input type="email" placeholder="Email Id"/>
-            </div>
-            <div className="input">
-                <img src="" alt="" />
-                <input type="password" placeholder="Password"/>
-            </div>
-            </div>
-            {action==="Sign Up"?<div></div>:<div ClassName="forgot-password">Lost Password? <span>Click Here!</span></div>}
-            <div className="submit-container">
-                <div className={action==="Login"?"submit gray":"submit"} onClick={()=>{setAction("Sign Up")}}>Sign Up</div>
-                <div className={action==="Sign Up"?"submit gray":"submit"}onClick={()=>{setAction("Login")}}>Login</div>
-            </div>
-        </div>
-    )
-}
-
-export default LoginSignup
-=======
                 <div className="options-banner">
                     <div
                         className={`option ${selectedOption === 'Listener' ? 'selected' : ''}`}
@@ -176,4 +136,3 @@ export default LoginSignup
 };
 
 export default LoginSignup;
->>>>>>> kevin

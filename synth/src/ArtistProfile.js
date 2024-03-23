@@ -18,15 +18,19 @@ const ArtistProfile = () => {
         <>
         <div className="image-upload-container">
             <div className="glass-static">
-                <div onClick= {handleImageClick}>
-                    {image ? <img src={URL.createObjectURL(image)} alt="" className="img-display-after" /> 
-                    : <img src="./upload image.png" alt="" className="img-display-before" />}
-                    <input 
+            <div onClick={handleImageClick}>
+                {image ? (
+                    <img src={URL.createObjectURL(image)} alt="" className="img-display-after" />
+                ) : (
+                    <div className="text-display-before">Upload Image</div>
+                )}
+                <input 
                     type="file" 
-                    ref = {inputRef} 
+                    ref={inputRef} 
                     onChange={handleImageChange} 
-                    style={{display: "none"}}/>
-                </div>
+                    style={{display: "none"}}
+                />
+            </div>
                 <button className="image-upload-button">Upload</button>
             </div>
         </div>
