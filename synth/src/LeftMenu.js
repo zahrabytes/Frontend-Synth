@@ -4,6 +4,7 @@ import './LeftMenu.css';
 import { Menu } from "./Menu";
 import { MenuList } from "./MenuList";
 import { MenuPlayList } from "./MenuPlaylist";
+import { TrackList } from "./TrackList";
 
 function LeftMenu() {
     return <div className="leftMenu">
@@ -23,6 +24,8 @@ function LeftMenu() {
       
       <Menu title ={"Menu"} menuObject={MenuList}/>
        <MenuPlayList />
+
+       <TrackList />
         </div>
 }
 
