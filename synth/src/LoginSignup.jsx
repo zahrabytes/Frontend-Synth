@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import './index.css';
 
 const LoginSignup = () => {
@@ -9,7 +10,7 @@ const LoginSignup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [dob, setDob] = useState('');
-    const [loginClickedOnce, setLoginClickedOnce] = useState(false);
+    const history = useHistory();
 
     const handleOptionSelect = (option) => {
         setSelectedOption(option);
@@ -30,49 +31,10 @@ const LoginSignup = () => {
         const userType = selectedOption.toLowerCase();
 
         // Proceed with form submission
-        console.log('Form submitted:', formData, selectedOption);
-
-        // Add logic to send form data to server
-        if (action === "Sign Up") {
-            fetch(`http://localhost:8800/users/${userType}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Response from server:', data);
-                // Handle response as needed
-            })
-            .catch(error => {
-                console.error('Error connecting to backend:', error);
-                // Handle error as needed
-            });
-        } else if (action === "Login") {
-            // Check if login is clicked for the second time
-            if (loginClickedOnce) {
-                // Add logic to connect to the backend for login
-                fetch(`http://localhost:8800/login/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Response from server:', data);
-                    // Handle response as needed
-                })
-                .catch(error => {
-                    console.error('Error connecting to backend:', error);
-                    // Handle error as needed
-                });
-            } else {
-                setLoginClickedOnce(true);
-            }
+        console.log('Form submitted:', fname, lname, email, password, dob, selectedOption);
+        // Add logic to send form data to server for sign-up
+        if (true /* replace with actual authentication logic */) {
+            history.push('/User-Home');
         }
     };
 

@@ -272,7 +272,7 @@ forgot-password span{
   background-color: #113687;
 }
 
-.option:select {
+.option.selected{
   background-color: #113687;
 }
 
@@ -325,4 +325,17 @@ margin-left: 35px;
 height: 200px;
 width: 200px;
 border-radius: 30px;
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
+
+header-menu {
+  font-family: 'Audiowide', cursive;
+  color: white;
+  font-size: 50px;
+  padding: 20px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
