@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AlbumAdd from './AlbumAdd.js';
 import ArtistProfile from './ArtistProfile.js';
 import Home from './Home.js';
+import { LeftMenu } from './LeftMenu.js';
 import LoginSignup from './LoginSignup.jsx';
 import './index.css';
 
@@ -23,6 +24,9 @@ function App() {
             </Route>
             <Route path ="/Create-Album">
               <AlbumAdd />
+            </Route>
+            <Route path ="/User-Home">
+            <LeftMenu />
             </Route>
           </Switch>
         </div>
