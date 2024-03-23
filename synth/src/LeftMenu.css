@@ -244,20 +244,6 @@
     background: rgba(255, 255, 255, 0.1);
   }
   
-  /* chrome and safari browser */
-  .trackList .bottom input::before {
-    position: absolute;
-    content: "";
-    top: 0;
-    left: 0;
-    background: #2e6de1;
-    width: 50%;
-    height: 100%;
-    border-radius: 10px;
-    z-index: 2;
-    transition: width 250ms linear;
-  }
-  
   .trackList .bottom input::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 10px;

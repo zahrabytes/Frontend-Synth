@@ -3,6 +3,7 @@ import { BiSearch } from "react-icons/bi";
 import './LeftMenu.css';
 import { Menu } from "./Menu";
 import { MenuList } from "./MenuList";
+import { MenuPlayList } from "./MenuPlaylist";
 
 function LeftMenu() {
     return <div className="leftMenu">
@@ -21,6 +22,7 @@ function LeftMenu() {
       </div>
       
       <Menu title ={"Menu"} menuObject={MenuList}/>
+       <MenuPlayList />
         </div>
 }
 
