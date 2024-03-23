@@ -26,7 +26,7 @@ function App() {
               <AlbumAdd />
             </Route>
             <Route path ="/User-Home">
-            <LeftMenu />
+              <LeftMenu />
             </Route>
           </Switch>
         </div>
