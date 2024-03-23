@@ -48,17 +48,23 @@ const AlbumAdd = () => {
             <subheader>Add new album</subheader>
             <div className='flex-container'>
                 <div className='left-align-container'>
-                        <div className="glass-album-page">
-                            <div onClick= {handleImageClick}>
-                                {image ? <img src={URL.createObjectURL(image)} alt="" className="img-display-after" /> 
-                                : <img src="./upload image.png" alt="" className="img-display-before" />}
-                                <input 
-                                type="file" 
-                                ref = {inputRef} 
-                                onChange={handleImageChange} 
-                                style={{display: "none"}}/>
+                <div className="glass-album-page">
+                    <div onClick={handleImageClick}>
+                        {image ? (
+                            <img src={URL.createObjectURL(image)} alt="" className="img-display-after" /> 
+                        ) : (
+                            <div className="upload-text" style={{ textAlign: "center" }}>
+                                Upload Album Image
                             </div>
-                        </div>
+                        )}
+                        <input 
+                            type="file" 
+                            ref={inputRef} 
+                            onChange={handleImageChange} 
+                            style={{ display: "none" }}
+                        />
+                    </div>
+                </div>
                     <div className="glass-album-page">
                         <input type="text" placeholder="artist name" onChange={handleChange} name="artistName" />
                         <input type="text" placeholder='album name' onChange={handleChange} name='albumName' />
