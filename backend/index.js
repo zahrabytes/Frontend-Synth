@@ -1,7 +1,10 @@
 import express from "express";
 import mysql from "mysql2";
+import cors from 'cors'
+
 
 const app = express();
+app.use(cors());
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
@@ -96,6 +99,48 @@ app.post('/login/:userType', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+app.get("/albums", (req, res)=> {
+    const q = "SELECT * FROM album;"
+    db.query(q, (err, data)=>{
+        if(err) return res.json(err)
+        return res.json(data)
+    })
+})
+
+//Uploading Albums
+app.post("/albums", (req, res)=>{
+    const q = "INSERT INTO album (`artistName`, `albumName`, `genre`, `releaseDate`, `cover`) VALUES (?)"
+    const values = [req.body.artistName, req.body.albumName, req.body.genre, req.body.releaseDate, req.body.cover]
+
+    db.query(q, [values], (err, data)=>{
+        if (err) return res.json(err)
+        return res.json("Album added successfully!")
+    })
+})
+
+//Updating Albums
+app.put("/albums/:id", (req, res)=>{
+    const albumId = req.params.id;
+    const q = "UPDATE album SET `artistName` = ?, `albumName` = ?, `genre` = ?, `releaseDate` = ?, `cover` = ? WHERE albumID = ?"
+    const values = [req.body.artistName, req.body.albumName, req.body.genre, req.body.releaseDate, req.body.cover]
+
+    db.query(q, [...values, albumId], (err, data)=>{
+        if(err) return res.json(err)
+        return res.json("Album has updated successfully!")
+    })
+})
+
+//Deleting Albums
+app.delete("/albums/:id", (req, res)=>{
+    const albumId = req.params.id;
+    const q = "DELETE FROM album WHERE albumID = ?"
+
+    db.query(q, [albumId], (err, data)=>{
+        if(err) return res.json(err)
+        return res.json(data)
+    })
+})
 
 // Main page
 app.get("/", (req, res) => {
