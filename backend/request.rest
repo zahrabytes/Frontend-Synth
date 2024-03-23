@@ -1,5 +1,5 @@
 # POST request to register an artist
-POST http://localhost:8800/users/artist
+POST http://localhost:8800/users/listener
 Content-Type: application/json
 
 {
@@ -14,11 +14,10 @@ Content-Type: application/json
 ###
 
 # Unsuccessful login request (invalid password)
-POST http://localhost:8800/login/artist
+POST http://localhost:8800/login
 Content-Type: application/json
 
 {
     "email": "johndoe@example.com",
-    "password": "password123",
-    "userType": "artist"
+    "password": "password123"
 }

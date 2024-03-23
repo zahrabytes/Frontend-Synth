@@ -67,38 +67,66 @@ app.post('/users/:userType', async (req, res) => {
 });
 
 
-app.post('/login/:userType', async (req, res) => {
+app.post('/login', async (req, res) => {
     try {
-        const userType = req.params.userType;
-        if (userType !== 'artist' && userType !== 'listener') {
-            return res.status(400).json({ error: 'Invalid user type' });
-        }
-
         const { email, password } = req.body;
 
-        // Retrieve user from the appropriate table based on user type
-        const query = `SELECT * FROM ${userType} WHERE email = ? AND password = ?`;
+        // Retrieve user from listener table
+        let query = `SELECT * FROM listener WHERE email = ? AND password = ?`;
         db.query(query, [email, password], (error, results, fields) => {
             if (error) {
-                console.error('Error retrieving user data:', error);
+                console.error('Error retrieving listener data:', error);
                 return res.status(500).json({ error: 'Internal server error' });
             }
 
-            if (results.length === 0) {
-                // User with the provided email and password combination does not exist
-                console.log('Invalid credentials');
-                return res.status(401).json({ error: 'Invalid credentials' });
+            if (results.length > 0) {
+                const user = results[0];
+                console.log('Login successful (Listener):', user);
+                return res.status(200).json({ message: 'Login successful', user });
             }
 
-            const user = results[0];
-            console.log('Login successful:', user);
-            res.status(200).json({ message: 'Login successful', user });
+            // If not found in listener table, try admin table
+            query = `SELECT * FROM admin WHERE email = ? AND password = ?`;
+            db.query(query, [email, password], (error, results, fields) => {
+                if (error) {
+                    console.error('Error retrieving admin data:', error);
+                    return res.status(500).json({ error: 'Internal server error' });
+                }
+
+                if (results.length > 0) {
+                    const user = results[0];
+                    console.log('Login successful (Admin):', user);
+                    return res.status(200).json({ message: 'Login successful', user });
+                }
+
+                // If not found in admin table, try artist table
+                query = `SELECT * FROM artist WHERE email = ? AND password = ?`;
+                db.query(query, [email, password], (error, results, fields) => {
+                    if (error) {
+                        console.error('Error retrieving artist data:', error);
+                        return res.status(500).json({ error: 'Internal server error' });
+                    }
+
+                    if (results.length > 0) {
+                        const user = results[0];
+                        console.log('Login successful (Artist):', user);
+                        return res.status(200).json({ message: 'Login successful', user });
+                    }
+
+                    // If not found in any table, return invalid credentials
+                    console.log('Invalid credentials');
+                    return res.status(401).json({ error: 'Invalid credentials' });
+                });
+            });
         });
     } catch (err) {
         console.error('Error during login:', err);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+
 
 app.get("/albums", (req, res)=> {
     const q = "SELECT * FROM album;"
