@@ -111,47 +111,43 @@ app.post('/album', async (req, res) => {
         const userType = req.params.userType;
         let requiredFields;
 
+        requiredFields = ['albumName', 'genre', 'releaseDate', 'cover'];
+        
+        /*
         // Define required fields based on user type
         if (userType === 'artist') {
-            requiredFields = ['fname', 'lname', 'artistName', 'email', 'password', 'DoB'];
-        } else if (userType === 'listener') {
-            requiredFields = ['DoB', 'email', 'fname', 'lname', 'password', 'username'];
+            requiredFields = ['albumName', 'genre', 'releaseDate', 'cover'];
         } else {
             return res.status(400).json({ error: 'Invalid user type' });
         }
+        */
 
-        if (userType === 'listener') {
-            requiredFields = ['fname', 'lname', 'artistName', 'email', 'password', 'DoB'];
-        } else if (userType === 'listener') {
-            requiredFields = ['DoB', 'email', 'fname', 'lname', 'password', 'username'];
-        } else {
-            return res.status(400).json({ error: 'Invalid user type' });
-        }
+        // Check if album already exists for this artist
 
-        // Check if email already exists
-        const emailExistsQuery = `SELECT COUNT(*) as count FROM ${userType} WHERE email = ?`;
+        /*
+        const album = `SELECT artistName FROM ${userType} WHERE email = ?`;
         const emailExistsResult = await db.promise().query(emailExistsQuery, [req.body.email]);
         const emailExists = emailExistsResult[0][0].count > 0;
         if (emailExists) {
             return res.status(400).json({ error: 'Email already exists' });
-        }
+        }*/
 
         // Insert user into the database
-        const query = `INSERT INTO ${userType} (${requiredFields.join(',')}) VALUES (${requiredFields.map(() => '?').join(',')})`;
+        const query = `INSERT INTO album (${requiredFields.join(',')}) VALUES (${requiredFields.map(() => '?').join(',')})`;
         const values = requiredFields.map(field => req.body[field]);
 
         db.query(query, values, (error, results, fields) => {
             if (error) {
                 console.error('Error inserting data:', error);
-                return res.status(500).json({ error: 'Error creating user' });
+                return res.status(500).json({ error: 'Error creating album' });
             }
-            console.log('User inserted successfully');
-            return res.status(201).json({ message: 'User created successfully' });
+            console.log('Album inserted successfully');
+            return res.status(201).json({ message: 'Album created successfully' });
         });
 
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ error: 'Error creating user' });
+        return res.status(500).json({ error: 'Error creating album' });
     }
 });
 
