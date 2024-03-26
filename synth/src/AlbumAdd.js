@@ -34,7 +34,7 @@ const AlbumAdd = () => {
    /* const handleClick = async (e) =>{
         e.preventDefault()
         try{
-            await axios.post("http://localhost:80/albums", album)
+            await axios.post("http://localhost:8800/albums", album)
             navigate("/")
         } catch(err) {
             console.log(err)

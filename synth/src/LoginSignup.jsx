@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import './index.css';
 
 const LoginSignup = () => {
@@ -9,6 +10,7 @@ const LoginSignup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [dob, setDob] = useState('');
+    const history = useHistory();
 
     const handleOptionSelect = (option) => {
         setSelectedOption(option);
@@ -23,8 +25,15 @@ const LoginSignup = () => {
         }
         // Proceed with form submission
         console.log('Form submitted:', fname, lname, email, password, dob, selectedOption);
-        // Add logic to send form data to server for sign-up
+        // TODO: Add logic to send form data to server for sign-up
+
     };
+
+    const handleLoginClick = () => {
+        // Redirect to user-home page
+        history.push('/user-home');
+    };
+
 
     return (
         <div className='glass'>
@@ -125,7 +134,7 @@ const LoginSignup = () => {
                     </div>
                     <div
                         className={action === "Sign Up" ? "submit gray" : "submit"}
-                        onClick={() => setAction("Login")}
+                        onClick={handleLoginClick}
                     >
                         Login
                     </div>

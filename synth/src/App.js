@@ -1,5 +1,6 @@
 import './index.css';
 import Home from './Home.js';
+import { LeftMenu } from './LeftMenu.js';
 import LoginSignup from './LoginSignup.jsx';
 import ArtistProfile from './ArtistProfile.js';
 import React from 'react';
@@ -23,6 +24,9 @@ function App() {
             </Route>
             <Route path ="/Create-Album">
               <AlbumAdd />
+            </Route>
+            <Route path ="/User-Home">
+              <LeftMenu />
             </Route>
           </Switch>
         </div>
