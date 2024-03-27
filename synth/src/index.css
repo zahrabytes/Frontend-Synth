@@ -36,6 +36,12 @@ header {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+.center{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 subheader {
   display: flex;
   font-family: 'Audiowide', cursive;

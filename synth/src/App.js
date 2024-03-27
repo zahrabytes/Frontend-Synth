@@ -6,6 +6,7 @@ import ArtistProfile from './ArtistProfile.js';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AlbumAdd from './AlbumAdd.js';
+import Audioplayer from './Disclaimer.js';
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
             </Route>
             <Route path ="/User-Home">
               <LeftMenu />
+            </Route>
+            <Route path ="/audioplayer">
+              <Audioplayer />
             </Route>
           </Switch>
         </div>
