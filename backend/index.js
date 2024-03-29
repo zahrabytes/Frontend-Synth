@@ -151,6 +151,68 @@ app.post('/album', async (req, res) => {
     }
 });
 
+app.get('/search-song', async (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    const query = `
+        SELECT DISTINCT S.songTitle, ART.artistName
+        FROM song AS S
+        JOIN album AS A ON S.albumID = A.albumID
+        JOIN artist AS ART ON A.artistID = ART.artistID
+        WHERE (S.songTitle LIKE '%${searchTerm}%'
+                OR ART.artistName LIKE '%${searchTerm}%')
+    `;
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error searching songs:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
+app.get('/search-album', async (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    const query = `
+    SELECT DISTINCT A.albumName, ART.artistName
+    FROM album AS A
+    JOIN artist AS ART ON A.artistID = ART.artistID
+    WHERE (A.albumName LIKE '%${searchTerm}%'
+            OR ART.genre LIKE '%${searchTerm}%'
+            OR ART.artistName LIKE '%${searchTerm}%')
+    `;
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error searching album:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
+app.get('/search-artist', async (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    const query = `
+    SELECT DISTINCT ART.artistName
+    FROM song AS S
+    JOIN album AS A ON S.albumID = A.albumID
+    JOIN artist AS ART ON A.artistID = ART.artistID
+    WHERE (S.songTitle LIKE '%${searchTerm}%' 
+            OR ART.artistName LIKE '%${searchTerm}%'
+            OR A.albumName LIKE '%${searchTerm}%')
+    
+    `;
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error searching album:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
 // Main page
 app.get("/", (req, res) => {
     res.json("This is the main page");
