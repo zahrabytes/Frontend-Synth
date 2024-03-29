@@ -160,7 +160,6 @@ app.get('/search-artist', async (req, res) => {
     WHERE (S.songTitle LIKE '%${searchTerm}%' 
             OR ART.artistName LIKE '%${searchTerm}%'
             OR A.albumName LIKE '%${searchTerm}%')
-    
     `;
     db.query(query, (err, results) => {
       if (err) {

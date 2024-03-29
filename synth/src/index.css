@@ -27,17 +27,20 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a304f",endColorstr="#f5fbff",GradientType=1);
 }
 
+.center{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 header {
+  display: flex;
   font-family: 'Audiowide', cursive;
   color: black;
-  font-size: 100px;
+  font-size: 200px;
   padding: 20px;
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.center{
-  display: flex;
   justify-content: space-around;
   align-items: center;
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './index.css';
+import './SearchPage.css'
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,7 +60,6 @@ const SearchPage = () => {
           <li key={index}>{item.albumName}</li>
         ))}
       </ul>
-
     </div>
   );
 };
