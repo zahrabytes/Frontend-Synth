@@ -4,16 +4,24 @@ import './index.css';
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [artistResults, setArtistResults] = useState([]);
+  const [albumResults, setAlbumResults] = useState([]);
+  const [songResults, setSongResults] = useState([]);
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`/search?searchTerm=${searchTerm}`);
-      setSearchResults(response.data);
+      const artist = await axios.get(`http://localhost:8800/search-artist?searchTerm=${searchTerm}`);
+      setArtistResults(artist.data);
+
+      const album = await axios.get(`http://localhost:8800/search-album?searchTerm=${searchTerm}`);
+      setAlbumResults(album.data);
+
+      const song = await axios.get(`http://localhost:8800/search-song?searchTerm=${searchTerm}`);
+      setSongResults(song.data);
     } catch (error) {
       console.error('Error searching:', error);
     }
-  };
+  };  
 
   return (
     <div>
@@ -24,9 +32,22 @@ const SearchPage = () => {
         placeholder="Enter search term" 
       />
       <button onClick={handleSearch}>Search</button>
+      <subheader>Artist</subheader>
       <ul>
-        {searchResults.map((song, index) => (
-          <li key={index}>{song.title} - {song.artist}</li>
+        {artistResults.map((item, index) => (
+          <li key={index}>{item.artistName}</li>
+        ))}
+      </ul>
+      <subheader>Album</subheader>
+      <ul>
+        {albumResults.map((item, index) => (
+          <li key={index}>{item.albumName}</li>
+        ))}
+      </ul>
+      <subheader>Song</subheader>
+      <ul>
+        {songResults.map((item, index) => (
+          <li key={index}>{item.songTitle}</li>
         ))}
       </ul>
     </div>
