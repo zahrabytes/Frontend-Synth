@@ -153,7 +153,7 @@ app.get('/search-album', async (req, res) => {
 app.get('/search-artist', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-    SELECT DISTINCT ART.artistName
+    SELECT DISTINCT ART.artistName, ART.profilePic
     FROM song AS S
     JOIN album AS A ON S.albumID = A.albumID
     JOIN artist AS ART ON A.artistID = ART.artistID

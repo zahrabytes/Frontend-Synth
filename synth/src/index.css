@@ -313,17 +313,17 @@ forgot-password span{
   display: none;
 }
 
-.img-display-before {
-height: 200px;
-width: 200px;
-margin-left: 35px;
-}
-
 .img-display-after {
 height: 200px;
 width: 200px;
 border-radius: 30px;
 }
+
+.img-pfp-display-after {
+  height: 200px;
+  width: 200px;
+  border-radius: 100px;
+  }
 
 ::-webkit-scrollbar{
   display: none;

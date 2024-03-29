@@ -35,7 +35,12 @@ const SearchPage = () => {
       <subheader>Artist</subheader>
       <ul>
         {artistResults.map((item, index) => (
-          <li key={index}>{item.artistName}</li>
+          <li key={index}>
+            <div>
+              <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistName} />
+            </div>
+            <div>{item.artistName}</div>
+          </li>
         ))}
       </ul>
       <subheader>Album</subheader>
