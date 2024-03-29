@@ -3,9 +3,11 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AlbumAdd from './AlbumAdd.js';
 import ArtistProfile from './ArtistProfile.js';
 import Home from './Home.js';
-import { LeftMenu } from './LeftMenu.js';
 import LoginSignup from './LoginSignup.jsx';
+import { AdminHome } from './MenuComponents/AdminHome.js';
+import { LeftMenu } from './MenuComponents/LeftMenu.js';
 import './index.css';
+
 
 function App() {
   return (
@@ -27,6 +29,9 @@ function App() {
             </Route>
             <Route path ="/User-Home">
             <LeftMenu />
+            </Route>
+            <Route path ="/Admin-Home">
+            <AdminHome />
             </Route>
           </Switch>
         </div>
