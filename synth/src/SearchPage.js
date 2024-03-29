@@ -32,29 +32,34 @@ const SearchPage = () => {
         placeholder="Enter search term" 
       />
       <button onClick={handleSearch}>Search</button>
-      <subheader>Artist</subheader>
-      <ul>
-        {artistResults.map((item, index) => (
-          <li key={index}>
-            <div>
-              <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistName} />
-            </div>
-            <div>{item.artistName}</div>
-          </li>
-        ))}
-      </ul>
+      <div className='flex-container'>
+        <div className='left-align-container'>
+          <subheader>Artist</subheader>
+          <ul>
+            {artistResults.map((item, index) => (
+              <li key={index}>
+                <div><img className='img-pfp-display-after' src={item.profilePic} alt={item.artistName} /></div>
+                <div>{item.artistName}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className='right-align-container'>
+          <subheader>Song</subheader>
+          <ul>
+            {songResults.map((item, index) => (
+              <li key={index}>{item.songTitle}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
       <subheader>Album</subheader>
       <ul>
         {albumResults.map((item, index) => (
           <li key={index}>{item.albumName}</li>
         ))}
       </ul>
-      <subheader>Song</subheader>
-      <ul>
-        {songResults.map((item, index) => (
-          <li key={index}>{item.songTitle}</li>
-        ))}
-      </ul>
+
     </div>
   );
 };

@@ -105,24 +105,15 @@ code {
   margin-bottom: 10px;
 }
 
-.left-align-container {
-  display: grid;
-  justify-content: start; /* Align content to the start (left) */
-  padding-left: 100px;
-}
 
-.right-align-container {
-  display: grid;
-  justify-content: end; /* Align content to the end (right) */
-  padding-right: 100px;
+.left-align-container, .right-align-container {
+  flex: 1; /* Each container takes up equal space */
 }
 
 .flex-container {
   display: flex;
   justify-content: space-between; /* Space items evenly along the main axis */
   align-items: flex-start; /* Align items to the start (top) of the cross axis */
-  padding-left: 10px;
-  padding-right: 10px;
 }
 
 .song-flex-container {
