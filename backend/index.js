@@ -109,6 +109,105 @@ app.post('/login/:userType', async (req, res) => {
     }
 });
 
+// Chase's part////////////////////////////////////////////////////
+//Artist View for albums and songs
+app.get("/albums", (req, res)=> {
+    const q = "SELECT * FROM album";
+    db.query(q, (err, data)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json(data);
+    });
+});
+
+//Uploading Albums
+app.post("/albums", (req, res)=>{
+    const q = "INSERT INTO album (`artistName`, `albumName`, `genre`, `releaseDate`, `cover`) VALUES (?)";
+    const values = [req.body.artistName, req.body.albumName, req.body.genre, req.body.releaseDate, req.body.cover];
+
+    db.query(q, [values], (err, data)=>{
+        if (err) {
+            return res.json(err);
+        }
+        return res.json({message: "Album added successfully!"});
+    });
+});
+
+//Updating Albums
+app.put("/albums/:id", (req, res)=>{
+    const albumId = req.params.id;
+    const q = "UPDATE album SET `artistName` = ?, `albumName` = ?, `genre` = ?, `releaseDate` = ?, `cover` = ? WHERE albumID = ?";
+    const values = [req.body.artistName, req.body.albumName, req.body.genre, req.body.releaseDate, req.body.cover];
+
+    db.query(q, [...values, albumId], (err, data)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json({message: "Album has updated successfully!"});
+    })
+})
+
+//Deleting Albums
+app.delete("/albums/:id", (req, res)=>{
+    const albumId = req.params.id;
+    const q = "DELETE FROM album WHERE albumID = ?";
+
+    db.query(q, [albumId], (err, data)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json({message: "Album deleted successfully!"});
+    });
+});
+
+//Handle Album Fetch on Song Upload Page
+app.get("/albums/:id/upload", (req, res) => {
+    const albumID = req.params.id;
+    const q = "SELECT * FROM album WHERE albumID = ?";
+
+    db.query(q, [albumID], (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]);
+        } else {
+            return res.json({ message: "Album not found" });
+        }
+    });
+});
+
+//Upload Songs to Album
+app.post("/albums/:id/upload", (req, res)=> {
+    const albumID = req.params.id;
+    const { songTitle, filePath, songDuration } = req.body;
+
+    const q = "SELECT album.artistName, album.genre, album.releaseDate FROM album WHERE album.albumID = ?";
+    db.query(q, albumID, (err, results)=>{
+        if(err) {
+            return res.json(err);
+        }
+        
+        if (results.length === 0) {
+            return res.status(404).json({error: 'Album not found'});
+        }
+        
+        const {artistName, genre, releaseDate} = results[0];
+
+        const songData = {songTitle, artistName, albumID, genre, releaseDate, filePath, songDuration};
+
+        const insertq = "INSERT INTO song SET ?";
+        db.query(insertq, songData, (err)=>{
+            if(err) {
+                return res.json(err);
+            }
+            return res.json({message: 'Song added successfully'});
+        });
+    });
+});
+///////////////////////////////////////////////////////////////////
+
 
 app.get('/search-song', async (req, res) => {
     const searchTerm = req.query.searchTerm;
@@ -158,7 +257,7 @@ app.get('/search-artist', async (req, res) => {
     JOIN album AS A ON S.albumID = A.albumID
     JOIN artist AS ART ON A.artistID = ART.artistID
     WHERE (S.songTitle LIKE '%${searchTerm}%' 
-            OR ART.artistName LIKE '%${searchTerm}%'
+            OR ART.artistName LIKE '%${searchTerm}%'                  
             OR A.albumName LIKE '%${searchTerm}%')
     `;
     db.query(query, (err, results) => {
