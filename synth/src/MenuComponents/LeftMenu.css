@@ -6,7 +6,7 @@
     width: 280px;
     height: 100%;
     min-height: 100vh;
-    background: rgba(34, 34, 34, 0.6);
+    /*background: rgba(34, 34, 34, 0.6);*/
     backdrop-filter: blur(10px);
     padding: 25px 20px;
     overflow: hidden;
@@ -40,7 +40,7 @@
     height: 45px;
     position: relative;
     margin-top: 20px;
-    color: #848484;
+    color: #c5c5c5;
     overflow: hidden;
     border-radius: 10px;
   }
@@ -60,7 +60,7 @@
   }
   
   .searchBox input::placeholder {
-    color: #848484;
+    color: #c5c5c5;
   }
   
   .searchBox i {
@@ -124,7 +124,7 @@
   
   .menuContainer ul li:hover a,
   .menuContainer ul li.active a {
-    color: #f1f1f1;
+    color: #2e6de1;
     transition: 0.3s;
   }
   

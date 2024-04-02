@@ -97,6 +97,46 @@ app.post('/login/:userType', async (req, res) => {
     }
 });
 
+//Admin flags
+app.post('/flag-song', (req, res) => {
+    const { songId } = req.body;
+  
+    // Increment flag count of the song in the database
+    db.query('UPDATE songs SET flag_count = flag_count + 1 WHERE id = ?', [songId], (err, result) => {
+      if (err) {
+        console.error('Error flagging song:', err);
+        res.status(500).json({ error: 'Error flagging song' });
+      } else {
+        res.status(200).json({ message: 'Song flagged successfully' });
+      }
+    });
+  });
+
+
+  //handle admin actions (e.g., delete song, reject report)
+app.post('/admin/actions/delete-song', (req, res) => {
+    const songId = req.body.songId;
+    // Perform necessary actions to delete the song from the database
+    db.query('DELETE FROM songs WHERE id = ?', [songId], (err, result) => {
+        if (err) {
+            console.error('Error deleting song:', err);
+            res.status(500).json({ error: 'Failed to delete song' });
+        } else {
+            // Remove the deleted song from the flagged songs data structure
+            flaggedSongs = flaggedSongs.filter(song => song.id !== songId);
+            res.status(200).json({ message: 'Song deleted successfully' });
+        }
+    });
+});
+
+// Endpoint to handle rejecting a report
+app.post('/admin/actions/reject-report', (req, res) => {
+    const songId = req.body.songId;
+    // Remove the song from the flagged songs data structure
+    flaggedSongs = flaggedSongs.filter(song => song.id !== songId);
+    res.status(200).json({ message: 'Report rejected successfully' });
+});
+
 // Main page
 app.get("/", (req, res) => {
     res.json("This is the main page");

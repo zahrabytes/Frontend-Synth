@@ -2,7 +2,7 @@
     height: 106vh;
     flex-grow: 1;
     z-index: 1;
-    background: rgba(34, 34, 34, 0.6);
+    /*background: rgba(34, 34, 34, 0.6);*/
     backdrop-filter: blur(10px);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
@@ -11,7 +11,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 15px 30px;
-    background: #2c2c2c;
+    background: rgba(0, 0, 0, 0.5);
   }
   
   .menuList ul {
@@ -27,7 +27,7 @@
   
   .mainContainer .menuList ul li a {
     text-decoration: none;
-    color: #848484;
+    color: #c5c5c5;
   }
   
   .mainContainer .menuList ul li::before {
@@ -65,7 +65,7 @@
   
   .mainContainer p span {
     margin-left: 6px;
-    color: #848484;
+    color: #c5c5c5;
   }
   
   .adminlists {
@@ -78,7 +78,7 @@
   }
 
 .adminlists .title span {
-    color:#848484;
+    color:#c5c5c5;
     font-size: 12px;
 }
 
@@ -93,7 +93,7 @@
     align-items: center;
     font-size: 14px;
     font-weight: 600;
-    color: #848484;
+    color: #c5c5c5;
     width: 100%;
     margin: 10px 0;
     padding: 5px;

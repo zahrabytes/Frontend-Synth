@@ -22,9 +22,6 @@ function MainContainer() {
         <div className="menuList">
             <ul>
                 <li>
-                    <a href="#">Latest</a>
-                    </li>
-                <li>
                     <a href="#">Active</a>
                     </li>
                 <li>
