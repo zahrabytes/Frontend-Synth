@@ -82,7 +82,6 @@ const AlbumAdd = () => {
                         </div>
                     </div>
                     <div className="glass-album-page">
-                        
                     </div>
                 </div>
             </div>
