@@ -4,7 +4,7 @@ import { AdminHome } from './Admin/AdminHome.js';
 import AlbumAdd from './AlbumAdd.js';
 import ArtistProfile from './ArtistProfile.js';
 import Home from './Home.js';
-import { LeftMenu } from './Listener/LeftMenu.js';
+import { ListenerHome } from './Listener/ListenerHome.js';
 import LoginSignup from './LoginSignup.jsx';
 import './index.css';
 
@@ -28,7 +28,7 @@ function App() {
               <AlbumAdd />
             </Route>
             <Route path ="/User-Home">
-            <LeftMenu />
+            <ListenerHome />
             </Route>
             <Route path ="/Admin-Home">
             <AdminHome />
