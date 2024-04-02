@@ -1,7 +1,7 @@
 import React from "react";
 import { BiSearch } from "react-icons/bi";
+import { Menu } from "../Listener/Menu";
 import { AMenuList } from "./AdminMenu";
-import { Menu } from "./Menu";
 
 function AdminPage() {
     return (

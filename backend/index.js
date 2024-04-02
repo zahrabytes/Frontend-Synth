@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import mysql from "mysql2";
 
@@ -5,6 +6,9 @@ const app = express();
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
+
+//Middleware for CORS
+app.use(cors());
 
 // Connection to database
 const db = mysql.createConnection({
