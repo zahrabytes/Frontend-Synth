@@ -8,8 +8,8 @@ import Home from './Home.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
 import LoginSignup from './LoginSignup.jsx';
 import Disclaimer from './Disclaimer.js'; 
-import Search from './SearchPage.js';
-import AudioPlayer from './audioplayer.js';
+import Search from './Listener/SearchPage.js';
+import AudioPlayer from './Listener/audioplayer.js';
 
 function App() {
   return (
