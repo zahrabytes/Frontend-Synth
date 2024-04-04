@@ -39,7 +39,7 @@ const SearchPage = () => {
           <ul>
             {artistResults.map((item, index) => (
               <li key={index}>
-                <div><img className='img-pfp-display-after' src={item.profilePic} alt={item.artistName} /></div>
+                <div><img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} /></div>
                 <div>{item.artistName}</div>
               </li>
             ))}

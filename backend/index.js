@@ -1,13 +1,10 @@
 import express from "express";
 import mysql from "mysql2";
-import cors from 'cors';
+import cors from "cors";
 
 const app = express();
 
-// Middleware for parsing JSON bodies
 app.use(express.json());
-
-// Middleware for CORS
 app.use(cors());
 
 // Connection to database
@@ -25,8 +22,202 @@ function logger(req, res, next) {
     next();
 }
 
-// Endpoint for user creation
-app.post('/users/:userType', async (req, res) => {
+// create Account - 1st endpoint (user picks either artist or listener account and is take to the correct signup page)
+app.post('/createAccount', async (req, res) => {
+    try {
+        // Extract the userType from the request body
+        const { userType } = req.body;
+
+        // Check if the userType is valid
+        if (userType !== 'artist' && userType !== 'listener') {
+            return res.status(400).json({ error: 'Invalid user type' });
+        }
+
+        // Redirect to the appropriate sign-up page based on the userType
+        if (userType === 'artist') {
+            // Redirect to artist sign-up page
+            return res.redirect('/createAccount/artist');
+        } else if (userType === 'listener') {
+            // Redirect to listener sign-up page
+            return res.redirect('/createAccount/listener');
+        }
+    } catch (error) {
+        console.error('Error creating user:', error);
+        return res.status(500).json({ error: 'Error creating user' });
+    }
+});
+
+// create account end point - user fills out information (based on the userType)
+app.post('/createAccount/:userType', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const userType = req.params.userType; // Accessing userType from URL parameter
+        let requiredFields;
+
+        // Define required fields based on user type
+        if (userType === 'artist') {
+            requiredFields = ['fname', 'lname', 'artistName', 'email', 'password', 'DoB'];
+        } 
+        else if (userType === 'listener') {
+            requiredFields = ['fname', 'lname', 'email', 'username', 'password', 'DoB', 'profilePic'];
+        } 
+        else {
+            return res.status(400).json({ error: 'Invalid user type' });
+        }
+
+        // Check if the email exists in any of the tables
+        let query = `SELECT * FROM listener WHERE email = ?`;
+        db.query(query, [email], async (error, results, fields) => {
+            if (error) {
+                console.error('Error retrieving listener data:', error);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+
+            if (results.length > 0) {
+                return res.status(400).json({ error: 'Email already exists' });
+            }
+
+            // If not found in listener table, check the admin table
+            query = `SELECT * FROM admin WHERE email = ?`;
+            db.query(query, [email], async (error, results, fields) => {
+                if (error) {
+                    console.error('Error retrieving admin data:', error);
+                    return res.status(500).json({ error: 'Internal server error' });
+                }
+
+                if (results.length > 0) {
+                    return res.status(400).json({ error: 'Email already exists' });
+                }
+
+                // If not found in admin table, check the artist table
+                query = `SELECT * FROM artist WHERE email = ?`;
+                db.query(query, [email], async (error, results, fields) => {
+                    if (error) {
+                        console.error('Error retrieving artist data:', error);
+                        return res.status(500).json({ error: 'Internal server error' });
+                    }
+
+                    if (results.length > 0) {
+                        return res.status(400).json({ error: 'Email already exists' });
+                    }
+
+                    // If not found in any table, check additional fields
+                    if (userType === 'artist') {
+                        // Check if artistName exists in the artist table
+                        query = `SELECT * FROM artist WHERE artistName = ?`;
+                    } 
+                    else if (userType === 'listener') {
+                        // Check if username exists in the listener table
+                        query = `SELECT * FROM listener WHERE username = ?`;
+                    }
+
+                    db.query(query, [req.body.artistName || req.body.username], async (error, results, fields) => {
+                        if (error) {
+                            console.error('Error retrieving data:', error);
+                            return res.status(500).json({ error: 'Internal server error' });
+                        }
+
+                        if (results.length > 0) {
+                            return res.status(400).json({ error: userType === 'artist' ? 'Artist name already exists' : 'Username already exists' });
+                        }
+
+                        // If not found in any table, create the account
+                        const insertQuery = `INSERT INTO ${userType} (${requiredFields.join(',')}) VALUES (${requiredFields.map(() => '?').join(',')})`;
+                        const values = requiredFields.map(field => req.body[field]);
+
+                        db.query(insertQuery, values, (error, results, fields) => {
+                            if (error) {
+                                console.error('Error creating user:', error);
+                                return res.status(500).json({ error: 'Error creating user' });
+                            }
+                            console.log('User created successfully');
+                            return res.status(201).json({ message: 'User created successfully' });
+                        });
+                    });
+                });
+            });
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error creating user' });
+    }
+});
+
+app.post('/listener-login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        let query = `SELECT * FROM listener WHERE email = ? AND BINARY password = ?`;
+        db.query(query, [email, password], (error, results, fields) => {
+            if (error) {
+                console.error('Error retrieving listener data:', error);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+            if (results.length > 0) {
+                const user = results[0];
+                console.log('Login successful (Listener):', user);
+                return res.status(200).json({ message: 'Login successful', user });
+            }
+            console.log('Invalid credentials');
+            return res.status(401).json({ error: 'Invalid credentials' });
+        });
+    } 
+    catch (err) {
+        console.error('Error during login:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.post('/artist-login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        let query = `SELECT * FROM artist WHERE email = ? AND BINARY password = ?`;
+        db.query(query, [email, password], (error, results, fields) => {
+            if (error) {
+                console.error('Error retrieving listener data:', error);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+            if (results.length > 0) {
+                const user = results[0];
+                console.log('Login successful (Listener):', user);
+                return res.status(200).json({ message: 'Login successful', user });
+            }
+            console.log('Invalid credentials');
+            return res.status(401).json({ error: 'Invalid credentials' });
+        });
+    } 
+    catch (err) {
+        console.error('Error during login:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.post('/admin-login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        let query = `SELECT * FROM admin WHERE email = ? AND BINARY password = ?`;
+        db.query(query, [email, password], (error, results, fields) => {
+            if (error) {
+                console.error('Error retrieving listener data:', error);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+            if (results.length > 0) {
+                const user = results[0];
+                console.log('Login successful (Listener):', user);
+                return res.status(200).json({ message: 'Login successful', user });
+            }
+            console.log('Invalid credentials');
+            return res.status(401).json({ error: 'Invalid credentials' });
+        });
+    } 
+    catch (err) {
+        console.error('Error during login:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+// Code to post an album
+app.post('/album', async (req, res) => {
     try {
         const userType = req.params.userType;
         let requiredFields;
@@ -42,9 +233,11 @@ app.post('/users/:userType', async (req, res) => {
 
         if (userType === 'listener') {
             requiredFields = ['fname', 'lname', 'artistName', 'email', 'password', 'DoB'];
-        } else if (userType === 'listener') {
+        } 
+        else if (userType === 'listener') {
             requiredFields = ['DoB', 'email', 'fname', 'lname', 'password', 'username'];
-        } else {
+        } 
+        else {
             return res.status(400).json({ error: 'Invalid user type' });
         }
 
@@ -75,140 +268,7 @@ app.post('/users/:userType', async (req, res) => {
     }
 });
 
-
-app.post('/login/:userType', async (req, res) => {
-    try {
-        const userType = req.params.userType;
-        if (userType !== 'artist' && userType !== 'listener') {
-            return res.status(400).json({ error: 'Invalid user type' });
-        }
-
-        const { email, password } = req.body;
-
-        // Retrieve user from the appropriate table based on user type
-        const query = `SELECT * FROM ${userType} WHERE email = ? AND password = ?`;
-        db.query(query, [email, password], (error, results, fields) => {
-            if (error) {
-                console.error('Error retrieving user data:', error);
-                return res.status(500).json({ error: 'Internal server error' });
-            }
-
-            if (results.length === 0) {
-                // User with the provided email and password combination does not exist
-                console.log('Invalid credentials');
-                return res.status(401).json({ error: 'Invalid credentials' });
-            }
-
-            const user = results[0];
-            console.log('Login successful:', user);
-            res.status(200).json({ message: 'Login successful', user });
-        });
-    } catch (err) {
-        console.error('Error during login:', err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Chase's part////////////////////////////////////////////////////
-//Artist View for albums and songs
-app.get("/albums", (req, res)=> {
-    const q = "SELECT * FROM album";
-    db.query(q, (err, data)=>{
-        if(err) {
-            return res.json(err);
-        }
-        return res.json(data);
-    });
-});
-
-//Uploading Albums
-app.post("/albums", (req, res)=>{
-    const q = "INSERT INTO album (`artistName`, `albumName`, `genre`, `releaseDate`, `cover`) VALUES (?)";
-    const values = [req.body.artistName, req.body.albumName, req.body.genre, req.body.releaseDate, req.body.cover];
-
-    db.query(q, [values], (err, data)=>{
-        if (err) {
-            return res.json(err);
-        }
-        return res.json({message: "Album added successfully!"});
-    });
-});
-
-//Updating Albums
-app.put("/albums/:id", (req, res)=>{
-    const albumId = req.params.id;
-    const q = "UPDATE album SET `artistName` = ?, `albumName` = ?, `genre` = ?, `releaseDate` = ?, `cover` = ? WHERE albumID = ?";
-    const values = [req.body.artistName, req.body.albumName, req.body.genre, req.body.releaseDate, req.body.cover];
-
-    db.query(q, [...values, albumId], (err, data)=>{
-        if(err) {
-            return res.json(err);
-        }
-        return res.json({message: "Album has updated successfully!"});
-    })
-})
-
-//Deleting Albums
-app.delete("/albums/:id", (req, res)=>{
-    const albumId = req.params.id;
-    const q = "DELETE FROM album WHERE albumID = ?";
-
-    db.query(q, [albumId], (err, data)=>{
-        if(err) {
-            return res.json(err);
-        }
-        return res.json({message: "Album deleted successfully!"});
-    });
-});
-
-//Handle Album Fetch on Song Upload Page
-app.get("/albums/:id/upload", (req, res) => {
-    const albumID = req.params.id;
-    const q = "SELECT * FROM album WHERE albumID = ?";
-
-    db.query(q, [albumID], (err, data) => {
-        if (err) {
-            return res.json({ error: err.message });
-        }
-        if (data.length > 0) {
-            return res.json(data[0]);
-        } else {
-            return res.json({ message: "Album not found" });
-        }
-    });
-});
-
-//Upload Songs to Album
-app.post("/albums/:id/upload", (req, res)=> {
-    const albumID = req.params.id;
-    const { songTitle, filePath, songDuration } = req.body;
-
-    const q = "SELECT album.artistName, album.genre, album.releaseDate FROM album WHERE album.albumID = ?";
-    db.query(q, albumID, (err, results)=>{
-        if(err) {
-            return res.json(err);
-        }
-        
-        if (results.length === 0) {
-            return res.status(404).json({error: 'Album not found'});
-        }
-        
-        const {artistName, genre, releaseDate} = results[0];
-
-        const songData = {songTitle, artistName, albumID, genre, releaseDate, filePath, songDuration};
-
-        const insertq = "INSERT INTO song SET ?";
-        db.query(insertq, songData, (err)=>{
-            if(err) {
-                return res.json(err);
-            }
-            return res.json({message: 'Song added successfully'});
-        });
-    });
-});
-///////////////////////////////////////////////////////////////////
-
-
+// Search Page Backend ///////////////////////////////////////////////////////////////////
 app.get('/search-song', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
@@ -217,7 +277,7 @@ app.get('/search-song', async (req, res) => {
         JOIN album AS A ON S.albumID = A.albumID
         JOIN artist AS ART ON A.artistID = ART.artistID
         WHERE (S.songTitle LIKE '%${searchTerm}%'
-                OR ART.artistName LIKE '%${searchTerm}%')
+                OR ART.artistName LIKE '%${searchTerm}%');
     `;
     db.query(query, (err, results) => {
       if (err) {
@@ -232,16 +292,16 @@ app.get('/search-song', async (req, res) => {
 app.get('/search-album', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-    SELECT DISTINCT A.albumName, ART.artistName
-    FROM album AS A
-    JOIN artist AS ART ON A.artistID = ART.artistID
-    WHERE (A.albumName LIKE '%${searchTerm}%'
-            OR ART.genre LIKE '%${searchTerm}%'
-            OR ART.artistName LIKE '%${searchTerm}%')
+        SELECT DISTINCT A.albumName, ART.artistName
+        FROM album AS A
+        JOIN artist AS ART ON A.artistID = ART.artistID
+        WHERE (A.albumName LIKE '%${searchTerm}%' 
+                OR ART.genre LIKE '%${searchTerm}%' 
+                OR ART.artistName LIKE '%${searchTerm}%');
     `;
     db.query(query, (err, results) => {
       if (err) {
-        console.error('Error searching album:', err);
+        console.error('Error searching songs:', err);
         res.status(500).json({ error: 'Internal server error' });
         return;
       }
@@ -252,23 +312,26 @@ app.get('/search-album', async (req, res) => {
 app.get('/search-artist', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-    SELECT DISTINCT ART.artistName, ART.profilePic
-    FROM song AS S
-    JOIN album AS A ON S.albumID = A.albumID
-    JOIN artist AS ART ON A.artistID = ART.artistID
-    WHERE (S.songTitle LIKE '%${searchTerm}%' 
-            OR ART.artistName LIKE '%${searchTerm}%'                  
-            OR A.albumName LIKE '%${searchTerm}%')
+        SELECT DISTINCT ART.artistName, ART.profilePic
+        FROM song AS S
+        JOIN album AS A ON S.albumID = A.albumID
+        JOIN artist AS ART ON A.artistID = ART.artistID
+        WHERE S.songTitle LIKE '%${searchTerm}%' 
+        OR A.albumName LIKE '%${searchTerm}%'
+        OR ART.genre LIKE '%${searchTerm}%' 
+        OR ART.artistName LIKE '%${searchTerm}%';
     `;
     db.query(query, (err, results) => {
       if (err) {
-        console.error('Error searching album:', err);
+        console.error('Error searching songs:', err);
         res.status(500).json({ error: 'Internal server error' });
         return;
       }
       res.json(results);
     });
 });
+
+// End of Search Page Backend ///////////////////////////////////////////////////////////////////
 
 // Main page
 app.get("/", (req, res) => {
