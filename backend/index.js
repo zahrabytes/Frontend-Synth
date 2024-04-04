@@ -333,6 +333,8 @@ app.get('/search-artist', async (req, res) => {
     });
 });
 
+// End Search Page Backend ///////////////////////////////////////////////////////////////////
+
 //Admin flags
 app.post('/flag-song', (req, res) => {
     const { songId } = req.body;
