@@ -31,3 +31,4 @@ function LeftMenu() {
 }
 
 export { LeftMenu };
+

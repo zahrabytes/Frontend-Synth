@@ -1,11 +1,12 @@
+import React from 'react';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { AdminHome } from './Admin/AdminHome.js';
+import AlbumAdd from './AlbumAdd.js';
+import ArtistProfile from './ArtistProfile.js';
 import './index.css';
 import Home from './Home.js';
-import { LeftMenu } from './LeftMenu.js';
+import { ListenerHome } from './Listener/ListenerHome.js';
 import LoginSignup from './LoginSignup.jsx';
-import ArtistProfile from './ArtistProfile.js';
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import AlbumAdd from './AlbumAdd.js';
 import Disclaimer from './Disclaimer.js'; 
 import Search from './SearchPage.js';
 import AudioPlayer from './audioplayer.js';
@@ -29,7 +30,10 @@ function App() {
               <AlbumAdd />
             </Route>
             <Route path ="/User-Home">
-              <LeftMenu />
+            <ListenerHome />
+            </Route>
+            <Route path ="/Admin-Home">
+            <AdminHome />
             </Route>
             <Route path ="/audioplayer">
               <AudioPlayer />
