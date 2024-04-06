@@ -271,27 +271,62 @@ app.post('/album', async (req, res) => {
 });
 
 // Album Display /////////////////////////////////////////////////////////////////////////
-app.get('/view-album/:albumID', async (req, res) =>{
-    const albumID = req.params.albumID;
-    try {
+// fetching songs
+async function fetchSongsForAlbum(albumID) {
+    return new Promise((resolve, reject) => {
         const query = `
-        SELECT A.albumName, A.releaseDate, A.cover , ART.artistName, ART.genre, ART.profilePic
-        FROM album as A, artist as ART
-        WHERE A.albumID = ? AND ART.artistID = A.artistID
+            SELECT songTitle, filePath, songDuration
+            FROM song
+            WHERE albumID = ?
         `;
         db.query(query, [albumID], (err, results) => {
-        if (err) {
-            console.error('Error searching albums:', err);
-            res.status(500).json({ error: 'Internal server error' });
+            if (err) {
+                console.error('Error searching songs:', err);
+                reject(err); // Reject the promise with the error
+            } else {
+                resolve(results); // Resolve the promise with the query results
+            }
+        });
+    });
+}
+
+// view album
+app.get('/view-album/:albumID', async (req, res) =>{
+    // Get the album ID from the URL
+    const albumID = req.params.albumID;
+
+    try {
+        // Define query to search for album
+        const query = `
+            SELECT A.albumName, A.releaseDate, A.cover , ART.artistName, ART.genre, ART.profilePic
+            FROM album as A, artist as ART
+            WHERE A.albumID = ? AND ART.artistID = A.artistID
+        `;
+        
+        // Execute album query
+        const [albumResults] = await db.promise().query(query, [albumID]);
+
+        if (albumResults.length === 0) {
+            res.status(404).json({ error: 'Album not found' });
             return;
         }
-        res.json(results);
-        });
+
+        // Fetch songs for the album
+        const songs = await fetchSongsForAlbum(albumID);
+
+        // Combine album details and songs into a single response
+        const albumWithSongs = {
+            album: albumResults[0],
+            songs: songs
+        };
+
+        res.json(albumWithSongs);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal server error');
     }
 });
+
 // End of Album Display //////////////////////////////////////////////////////////////////
 
 // Search Page Backend ///////////////////////////////////////////////////////////////////
