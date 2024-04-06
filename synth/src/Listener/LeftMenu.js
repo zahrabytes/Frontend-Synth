@@ -5,7 +5,7 @@ import { Menu } from "./Menu";
 import { MenuList } from "./MenuList";
 import { MenuPlayList } from "./MenuPlaylist";
 import { TrackList } from "./TrackList";
-import './index.css';
+import '../index.css';
 
 function LeftMenu() {
     return <div className="leftMenu">

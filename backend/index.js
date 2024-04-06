@@ -1,7 +1,6 @@
 import cors from "cors";
-import express from "express";
 import mysql from "mysql2";
-import cors from "cors";
+import express from "express";
 
 const app = express();
 
