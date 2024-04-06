@@ -270,6 +270,30 @@ app.post('/album', async (req, res) => {
     }
 });
 
+// Album Display /////////////////////////////////////////////////////////////////////////
+app.get('/view-album/:albumID', async (req, res) =>{
+    const albumID = req.params.albumID;
+    try {
+        const query = `
+        SELECT A.albumName, A.releaseDate, A.cover , ART.artistName, ART.genre, ART.profilePic
+        FROM album as A, artist as ART
+        WHERE A.albumID = ? AND ART.artistID = A.artistID
+        `;
+        db.query(query, [albumID], (err, results) => {
+        if (err) {
+            console.error('Error searching albums:', err);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+        res.json(results);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// End of Album Display //////////////////////////////////////////////////////////////////
+
 // Search Page Backend ///////////////////////////////////////////////////////////////////
 app.get('/search-song', async (req, res) => {
     const searchTerm = req.query.searchTerm;
