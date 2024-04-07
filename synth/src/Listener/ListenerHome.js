@@ -6,7 +6,7 @@ function ListenerHome() {
   return (
     <div>
       <LeftMenu />
-      <div className="flex"><SearchPage /></div>
+      <SearchPage />
     </div>
   );
 }
