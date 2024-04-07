@@ -5,8 +5,9 @@ import { SearchPage } from "./SearchPage.js";
 function ListenerHome() {
   return (
     <div>
-      <LeftMenu />
+      <LeftMenu>
       <SearchPage />
+      </LeftMenu>
     </div>
   );
 }
