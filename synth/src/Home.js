@@ -1,7 +1,12 @@
-const Home = () => {
+import React from 'react';
+import './index.css'
+
+function Home () {
     return (
-        <div className="home">
-            <header>Synth</header>
+        <div>
+            <div className="hover">
+                <header>Synth</header>
+            </div>
         </div>
     );
 }

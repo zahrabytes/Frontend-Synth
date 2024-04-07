@@ -1,12 +1,15 @@
 import React from "react";
 import { LeftMenu } from "./LeftMenu";
+import { SearchPage } from "./SearchPage.js";
 
 function ListenerHome() {
   return (
     <div>
-      <LeftMenu />
+      <LeftMenu>
+      <SearchPage />
+      </LeftMenu>
     </div>
   );
 }
 
-export { ListenerHome };
+export { ListenerHome }; 

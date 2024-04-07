@@ -27,13 +27,22 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a304f",endColorstr="#f5fbff",GradientType=1);
 }
 
+.center{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 header {
+  display: flex;
   font-family: 'Audiowide', cursive;
-  color: white;
-  font-size: 100px;
+  color: black;
+  font-size: 200px;
   padding: 20px;
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  justify-content: space-around;
+  align-items: center;
 }
 
 subheader {
@@ -89,7 +98,7 @@ code {
   flex-direction: column;
   margin: auto;
   width: 400px;
-  background: rgba(255, 255, 255, 0.3); /* Adjust the opacity to make it more milky white */
+  background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
   backdrop-filter: blur(20px); /* Increase blur for a softer effect */
   -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
   border-radius: 20px;
@@ -99,24 +108,15 @@ code {
   margin-bottom: 10px;
 }
 
-.left-align-container {
-  display: grid;
-  justify-content: start; /* Align content to the start (left) */
-  padding-left: 100px;
-}
 
-.right-align-container {
-  display: grid;
-  justify-content: end; /* Align content to the end (right) */
-  padding-right: 100px;
+.left-align-container, .right-align-container {
+  flex: 1; /* Each container takes up equal space */
 }
 
 .flex-container {
   display: flex;
   justify-content: space-between; /* Space items evenly along the main axis */
   align-items: flex-start; /* Align items to the start (top) of the cross axis */
-  padding-left: 10px;
-  padding-right: 10px;
 }
 
 .song-flex-container {
@@ -129,24 +129,25 @@ code {
   display: flex;
   flex-direction: column;
   margin: auto;
-  margin-top: 200px;
   width: 600px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.3); /* Adjust the opacity to make it more milky white */
+  backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+  -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
   border-radius: 20px;
-  border:1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  padding-bottom: 30px;
+  padding: 30px;
 }
 
-.header{
+
+.header {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 9px;
   width: 100%;
   margin-top: 30px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .text{
@@ -167,6 +168,7 @@ code {
   display: flex;
   flex-direction: column;
   gap: 25px;
+  border-radius: 30px;
 }
 
 .input{
@@ -305,27 +307,17 @@ forgot-password span{
   display: none;
 }
 
-.image-upload-button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 0.8rem 1.2rem;
-  margin-top: 1rem;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.img-display-before {
-height: 200px;
-width: 200px;
-margin-left: 35px;
-}
-
 .img-display-after {
 height: 200px;
 width: 200px;
 border-radius: 30px;
 }
+
+.img-pfp-display-after {
+  height: 200px;
+  width: 200px;
+  border-radius: 100px;
+  }
 
 ::-webkit-scrollbar{
   display: none;

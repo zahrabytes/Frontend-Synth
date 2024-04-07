@@ -3,11 +3,13 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { AdminHome } from './Admin/AdminHome.js';
 import AlbumAdd from './AlbumAdd.js';
 import ArtistProfile from './ArtistProfile.js';
+import './index.css';
 import Home from './Home.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
 import LoginSignup from './LoginSignup.jsx';
-import './index.css';
-
+import Disclaimer from './Disclaimer.js'; 
+import { SearchPage } from './Listener/SearchPage.js';
+import AudioPlayer from './Listener/audioplayer.js';
 
 function App() {
   return (
@@ -32,6 +34,15 @@ function App() {
             </Route>
             <Route path ="/Admin-Home">
             <AdminHome />
+            </Route>
+            <Route path ="/audioplayer">
+              <AudioPlayer />
+            </Route>
+            <Route path ="/Disclaimer">
+              <Disclaimer />
+            </Route>
+            <Route path ="/Search">
+              <SearchPage />
             </Route>
           </Switch>
         </div>

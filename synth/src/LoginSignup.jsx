@@ -25,7 +25,7 @@ const LoginSignup = () => {
         }
         // Proceed with form submission
         console.log('Form submitted:', fname, lname, email, password, dob, selectedOption);
-        // Add logic to send form data to server for sign-up
+        // TODO: Add logic to send form data to server for sign-up
 
     };
 
