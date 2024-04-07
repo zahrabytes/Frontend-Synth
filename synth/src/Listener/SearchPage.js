@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../index.css';
-import './SearchPage.css'
 
-const SearchPage = () => {
+// TODO integrate with left menu/ listener home
+function SearchPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [artistResults, setArtistResults] = useState([]);
   const [albumResults, setAlbumResults] = useState([]);
@@ -64,4 +64,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+export { SearchPage };

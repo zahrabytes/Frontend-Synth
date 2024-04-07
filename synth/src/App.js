@@ -8,7 +8,7 @@ import Home from './Home.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
 import LoginSignup from './LoginSignup.jsx';
 import Disclaimer from './Disclaimer.js'; 
-import Search from './Listener/SearchPage.js';
+import { SearchPage } from './Listener/SearchPage.js';
 import AudioPlayer from './Listener/audioplayer.js';
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
               <Disclaimer />
             </Route>
             <Route path ="/Search">
-              <Search />
+              <SearchPage />
             </Route>
           </Switch>
         </div>
