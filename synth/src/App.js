@@ -9,7 +9,8 @@ import { ListenerHome } from './Listener/ListenerHome.js';
 import LoginSignup from './LoginSignup.jsx';
 import Disclaimer from './Disclaimer.js'; 
 import { SearchPage } from './Listener/SearchPage.js';
-import AudioPlayer from './Listener/audioplayer.js';
+import AudioPlayer from './Listener/AudioPlayer.js';
+import ViewAlbum from "./Listener/ViewAlbum.js";
 
 function App() {
   return (
@@ -44,6 +45,9 @@ function App() {
             <Route path ="/Search">
               <SearchPage />
             </Route>
+            <Router>
+              <Route path="/View-Album/:albumID" component={ViewAlbum} />
+            </Router>
           </Switch>
         </div>
       </div>

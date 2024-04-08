@@ -308,7 +308,7 @@ app.post('/album', async (req, res) => {
 // Album Display /////////////////////////////////////////////////////////////////////////
 // fetching songs
 
-app.get('/view-album/:albumID/songs', async (req, res) =>{
+app.get('/view-album/:albumID/song', async (req, res) =>{
     const albumID = req.params.albumID;
     try {
         const query = `
