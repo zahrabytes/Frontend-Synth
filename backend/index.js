@@ -353,7 +353,7 @@ app.get('/search-song', async (req, res) => {
 app.get('/search-album', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-        SELECT DISTINCT A.albumName, ART.artistName
+        SELECT DISTINCT A.albumName, A.cover, ART.artistName
         FROM album AS A
         JOIN artist AS ART ON A.artistID = ART.artistID
         WHERE (A.albumName LIKE '%${searchTerm}%' 

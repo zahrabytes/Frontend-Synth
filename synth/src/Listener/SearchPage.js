@@ -57,7 +57,10 @@ function SearchPage() {
       <subheader>Album</subheader>
       <ul>
         {albumResults.map((item, index) => (
-          <li key={index}>{item.albumName}</li>
+          <li key={index}>
+            <div><img className='img-display-after' src={item.cover} alt={item.cover} /></div>
+            <div>{item.albumName}</div>
+          </li>
         ))}
       </ul>
     </div>
