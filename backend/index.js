@@ -1,6 +1,34 @@
 import cors from "cors";
 import mysql from "mysql2";
 import express from "express";
+/*
+const {Storage} = require('@google-cloud/storage');
+require('dotenv').config();
+
+const projectId = process.env.PROJECT_ID;
+const keyFilename = process.env.KEYFILENAME;
+const storage = new Storage({projectId, keyFilename});
+
+async function uploadFile(bucketName, file, fileOutputName){
+    try{
+        const bucket = storage.bucket(bucketName);
+        const ret = await bucket.upload(file,{
+            destination:fileOutputName
+        })
+        return ret;
+    }catch(error){
+        console.error('Error:', error);        
+    }
+}
+
+async function generateLink(file_name, song_id){
+    //const file_name = 'Cherry Waves.mp3';
+    //const song_id = 'examplesongid.mp3';
+    const ret = await uploadFile(process.env.BUCKET_NAME, file_name, song_id);
+    const link = "https://storage.googleapis.com/bucket-tester-2/" + song_id;
+    console.log(link);
+}
+*/
 
 const app = express();
 
@@ -23,6 +51,13 @@ function logger(req, res, next) {
     console.log('Log');
     next();
 }
+
+/*
+// initial song posting helper
+app.post('/post-song', async (req, res) => {
+
+});
+*/
 
 // create Account - 1st endpoint (user picks either artist or listener account and is take to the correct signup page)
 app.post('/createAccount', async (req, res) => {
@@ -218,7 +253,7 @@ app.post('/admin-login', async (req, res) => {
 });
 
 
-// Code to post an album
+// Code to post an album ? it's not
 app.post('/album', async (req, res) => {
     try {
         const userType = req.params.userType;
