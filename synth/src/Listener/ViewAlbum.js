@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import '../index.css';
 
-function AlbumPage({ match }) {
-    const [albumData, setAlbumData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const AlbumWithSongs = ({ albumData }) => {
+    const [albumResults, setAlbumResults] = useState([]);
+    const [songResults, setSongResults] = useState([]);
 
-    useEffect(() => {
-        const fetchAlbumAndSongs = async () => {
-            try {
-                const albumResponse = await axios.get(`/view-album/${match.params.albumID}`);
-                setAlbumData(albumResponse.data);
-                setLoading(false);
-            } catch (error) {
-                setError(error.message);
-                setLoading(false);
-            }
-        };
+    const fetchAlbum = async () => {
+        try {
+            const album = await axios.get(`http://localhost:8800/search-artist?searchTerm=${searchTerm}`);
+            setAlbumResults(album.data);
+        } catch (error) {
+          console.error('Error searching:', error);
+        }
+      };  
+    
+    return (
+        <div>
+        </div>
+    );
+};
 
-        fetchAlbumAndSongs();
-    }, [match.params.albumID]);
-}
-
-export default AlbumPage;
+export default ViewAlbum;

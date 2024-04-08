@@ -307,23 +307,26 @@ app.post('/album', async (req, res) => {
 
 // Album Display /////////////////////////////////////////////////////////////////////////
 // fetching songs
-async function fetchSongsForAlbum(albumID) {
-    return new Promise((resolve, reject) => {
+
+app.get('/view-album/:albumID/songs', async (req, res) =>{
+    const albumID = req.params.albumID;
+    try {
         const query = `
             SELECT songTitle, filePath, songDuration
             FROM song
             WHERE albumID = ?
         `;
-        db.query(query, [albumID], (err, results) => {
-            if (err) {
-                console.error('Error searching songs:', err);
-                reject(err); // Reject the promise with the error
-            } else {
-                resolve(results); // Resolve the promise with the query results
-            }
-        });
-    });
-}
+        const [songResults] = await db.promise().query(query, [albumID]);
+        if (songResults.length === 0) {
+            res.status(404).json({ error: 'Songs not found' });
+            return;
+        }
+        res.json(songResults);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 
 // view album
 app.get('/view-album/:albumID', async (req, res) =>{
@@ -337,7 +340,6 @@ app.get('/view-album/:albumID', async (req, res) =>{
             FROM album as A, artist as ART
             WHERE A.albumID = ? AND ART.artistID = A.artistID
         `;
-        
         // Execute album query
         const [albumResults] = await db.promise().query(query, [albumID]);
 
@@ -345,17 +347,7 @@ app.get('/view-album/:albumID', async (req, res) =>{
             res.status(404).json({ error: 'Album not found' });
             return;
         }
-
-        // Fetch songs for the album
-        const songs = await fetchSongsForAlbum(albumID);
-
-        // Combine album details and songs into a single response
-        const albumWithSongs = {
-            album: albumResults[0],
-            songs: songs
-        };
-
-        res.json(albumWithSongs);
+        res.json(albumResults);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal server error');
