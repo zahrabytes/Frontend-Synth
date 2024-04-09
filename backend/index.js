@@ -434,9 +434,70 @@ app.delete('/:listenerID/:albumID/unlike-album', async (req, res) => {
 // End of Like Functionality /////////////////////////////////////////////////////////////
 
 // Following
-// TODO post artist follow
-
+// TODO post artist follower
+app.post('/:listenerID/:artistID/follow-artist', async (req, res) =>{
+    const listenerID_value = req.params.listenerID;
+    const artistID_value = req.params.artistID;
+    try {
+        const query =`
+        INSERT INTO artist_follower (artistID, listenerID) 
+        VALUES (?, ?)
+        `;
+        await db.promise().query(query, [artistID_value, listenerID_value]);
+        res.status(200).send('Artist followed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// TODO post artist unfollow
+app.delete('/:listenerID/:artistID/unfollow-artist', async (req, res) =>{
+    const listenerID_value = req.params.listenerID;
+    const artistID_value = req.params.artistID;
+    try {
+        const query =`
+        DELETE FROM artist_follower
+        WHERE artistID = ? AND listenerID = ?
+        `;
+        await db.promise().query(query, [artistID_value, listenerID_value]);
+        res.status(200).send('Artist unfollowed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 // TODO post listener follow
+app.post('/:followerID/:followed_listenerID/follow-listener', async (req, res) =>{
+    const followerID_value = req.params.followerID;
+    const followed_listenerID_value = req.params.followed_listenerID;
+    try {
+        const query =`
+        INSERT INTO listener_follower (followed_listenerID, followerID) 
+        VALUES (?, ?)
+        `;
+        await db.promise().query(query, [followed_listenerID_value, followerID_value]);
+        res.status(200).send('Listener followed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// TODO post listener unfollow
+app.delete('/:followerID/:followed_listenerID/unfollow-listener', async (req, res) =>{
+    const followerID_value = req.params.followerID;
+    const followed_listenerID_value = req.params.followed_listenerID;
+    try {
+        const query =`
+        DELETE FROM listener_follower
+        WHERE followed_listenerID = ? AND followerID = ?
+        `;
+        await db.promise().query(query, [followed_listenerID_value, followerID_value]);
+        res.status(200).send('Listener unfollowed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 
 // Search Page Backend ///////////////////////////////////////////////////////////////////
 app.get('/search-song', async (req, res) => {
