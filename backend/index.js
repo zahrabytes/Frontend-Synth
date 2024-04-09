@@ -363,7 +363,7 @@ app.get('/view-album/:albumID', async (req, res) =>{
 // End of Album Display //////////////////////////////////////////////////////////////////
 
 // Like Functionality ////////////////////////////////////////////////////////////////////
-// TODO post song like
+// post song like
 app.post('/:listenerID/:songID/like-song', async (req, res) =>{
     const listenerID_value = req.params.listenerID;
     const songID_value = req.params.songID;
@@ -373,12 +373,31 @@ app.post('/:listenerID/:songID/like-song', async (req, res) =>{
         VALUES (?, ?)
         `;
         await db.promise().query(query, [songID_value, listenerID_value]);
+        res.status(200).send('Song liked successfully');
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal server error');
     }
 });
-// TODO post album like
+
+// TODO delete song like
+app.delete('/:listenerID/:songID/unlike-song', async (req, res) => {
+    const listenerID_value = req.params.listenerID;
+    const songID_value = req.params.songID;
+    try {
+        const query = `
+            DELETE FROM song_like 
+            WHERE songID = ? AND listenerID = ?
+        `;
+        await db.promise().query(query, [songID_value, listenerID_value]);
+        res.status(200).send('Song unliked successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// post album like
 app.post('/:listenerID/:albumID/like-album', async (req, res) =>{
     const listenerID_value = req.params.listenerID;
     const albumID_value = req.params.albumID;
@@ -388,12 +407,14 @@ app.post('/:listenerID/:albumID/like-album', async (req, res) =>{
         VALUES (?, ?)
         `;
         await db.promise().query(query, [albumID_value, listenerID_value]);
+        res.status(200).send('Album liked successfully');
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal server error');
     }
 });
-// TODO delete album like
+
+// delete album like
 app.delete('/:listenerID/:albumID/unlike-album', async (req, res) => {
     const listenerID_value = req.params.listenerID;
     const albumID_value = req.params.albumID;
