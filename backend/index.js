@@ -1,6 +1,6 @@
 import cors from "cors";
-import mysql from "mysql2";
-import express from "express";
+import mysql from "mysql2"; 
+
 /*
 const {Storage} = require('@google-cloud/storage');
 require('dotenv').config();
@@ -20,6 +20,12 @@ async function uploadFile(bucketName, file, fileOutputName){
         console.error('Error:', error);        
     }
 }
+*/
+
+import express from "express";
+
+
+/*
 
 async function generateLink(file_name, song_id){
     //const file_name = 'Cherry Waves.mp3';
@@ -37,6 +43,12 @@ app.use(express.json());
 //Middleware for CORS
 app.use(cors());
 
+// Logger middleware
+function logger(req, res, next) {
+    console.log('Log');
+    next();
+}
+
 // Connection to database
 const db = mysql.createConnection({
     host: "database-group-12.cxyime46mesp.us-east-2.rds.amazonaws.com",
@@ -45,12 +57,6 @@ const db = mysql.createConnection({
     database: "coogtunes",
     port: "3306"
 });
-
-// Logger middleware
-function logger(req, res, next) {
-    console.log('Log');
-    next();
-}
 
 /*
 // initial song posting helper
@@ -306,8 +312,8 @@ app.post('/album', async (req, res) => {
 });
 
 // Album Display /////////////////////////////////////////////////////////////////////////
-// fetching songs
 
+// fetching songs
 app.get('/view-album/:albumID/song', async (req, res) =>{
     const albumID = req.params.albumID;
     try {
@@ -328,7 +334,7 @@ app.get('/view-album/:albumID/song', async (req, res) =>{
     }
 });
 
-// view album
+// fetching album
 app.get('/view-album/:albumID', async (req, res) =>{
     // Get the album ID from the URL
     const albumID = req.params.albumID;
@@ -355,6 +361,59 @@ app.get('/view-album/:albumID', async (req, res) =>{
 });
 
 // End of Album Display //////////////////////////////////////////////////////////////////
+
+// Like Functionality ////////////////////////////////////////////////////////////////////
+// TODO post song like
+app.post('/:listenerID/:songID/like-song', async (req, res) =>{
+    const listenerID_value = req.params.listenerID;
+    const songID_value = req.params.songID;
+    try {
+        const query =`
+        INSERT INTO song_like (songID, listenerID) 
+        VALUES (?, ?)
+        `;
+        await db.promise().query(query, [songID_value, listenerID_value]);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// TODO post album like
+app.post('/:listenerID/:albumID/like-album', async (req, res) =>{
+    const listenerID_value = req.params.listenerID;
+    const albumID_value = req.params.albumID;
+    try {
+        const query =`
+        INSERT INTO album_like (albumID, listenerID) 
+        VALUES (?, ?)
+        `;
+        await db.promise().query(query, [albumID_value, listenerID_value]);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// TODO delete album like
+app.delete('/:listenerID/:albumID/unlike-album', async (req, res) => {
+    const listenerID_value = req.params.listenerID;
+    const albumID_value = req.params.albumID;
+    try {
+        const query = `
+            DELETE FROM album_like 
+            WHERE albumID = ? AND listenerID = ?
+        `;
+        await db.promise().query(query, [albumID_value, listenerID_value]);
+        res.status(200).send('Album unliked successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// End of Like Functionality /////////////////////////////////////////////////////////////
+
+// Following
+// TODO post artist follow
 
 // Search Page Backend ///////////////////////////////////////////////////////////////////
 app.get('/search-song', async (req, res) => {

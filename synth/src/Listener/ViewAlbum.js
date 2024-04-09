@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import '../index.css';
-import AudioPlayer from './AudioPlayer';
 
 const ViewAlbum = () => {
     const { albumID } = useParams();
@@ -41,9 +40,8 @@ const ViewAlbum = () => {
                 {songResults.map((song, index) => (
                     <li key={index}>
                         <h2>{song.songTitle}</h2>
-                        <AudioPlayer songUrl={song.filePath} />
+                        <audio controls src={song.filePath}></audio>
                         <p>Song Duration: {song.songDuration}</p>
-                        {/* Add other song details here */}
                     </li>
                 ))}
             </ul>
