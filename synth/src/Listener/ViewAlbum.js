@@ -1,74 +1,120 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { PiHeartFill, PiHeartLight } from "react-icons/pi";
+import { useParams } from 'react-router-dom';
+import '../index.css';
 
-function AlbumPage({ match }) {
-    const [albumData, setAlbumData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [playlistName, setPlaylistName] = useState('');
-    const [playlists, setPlaylists] = useState([]); // State to hold playlists
+const ViewAlbum = () => {
+    const { listenerID, albumID} = useParams();
+    const [albumResults, setAlbumResults] = useState([]);
+    const [songResults, setSongResults] = useState([]);
+    const [likedSongs, setLikedSongs] = useState(new Set());
+    const [albumLike, setAlbumLike] = useState(false);
+
+    const findLikedSongs = async () => {
+        try {
+            const songsP = await axios.get(`http://localhost:8800/${listenerID}/${albumID}/songs-liked`);
+            const songsLikedData = songsP.data;
+            const transformedSongs = songsLikedData.map((song, index) => {
+                return { ...song, index: index + 1 };
+            });
+            setLikedSongs(new Set(transformedSongs));
+            console.log('Songs found');
+        } catch (error) {
+            console.error('Error finding songs:', error);
+        }
+    };
+
+    const handleLikeAlbum= async () => {
+        try {
+            await axios.post(`http://localhost:8800/${listenerID}/${albumID}/like-album`);
+            setAlbumLike(true);
+            console.log('Album liked:', albumID);
+        } catch (error) {
+            console.error('Error liking album:', error);
+        }
+    };
+  
+    const handleUnlikeAlbum = async () => {
+        try {
+            await axios.delete(`http://localhost:8800/${listenerID}/${albumID}/unlike-album`);
+            setAlbumLike(false);
+            console.log('Album unliked:', albumID);
+        } catch (error) {
+            console.error('Error unliking song:', error);
+        }
+    };
+
+    const handleLikeSong = async (songID) => {
+        try {
+            await axios.post(`http://localhost:8800/${listenerID}/${songID}/like-song`);
+            setLikedSongs(new Set([...likedSongs, songID]));
+        } catch (error) {
+            console.error('Error liking song:', error);
+        }
+    };
+  
+    const handleUnlikeSong = async (songID) => {
+        try {
+            await axios.delete(`http://localhost:8800/${listenerID}/${songID}/unlike-song`);
+            const updatedLikedSongs = new Set(likedSongs);
+            updatedLikedSongs.delete(songID);
+            setLikedSongs(updatedLikedSongs);
+        } catch (error) {
+            console.error('Error unliking song:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchAlbumAndSongs = async () => {
+        const fetchAlbum = async () => {
             try {
-                const albumResponse = await axios.get(`/view-album/${match.params.albumID}`);
-                setAlbumData(albumResponse.data);
-                setLoading(false);
+                const album = await axios.get(`http://localhost:8800/view-album/${albumID}`); 
+                setAlbumResults(album.data);
+                const song = await axios.get(`http://localhost:8800/view-album/${albumID}/song/`); 
+                setSongResults(song.data);
             } catch (error) {
-                setError(error.message);
-                setLoading(false);
+            console.error('Error searching:', error);
             }
-        };
+        }; 
+        fetchAlbum(); 
+    }, [albumID]);
 
-        fetchAlbumAndSongs();
-    }, [match.params.albumID]);
-
-    const createPlaylist = async (playlistName) => {
-        try {
-            const newPlaylistResponse = await axios.post('/create-playlist', { name: playlistName });
-            const newPlaylist = newPlaylistResponse.data;
-            setPlaylists([...playlists, newPlaylist]); // Add new playlist to the existing playlists
-            console.log('New playlist created:', newPlaylist);
-            // Optionally, you can update your UI to reflect the new playlist
-        } catch (error) {
-            console.error('Error creating playlist:', error);
-        }
-    };
-
-    const handlePlaylistCreation = async () => {
-        if (playlistName.trim() === '') {
-            alert('Please enter a playlist name.');
-            return;
-        }
-        createPlaylist(playlistName);
-        setPlaylistName(''); // Clear the input field after creating playlist
-    };
-
+    useEffect(() => {
+        findLikedSongs();
+    }, [listenerID, albumID, findLikedSongs]);
+    
     return (
         <div>
-            {/* Your album page content */}
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
-            {albumData && (
-                <div>
-                    {/* Display album data */}
-                    {/* For example: */}
-                    <h1>{albumData.title}</h1>
-                    <img src={albumData.cover} alt={albumData.title} />
-                    {/* Other album details */}
-                </div>
-            )}
+            <ul>
+                {albumResults.map((album, index) => (
+                    <li key={index}>
+                        <div><img className='img-display-after' src={album.cover} alt={album.cover} /></div>
+                        <div>
+                            <h1>{album.albumName}</h1>
+                            <p>Release Date: {album.releaseDate}</p>
+                            <p>Genre: {album.genre}</p>
+                        </div>
+                        <div onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
+                            {albumLike ? <PiHeartFill /> : <PiHeartLight />}
+                        </div>
+                    </li>
+                ))}
+            </ul>
 
-            {/* Playlist creation */}
-            <input 
-                type="text" 
-                value={playlistName} 
-                onChange={(e) => setPlaylistName(e.target.value)} 
-                placeholder="Enter playlist name" 
-            />
-            <button onClick={handlePlaylistCreation}>Create Playlist</button>
+            <ul>
+                {songResults.map((song, index) => (
+                    <li key={index}>
+                        <h2>{song.songTitle}</h2>
+                        <audio controls src={song.filePath}></audio>
+                        <div onClick={() => likedSongs.has(song.songID) ? handleUnlikeSong(song.songID) : handleLikeSong(song.songID)}>
+                            {likedSongs.has(song.songID) ? <PiHeartFill /> : <PiHeartLight />}
+                        </div>
+                        <p>Song Duration: {song.songDuration}</p>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
-}
+};
 
-export default AlbumPage;
+export default ViewAlbum;

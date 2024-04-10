@@ -168,3 +168,16 @@
     color:#3f3e3e;
     transition: 0.3s;
 }
+
+.roundedButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #1a5cb3;
+  color: white;
+  border-radius: 30px;
+  text-decoration: none; /* Remove default underline for anchor tags */
+}
+
+.roundedButton:hover {
+  background-color: #113687;
+}

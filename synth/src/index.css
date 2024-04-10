@@ -161,8 +161,21 @@ code {
 
 .textwhite{
   color: #ffffff;
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 700;
+  padding-left: 50px;
+}
+
+.textA{
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 700;
+  padding: 100px;
+  margin: auto;
+  display: flex; /* Set display to flex */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  width: 30%;
 }
 
 .underline{
@@ -262,13 +275,16 @@ forgot-password span{
   cursor: pointer;
 }
 
-.options-banner {
+.login-options-container {
   display: flex;
-  justify-content: flex-end; /* Align options to the right */
-  align-items: center;
-  width: 30%; /* Adjust width to fit screen */
-  margin-right: 30px; /* Add margin to the right */
-  gap: 30px;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.options-banner {
+  position: absolute;
+  top: 50px;
+  right: 50px;
 }
 
 .option {
@@ -279,6 +295,12 @@ forgot-password span{
   flex: 1;
   border-radius: 30px; /* Add border-radius for rounded corners */
   text-align: center; /* Center text horizontally */
+  margin-right: 10px; /* Add a margin-right for the gap between options */
+  text-decoration: none; /* Remove underline */
+}
+
+.option:last-child {
+  margin-right: 0; /* Remove margin-right for the last option */
 }
 
 .option:hover {

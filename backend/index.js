@@ -1,6 +1,40 @@
 import cors from "cors";
-import express from "express";
 import mysql from "mysql2";
+
+/*
+const {Storage} = require('@google-cloud/storage');
+require('dotenv').config();
+
+const projectId = process.env.PROJECT_ID;
+const keyFilename = process.env.KEYFILENAME;
+const storage = new Storage({projectId, keyFilename});
+
+async function uploadFile(bucketName, file, fileOutputName){
+    try{
+        const bucket = storage.bucket(bucketName);
+        const ret = await bucket.upload(file,{
+            destination:fileOutputName
+        })
+        return ret;
+    }catch(error){
+        console.error('Error:', error);        
+    }
+}
+*/
+
+import express from "express";
+
+
+/*
+
+async function generateLink(file_name, song_id){
+    //const file_name = 'Cherry Waves.mp3';
+    //const song_id = 'examplesongid.mp3';
+    const ret = await uploadFile(process.env.BUCKET_NAME, file_name, song_id);
+    const link = "https://storage.googleapis.com/bucket-tester-2/" + song_id;
+    console.log(link);
+}
+*/
 
 const app = express();
 
@@ -8,6 +42,12 @@ app.use(express.json());
 
 //Middleware for CORS
 app.use(cors());
+
+// Logger middleware
+function logger(req, res, next) {
+    console.log('Log');
+    next();
+}
 
 // Connection to database
 const db = mysql.createConnection({
@@ -18,11 +58,12 @@ const db = mysql.createConnection({
     port: "3306"
 });
 
-// Logger middleware
-function logger(req, res, next) {
-    console.log('Log');
-    next();
-}
+/*
+// initial song posting helper
+app.post('/post-song', async (req, res) => {
+
+});
+*/
 
 // create Account - 1st endpoint (user picks either artist or listener account and is take to the correct signup page)
 app.post('/createAccount', async (req, res) => {
@@ -248,7 +289,7 @@ app.get("/:id/admin", (req, res) => {
 });
 
 
-// Code to post an album
+// Code to post an album ? it's not
 app.post('/album', async (req, res) => {
     try {
         const userType = req.params.userType;
@@ -301,26 +342,29 @@ app.post('/album', async (req, res) => {
 });
 
 // Album Display /////////////////////////////////////////////////////////////////////////
+
 // fetching songs
-async function fetchSongsForAlbum(albumID) {
-    return new Promise((resolve, reject) => {
+app.get('/view-album/:albumID/song', async (req, res) =>{
+    const albumID = req.params.albumID;
+    try {
         const query = `
-            SELECT songTitle, filePath, songDuration
+            SELECT songTitle, filePath, songDuration, songID
             FROM song
             WHERE albumID = ?
         `;
-        db.query(query, [albumID], (err, results) => {
-            if (err) {
-                console.error('Error searching songs:', err);
-                reject(err); // Reject the promise with the error
-            } else {
-                resolve(results); // Resolve the promise with the query results
-            }
-        });
-    });
-}
+        const [songResults] = await db.promise().query(query, [albumID]);
+        if (songResults.length === 0) {
+            res.status(404).json({ error: 'Songs not found' });
+            return;
+        }
+        res.json(songResults);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 
-// view album
+// fetching album
 app.get('/view-album/:albumID', async (req, res) =>{
     // Get the album ID from the URL
     const albumID = req.params.albumID;
@@ -332,7 +376,6 @@ app.get('/view-album/:albumID', async (req, res) =>{
             FROM album as A, artist as ART
             WHERE A.albumID = ? AND ART.artistID = A.artistID
         `;
-        
         // Execute album query
         const [albumResults] = await db.promise().query(query, [albumID]);
 
@@ -340,17 +383,7 @@ app.get('/view-album/:albumID', async (req, res) =>{
             res.status(404).json({ error: 'Album not found' });
             return;
         }
-
-        // Fetch songs for the album
-        const songs = await fetchSongsForAlbum(albumID);
-
-        // Combine album details and songs into a single response
-        const albumWithSongs = {
-            album: albumResults[0],
-            songs: songs
-        };
-
-        res.json(albumWithSongs);
+        res.json(albumResults);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal server error');
@@ -358,6 +391,144 @@ app.get('/view-album/:albumID', async (req, res) =>{
 });
 
 // End of Album Display //////////////////////////////////////////////////////////////////
+
+// Like Functionality ////////////////////////////////////////////////////////////////////
+// post song like
+app.post('/:listenerID/:songID/like-song', async (req, res) =>{
+    const listenerID_value = req.params.listenerID;
+    const songID_value = req.params.songID;
+    try {
+        const query =`
+        INSERT INTO song_like (songID, listenerID) 
+        VALUES (?, ?)
+        `;
+        await db.promise().query(query, [songID_value, listenerID_value]);
+        res.status(200).send('Song liked successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// TODO delete song like
+app.delete('/:listenerID/:songID/unlike-song', async (req, res) => {
+    const listenerID_value = req.params.listenerID;
+    const songID_value = req.params.songID;
+    try {
+        const query = `
+            DELETE FROM song_like 
+            WHERE songID = ? AND listenerID = ?
+        `;
+        await db.promise().query(query, [songID_value, listenerID_value]);
+        res.status(200).send('Song unliked successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// post album like
+app.post('/:listenerID/:albumID/like-album', async (req, res) =>{
+    const listenerID_value = req.params.listenerID;
+    const albumID_value = req.params.albumID;
+    try {
+        const query =`
+        INSERT INTO album_like (albumID, listenerID) 
+        VALUES (?, ?)
+        `;
+        await db.promise().query(query, [albumID_value, listenerID_value]);
+        res.status(200).send('Album liked successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// delete album like
+app.delete('/:listenerID/:albumID/unlike-album', async (req, res) => {
+    const listenerID_value = req.params.listenerID;
+    const albumID_value = req.params.albumID;
+    try {
+        const query = `
+            DELETE FROM album_like 
+            WHERE albumID = ? AND listenerID = ?
+        `;
+        await db.promise().query(query, [albumID_value, listenerID_value]);
+        res.status(200).send('Album unliked successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// End of Like Functionality /////////////////////////////////////////////////////////////
+
+// Following Functionality //////////////////////////////////////////////////////////////
+// post artist follower
+app.post('/:listenerID/:artistID/follow-artist', async (req, res) =>{
+    const listenerID_value = req.params.listenerID;
+    const artistID_value = req.params.artistID;
+    try {
+        const query =`
+        INSERT INTO artist_follower (artistID, listenerID) 
+        VALUES (?, ?)
+        `;
+        await db.promise().query(query, [artistID_value, listenerID_value]);
+        res.status(200).send('Artist followed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// post artist unfollow
+app.delete('/:listenerID/:artistID/unfollow-artist', async (req, res) =>{
+    const listenerID_value = req.params.listenerID;
+    const artistID_value = req.params.artistID;
+    try {
+        const query =`
+        DELETE FROM artist_follower
+        WHERE artistID = ? AND listenerID = ?
+        `;
+        await db.promise().query(query, [artistID_value, listenerID_value]);
+        res.status(200).send('Artist unfollowed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// post listener follow
+app.post('/:followerID/:followed_listenerID/follow-listener', async (req, res) =>{
+    const followerID_value = req.params.followerID;
+    const followed_listenerID_value = req.params.followed_listenerID;
+    try {
+        const query =`
+        INSERT INTO listener_follower (followed_listenerID, followerID) 
+        VALUES (?, ?)
+        `;
+        await db.promise().query(query, [followed_listenerID_value, followerID_value]);
+        res.status(200).send('Listener followed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// post listener unfollow
+app.delete('/:followerID/:followed_listenerID/unfollow-listener', async (req, res) =>{
+    const followerID_value = req.params.followerID;
+    const followed_listenerID_value = req.params.followed_listenerID;
+    try {
+        const query =`
+        DELETE FROM listener_follower
+        WHERE followed_listenerID = ? AND followerID = ?
+        `;
+        await db.promise().query(query, [followed_listenerID_value, followerID_value]);
+        res.status(200).send('Listener unfollowed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// End of Following Functionality ////////////////////////////////////////////////////////
 
 // Search Page Backend ///////////////////////////////////////////////////////////////////
 app.get('/search-song', async (req, res) => {
@@ -368,7 +539,7 @@ app.get('/search-song', async (req, res) => {
         JOIN album AS A ON S.albumID = A.albumID
         JOIN artist AS ART ON A.artistID = ART.artistID
         WHERE (S.songTitle LIKE '%${searchTerm}%'
-                OR ART.artistName LIKE '%${searchTerm}%');
+                OR ART.artistName LIKE '%${searchTerm}%')
     `;
     db.query(query, (err, results) => {
       if (err) {
@@ -383,12 +554,12 @@ app.get('/search-song', async (req, res) => {
 app.get('/search-album', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-        SELECT DISTINCT A.albumName, ART.artistName
+        SELECT DISTINCT A.albumName, A.cover, ART.artistName
         FROM album AS A
         JOIN artist AS ART ON A.artistID = ART.artistID
         WHERE (A.albumName LIKE '%${searchTerm}%' 
                 OR ART.genre LIKE '%${searchTerm}%' 
-                OR ART.artistName LIKE '%${searchTerm}%');
+                OR ART.artistName LIKE '%${searchTerm}%')
     `;
     db.query(query, (err, results) => {
       if (err) {
@@ -410,7 +581,7 @@ app.get('/search-artist', async (req, res) => {
         WHERE S.songTitle LIKE '%${searchTerm}%' 
         OR A.albumName LIKE '%${searchTerm}%'
         OR ART.genre LIKE '%${searchTerm}%' 
-        OR ART.artistName LIKE '%${searchTerm}%';
+        OR ART.artistName LIKE '%${searchTerm}%'
     `;
     db.query(query, (err, results) => {
         if (err) {
@@ -421,7 +592,30 @@ app.get('/search-artist', async (req, res) => {
     });
 });
 
-// End Search Page Backend ///////////////////////////////////////////////////////////////////
+// End Search Page Backend ///////////////////////////////////////////////////////////////
+
+// Library / Homepage Backend ////////////////////////////////////////////////////////////
+
+app.get('/:listenerID/:albumID/songs-liked', async (req, res) => {
+    const albumID = req.params.albumID;
+    const listenerID = req.params.listenerID;
+    const query = `
+    SELECT DISTINCT song_like.songID 
+    FROM song_like, song, album, listener
+    WHERE song.songID = song_like.songID AND song.albumID = ? AND song_like.listenerID = ?
+    `;
+
+    db.query(query, [albumID, listenerID], (err, results) => {
+      if (err) {
+        console.error('Error searching songs:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
+// End of Library / Homepage Backend /////////////////////////////////////////////////////
 
 // Playlists ///
 

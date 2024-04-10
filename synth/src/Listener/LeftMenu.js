@@ -1,7 +1,6 @@
-// LeftMenu.js
-
 import React, { useState } from "react";
 import { BiSearch } from "react-icons/bi";
+import { Link } from "react-router-dom"; // Import Link
 import '../index.css';
 import './LeftMenu.css';
 import { Menu } from "./Menu";
@@ -30,27 +29,28 @@ function LeftMenu() {
                 </div>
             </div>
             <div className ="searchBox">
-                {/* Search bar with Enter key press handling */}
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyPress={handleKeyPress} // Handle Enter key press
-                    placeholder="Search..."
-                />
-                <i>
-                    <BiSearch />
-                </i>
+                {/* Wrap the input and search icon with Link */}
+                <Link to="/Search">
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyPress={handleKeyPress} // Handle Enter key press
+                        placeholder="Search..."
+                    />
+                    <i>
+                        <BiSearch />
+                    </i>
+                </Link>
             </div>
             
             <Menu title={"Menu"} menuObject={MenuList} />
             <MenuPlayList />
-
             <TrackList />
         </div>
-
     );
 }
 
 export { LeftMenu };
+
 

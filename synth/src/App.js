@@ -6,6 +6,7 @@ import ArtistProfile from './ArtistProfile.js';
 import Disclaimer from './Disclaimer.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
 import { SearchPage } from './Listener/SearchPage.js';
+import ViewAlbum from "./Listener/ViewAlbum.js";
 import AudioPlayer from './Listener/audioplayer.js';
 import LoginOptions from './LoginOptions.js';
 import LoginAdmin from './Pages/login-admin.jsx';
@@ -21,7 +22,6 @@ function App() {
             <Route exact path="/">
               <LoginOptions />
               <Disclaimer />
-              <LoginOptions />
             </Route>
             <Route path="/login">
               <LoginOptions />
@@ -53,6 +53,9 @@ function App() {
             <Route path="/login-listener">
               <ListenerLogin />
             </Route>
+            <Router>
+              <Route path="/View-Album/:listenerID/:albumID" component={ViewAlbum} />
+            </Router>
           </Switch>
         </div>
       </div>

@@ -177,3 +177,15 @@
   flex: 1; /* Let the content container grow to fill available space */
   /*padding: 20px;  Add padding for spacing */
 }
+.roundedButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #1a5cb3;
+  color: white;
+  border-radius: 30px;
+  text-decoration: none; /* Remove default underline for anchor tags */
+}
+
+.roundedButton:hover {
+  background-color: #113687;
+}
