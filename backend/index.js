@@ -433,8 +433,8 @@ app.delete('/:listenerID/:albumID/unlike-album', async (req, res) => {
 
 // End of Like Functionality /////////////////////////////////////////////////////////////
 
-// Following
-// TODO post artist follower
+// Following Functionality //////////////////////////////////////////////////////////////
+// post artist follower
 app.post('/:listenerID/:artistID/follow-artist', async (req, res) =>{
     const listenerID_value = req.params.listenerID;
     const artistID_value = req.params.artistID;
@@ -450,7 +450,7 @@ app.post('/:listenerID/:artistID/follow-artist', async (req, res) =>{
         res.status(500).send('Internal server error');
     }
 });
-// TODO post artist unfollow
+// post artist unfollow
 app.delete('/:listenerID/:artistID/unfollow-artist', async (req, res) =>{
     const listenerID_value = req.params.listenerID;
     const artistID_value = req.params.artistID;
@@ -466,7 +466,7 @@ app.delete('/:listenerID/:artistID/unfollow-artist', async (req, res) =>{
         res.status(500).send('Internal server error');
     }
 });
-// TODO post listener follow
+// post listener follow
 app.post('/:followerID/:followed_listenerID/follow-listener', async (req, res) =>{
     const followerID_value = req.params.followerID;
     const followed_listenerID_value = req.params.followed_listenerID;
@@ -482,7 +482,7 @@ app.post('/:followerID/:followed_listenerID/follow-listener', async (req, res) =
         res.status(500).send('Internal server error');
     }
 });
-// TODO post listener unfollow
+// post listener unfollow
 app.delete('/:followerID/:followed_listenerID/unfollow-listener', async (req, res) =>{
     const followerID_value = req.params.followerID;
     const followed_listenerID_value = req.params.followed_listenerID;
@@ -498,6 +498,7 @@ app.delete('/:followerID/:followed_listenerID/unfollow-listener', async (req, re
         res.status(500).send('Internal server error');
     }
 });
+// End of Following Functionality ////////////////////////////////////////////////////////
 
 // Search Page Backend ///////////////////////////////////////////////////////////////////
 app.get('/search-song', async (req, res) => {
@@ -508,7 +509,7 @@ app.get('/search-song', async (req, res) => {
         JOIN album AS A ON S.albumID = A.albumID
         JOIN artist AS ART ON A.artistID = ART.artistID
         WHERE (S.songTitle LIKE '%${searchTerm}%'
-                OR ART.artistName LIKE '%${searchTerm}%');
+                OR ART.artistName LIKE '%${searchTerm}%')
     `;
     db.query(query, (err, results) => {
       if (err) {
@@ -528,7 +529,7 @@ app.get('/search-album', async (req, res) => {
         JOIN artist AS ART ON A.artistID = ART.artistID
         WHERE (A.albumName LIKE '%${searchTerm}%' 
                 OR ART.genre LIKE '%${searchTerm}%' 
-                OR ART.artistName LIKE '%${searchTerm}%');
+                OR ART.artistName LIKE '%${searchTerm}%')
     `;
     db.query(query, (err, results) => {
       if (err) {
@@ -550,7 +551,7 @@ app.get('/search-artist', async (req, res) => {
         WHERE S.songTitle LIKE '%${searchTerm}%' 
         OR A.albumName LIKE '%${searchTerm}%'
         OR ART.genre LIKE '%${searchTerm}%' 
-        OR ART.artistName LIKE '%${searchTerm}%';
+        OR ART.artistName LIKE '%${searchTerm}%'
     `;
     db.query(query, (err, results) => {
         if (err) {
@@ -561,7 +562,30 @@ app.get('/search-artist', async (req, res) => {
     });
 });
 
-// End Search Page Backend ///////////////////////////////////////////////////////////////////
+// End Search Page Backend ///////////////////////////////////////////////////////////////
+
+// Library / Homepage Backend ////////////////////////////////////////////////////////////
+
+app.get('/:listenerID/:albumID/songs-liked', async (req, res) => {
+    const albumID = req.params.albumID;
+    const listenerID = req.params.listenerID;
+    const query = `
+    SELECT DISTINCT song_like.songID 
+    FROM song_like, song, album, listener
+    WHERE song.songID = song_like.songID AND song.albumID = ? AND song_like.listenerID = ?
+    `;
+
+    db.query(query, [albumID, listenerID], (err, results) => {
+      if (err) {
+        console.error('Error searching songs:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
+// End of Library / Homepage Backend /////////////////////////////////////////////////////
 
 //Admin flags
 app.post('/flag-song', (req, res) => {
