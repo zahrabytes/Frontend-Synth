@@ -10,6 +10,27 @@ const ViewAlbum = () => {
     const [albumResults, setAlbumResults] = useState([]);
     const [songResults, setSongResults] = useState([]);
     const [likedSongs, setLikedSongs] = useState(new Set());
+    const [albumLike, setAlbumLike] = useState(false);
+
+    const handleLikeAlbum= async () => {
+        try {
+            await axios.post(`http://localhost:8800/listener/${listenerID}/${albumID}/like-album`);
+            setAlbumLike(true);
+            console.log('Album liked:', albumID);
+        } catch (error) {
+            console.error('Error liking album:', error);
+        }
+    };
+  
+    const handleUnlikeAlbum = async () => {
+        try {
+            await axios.delete(`http://localhost:8800/listener/${listenerID}/${albumID}/unlike-album`);
+            setAlbumLike(false);
+            console.log('Album unliked:', albumID);
+        } catch (error) {
+            console.error('Error unliking song:', error);
+        }
+    };
 
     const handleLikeSong = async (songID) => {
         try {
@@ -31,7 +52,6 @@ const ViewAlbum = () => {
         }
     };
 
-
     useEffect(() => {
         const fetchAlbum = async () => {
             try {
@@ -52,10 +72,14 @@ const ViewAlbum = () => {
                 {albumResults.map((album, index) => (
                     <li key={index}>
                         <div><img className='img-display-after' src={album.cover} alt={album.cover} /></div>
-                        <div><h1>{album.albumName}</h1>
-                        <p>Release Date: {album.releaseDate}</p>
-                        <p>Genre: {album.genre}</p></div>
-                        {/* Add other song details here */}
+                        <div>
+                            <h1>{album.albumName}</h1>
+                            <p>Release Date: {album.releaseDate}</p>
+                            <p>Genre: {album.genre}</p>
+                        </div>
+                        <button onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
+                            {albumLike ? <PiHeartFill /> : <PiHeartLight />}
+                        </button>
                     </li>
                 ))}
             </ul>
