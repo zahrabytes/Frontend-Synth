@@ -2,11 +2,35 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import '../index.css';
+import { PiHeartLight } from "react-icons/pi";
+import { PiHeartFill } from "react-icons/pi";
 
 const ViewAlbum = () => {
-    const { albumID } = useParams();
+    const { listenerID, albumID} = useParams();
     const [albumResults, setAlbumResults] = useState([]);
     const [songResults, setSongResults] = useState([]);
+    const [likedSongs, setLikedSongs] = useState(new Set());
+
+    const handleLikeSong = async (songID) => {
+        try {
+            await axios.post(`http://localhost:8800/listener/${listenerID}/${songID}/like-song`);
+            setLikedSongs(new Set([...likedSongs, songID]));
+        } catch (error) {
+            console.error('Error liking song:', error);
+        }
+    };
+  
+    const handleUnlikeSong = async (songID) => {
+        try {
+            await axios.delete(`http://localhost:8800/listener/${listenerID}/${songID}/unlike-song`);
+            const updatedLikedSongs = new Set(likedSongs);
+            updatedLikedSongs.delete(songID);
+            setLikedSongs(updatedLikedSongs);
+        } catch (error) {
+            console.error('Error unliking song:', error);
+        }
+    };
+
 
     useEffect(() => {
         const fetchAlbum = async () => {
@@ -41,6 +65,9 @@ const ViewAlbum = () => {
                     <li key={index}>
                         <h2>{song.songTitle}</h2>
                         <audio controls src={song.filePath}></audio>
+                        <button onClick={() => likedSongs.has(song.songID) ? handleUnlikeSong(song.songID) : handleLikeSong(song.songID)}>
+                            {likedSongs.has(song.songID) ? <PiHeartFill /> : <PiHeartLight />}
+                        </button>
                         <p>Song Duration: {song.songDuration}</p>
                     </li>
                 ))}

@@ -46,7 +46,7 @@ function App() {
               <SearchPage />
             </Route>
             <Router>
-              <Route path="/View-Album/:albumID" component={ViewAlbum} />
+              <Route path="/View-Album/:listenerID/:albumID" component={ViewAlbum} />
             </Router>
           </Switch>
         </div>

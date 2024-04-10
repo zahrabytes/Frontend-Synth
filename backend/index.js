@@ -318,7 +318,7 @@ app.get('/view-album/:albumID/song', async (req, res) =>{
     const albumID = req.params.albumID;
     try {
         const query = `
-            SELECT songTitle, filePath, songDuration
+            SELECT songTitle, filePath, songDuration, songID
             FROM song
             WHERE albumID = ?
         `;
