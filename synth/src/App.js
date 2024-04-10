@@ -3,46 +3,55 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { AdminHome } from './Admin/AdminHome.js';
 import AlbumAdd from './AlbumAdd.js';
 import ArtistProfile from './ArtistProfile.js';
-import './index.css';
-import Home from './Home.js';
+import Disclaimer from './Disclaimer.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
-import LoginSignup from './LoginSignup.jsx';
-import Disclaimer from './Disclaimer.js'; 
 import { SearchPage } from './Listener/SearchPage.js';
 import AudioPlayer from './Listener/audioplayer.js';
+import LoginOptions from './LoginOptions.js';
+import LoginAdmin from './Pages/login-admin.jsx';
+import ListenerLogin from './Pages/login-listener.jsx';
+import './index.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <div className = "content">
+        <div className="content">
           <Switch>
-            <Route exact path ="/">
-              <Home />
+            <Route exact path="/">
+              <LoginOptions />
+              <Disclaimer />
+              <LoginOptions />
             </Route>
-            <Route path="/Login">
-              <LoginSignup />
+            <Route path="/login">
+              <LoginOptions />
             </Route>
             <Route path="/Artist">
               <ArtistProfile />
             </Route>
-            <Route path ="/Create-Album">
+            <Route path="/Create-Album">
               <AlbumAdd />
             </Route>
-            <Route path ="/User-Home">
-            <ListenerHome />
+            <Route path="/:id/user-home">
+              <ListenerHome />
             </Route>
-            <Route path ="/Admin-Home">
-            <AdminHome />
+            <Route path="/:id/Admin-Home">
+              <AdminHome />
             </Route>
-            <Route path ="/audioplayer">
+            <Route path="/audioplayer">
               <AudioPlayer />
             </Route>
-            <Route path ="/Disclaimer">
+            <Route path="/Disclaimer">
               <Disclaimer />
             </Route>
-            <Route path ="/Search">
+            <Route path="/Search">
               <SearchPage />
+            </Route>
+            <Route path="/login-admin">
+              <LoginAdmin />
+            </Route>
+            <Route path="/login-listener">
+              <ListenerLogin />
             </Route>
           </Switch>
         </div>

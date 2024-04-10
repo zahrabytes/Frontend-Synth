@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+// SearchPage.js
+
 import axios from 'axios';
+import React, { useState } from 'react';
 import '../index.css';
 
-// TODO integrate with left menu/ listener home
-function SearchPage() {
+function SearchPage({ onSongSelect }) { // Accepting onSongSelect as a prop
   const [searchTerm, setSearchTerm] = useState('');
   const [artistResults, setArtistResults] = useState([]);
   const [albumResults, setAlbumResults] = useState([]);
@@ -23,6 +24,10 @@ function SearchPage() {
       console.error('Error searching:', error);
     }
   };  
+
+  const handleSongSelect = (song) => {
+    onSongSelect(song); // Pass selected song to the parent component
+  };
 
   return (
     <div>
@@ -49,7 +54,9 @@ function SearchPage() {
           <subheader>Song</subheader>
           <ul>
             {songResults.map((item, index) => (
-              <li key={index}>{item.songTitle}</li>
+              <li key={index} onClick={() => handleSongSelect(item)}>
+                {item.songTitle}
+              </li>
             ))}
           </ul>
         </div>
@@ -65,3 +72,4 @@ function SearchPage() {
 };
 
 export { SearchPage };
+

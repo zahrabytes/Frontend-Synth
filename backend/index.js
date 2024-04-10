@@ -1,6 +1,6 @@
 import cors from "cors";
-import mysql from "mysql2";
 import express from "express";
+import mysql from "mysql2";
 
 const app = express();
 
@@ -217,6 +217,36 @@ app.post('/admin-login', async (req, res) => {
     }
 });
 
+app.get("/:id/listener", (req, res) => {
+    const listenerID = req.params.id;
+    const q = "SELECT * FROM listener WHERE listenerID = ?";
+    db.query(q, [listenerID], (err, data) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        if (data.length > 0) {
+            return res.status(200).json(data[0]); // Return the first object directly
+        } else {
+            return res.status(404).json({ error: 'Listener not found' }); // Return 404 if listener not found
+        }
+    });
+});
+
+app.get("/:id/admin", (req, res) => {
+    const adminID = req.params.id;
+    const q = "SELECT * FROM admin WHERE adminID = ?";
+    db.query(q, [adminID], (err, data) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        if (data.length > 0) {
+            return res.status(200).json(data[0]);
+        } else {
+            return res.status(404).json({ error: 'Admin not found' }); 
+        }
+    });
+});
+
 
 // Code to post an album
 app.post('/album', async (req, res) => {
@@ -393,6 +423,45 @@ app.get('/search-artist', async (req, res) => {
 
 // End Search Page Backend ///////////////////////////////////////////////////////////////////
 
+// Playlists ///
+
+// Dummy array to hold playlists
+let playlists = [];
+
+// Route to create a new playlist
+app.post("/create-playlist", (req, res) => {
+    const { name, songs } = req.body;
+    if (!name) {
+      return res.status(400).json({ message: "Playlist name is required." });
+    }
+    const newPlaylist = {
+      id: playlists.length + 1,
+      name: name,
+      songs: songs || [],
+    };
+    playlists.push(newPlaylist);
+    return res.status(201).json(newPlaylist);
+  });
+  
+  // Route to add a song to a playlist
+  app.post("/playlist/:id/add-song", (req, res) => {
+    const { id } = req.params;
+    const { song } = req.body;
+    const playlist = playlists.find((playlist) => playlist.id === parseInt(id));
+    if (!playlist) {
+      return res.status(404).json({ message: "Playlist not found." });
+    }
+    playlist.songs.push(song);
+    return res.status(200).json(playlist);
+  });
+  
+  // Route to get all playlists
+  app.get("/playlists", (req, res) => {
+    return res.status(200).json(playlists);
+  });
+
+
+
 //Admin flags
 app.post('/flag-song', (req, res) => {
     const { songId } = req.body;
@@ -436,6 +505,12 @@ app.post('/admin/actions/reject-report', (req, res) => {
 // Main page
 app.get("/", (req, res) => {
     res.json("This is the main page");
+});
+
+///////// Jonathan backend for listener viewing an artist:
+app.get("/view-artist/:artistID" , (req,res) => {
+    const artistID = req.params.artistID;
+    db.query('SELECT * FROM artists WHERE artistID = ?')
 });
 
 // Start the server

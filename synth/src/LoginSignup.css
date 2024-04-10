@@ -38,6 +38,12 @@
     font-weight: 700;
 }
 
+.textwhite{
+    color: #ffffff;
+    font-size: 48px;
+    font-weight: 700;
+}
+
 .underline{
     width: 61px;
     height: 6px;

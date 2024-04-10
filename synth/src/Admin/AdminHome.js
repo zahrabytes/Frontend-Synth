@@ -1,4 +1,4 @@
-import { AdminPage } from "./AdminPage";
+import { AdminPage } from "./AdminLeftMenu";
 import "./LeftMenu.css";
 import { MainContainer } from "./MainContainer";
 import "./MainContainer.css";
