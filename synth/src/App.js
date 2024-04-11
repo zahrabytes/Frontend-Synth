@@ -1,92 +1,53 @@
 import React from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import './index.css';
+
+// Import your components
 import { AdminHome } from './Admin/AdminHome.js';
-import AlbumAdd from './AlbumAdd.js';
+import AlbumAdd from './Artist/AlbumAdd.jsx';
 import AlbumUpdate from './Artist/AlbumUpdate.jsx';
+import Albums from './Artist/Albums.jsx';
 import SongAdd from './Artist/SongAdd.jsx';
+import SongsView from './Artist/SongsView.jsx';
 import ArtistProfile from './ArtistProfile.js';
 import Disclaimer from './Disclaimer.js';
+import Landing from './Landing.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
 import { SearchPage } from './Listener/SearchPage.js';
 import ViewAlbum from "./Listener/ViewAlbum.js";
-import AudioPlayer from './Listener/audioplayer.js';
-import LoginOptions from './LoginOptions.js';
 import CreateAccount from './Pages/createAccount.jsx';
 import CreateAccountArtist from './Pages/createAccountArtist.jsx';
 import CreateAccountListener from './Pages/createAccountListener.jsx';
 import LoginAdmin from './Pages/login-admin.jsx';
 import LoginArtist from './Pages/login-artist.jsx';
 import ListenerLogin from './Pages/login-listener.jsx';
-import './index.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
         <div className="content">
-          <Switch>
-            <Route exact path="/">
-              <LoginOptions />
-              <Disclaimer />
-            </Route>
-            <Route path="/login">
-              <LoginOptions />
-            </Route>
-            <Route path="/Artist">
-              <ArtistProfile />
-            </Route>
-            <Route path="/Create-Album">
-              <AlbumAdd />
-            </Route>
-            <Route path="/:id/user-home">
-              <ListenerHome />
-            </Route>
-            <Route path="/:id/Admin-Home">
-              <AdminHome />
-            </Route>
-            <Route path="/audioplayer">
-              <AudioPlayer />
-            </Route>
-            <Route path="/Disclaimer">
-              <Disclaimer />
-            </Route>
-            <Route path="/Search">
-              <SearchPage />
-            </Route>
-            <Route path="/login-admin">
-              <LoginAdmin />
-            </Route>
-            <Route path="/login-listener">
-              <ListenerLogin />
-            </Route>
-            <Router>
-              <Route path="/View-Album/:listenerID/:albumID" component={ViewAlbum} />
-            </Router>
-            <Route path="/:id/albums/add">
-              <AlbumAdd />
-            </Route>
-            <Route path="/:id/albums/add">
-              <AlbumAdd />
-            </Route>
-            <Route path="/:artistID/update/:id">
-              <AlbumUpdate/>
-            </Route>
-            <Route path="/:artistID/upload/:id">
-              <SongAdd/>
-            </Route>
-            <Route path="/Registration">
-              <CreateAccount/>
-            </Route>
-            <Route path="/ListenerRegistration">
-              <CreateAccountListener/>
-            </Route>
-            <Route path="/ArtistRegistration">
-              <CreateAccountArtist/>
-            </Route>
-            <Route path="/login-artist">
-              <LoginArtist/>
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/Artist" element={<ArtistProfile />} />
+            <Route path="/Create-Album" element={<AlbumAdd />} />
+            <Route path="/:id/user-home" element={<ListenerHome />} />
+            <Route path="/:id/Admin-Home" element={<AdminHome />} />
+            <Route path="/login-admin" element={<LoginAdmin />} />
+            <Route path="/:id/albums/add" element={<AlbumAdd />} />
+            <Route path="/:id/albums" element={<Albums />} />
+            <Route path="/:artistID/update/:id" element={<AlbumUpdate />} />
+            <Route path="/:artistID/upload/:id" element={<SongAdd />} />
+            <Route path="/Registration" element={<CreateAccount />} />
+            <Route path="/ListenerRegistration" element={<CreateAccountListener />} />
+            <Route path="/ArtistRegistration" element={<CreateAccountArtist />} />
+            <Route path="/login-listener" element={<ListenerLogin />} />
+            <Route path="/login-artist" element={<LoginArtist />} />
+            <Route path="/Disclaimer" element={<Disclaimer />} />
+            <Route path="/Search" element={<SearchPage />} />
+            <Route path="/View-Album/:albumID" element={<ViewAlbum />} />
+            <Route path =":artistID/albums/:albumID/songs" element ={<SongsView />} />
+          </Routes>
         </div>
       </div>
     </Router>
