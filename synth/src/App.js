@@ -21,6 +21,7 @@ import CreateAccountListener from './Pages/createAccountListener.jsx';
 import LoginAdmin from './Pages/login-admin.jsx';
 import LoginArtist from './Pages/login-artist.jsx';
 import ListenerLogin from './Pages/login-listener.jsx';
+import { LeftMenu } from './Listener/LeftMenu.js';
 
 function App() {
   return (
@@ -45,8 +46,8 @@ function App() {
             <Route path="/login-listener" element={<ListenerLogin />} />
             <Route path="/login-artist" element={<LoginArtist />} />
             <Route path="/Disclaimer" element={<Disclaimer />} />
-            <Route path="/Search" element={<SearchPage />} />
-            <Route path="/View-Album/:albumID" element={<ViewAlbum />} />
+            <Route path="/Search/:id" element={<SearchPage />} />
+            <Route path="/View-Album/:id/:albumID" element={<ViewAlbum />} />
             <Route path =":artistID/albums/:albumID/songs" element ={<SongsView />} />
           </Routes>
         </div>

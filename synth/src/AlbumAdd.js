@@ -53,7 +53,7 @@ const AlbumAdd = () => {
                         {image ? (
                             <img src={URL.createObjectURL(image)} alt="" className="img-display-after" /> 
                         ) : (
-                            <div className="upload-text" style={{ textAlign: "center" }}>
+                            <div style={{ textAlign: "center" }}>
                                 Upload Album Image
                             </div>
                         )}

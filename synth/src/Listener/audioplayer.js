@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-function AudioPlayer() {
+function AudioPlayer({ songUrl }) {
   const audioPlayerRef = useRef(null);
 
   const playAudioFromURL = (url) => {
@@ -13,7 +13,7 @@ function AudioPlayer() {
       <audio controls ref={audioPlayerRef}>
         Your browser does not support the audio element.
       </audio>
-      <button onClick={() => playAudioFromURL('https://storage.googleapis.com/bucket-tester-2/examplesongid.mp3')}>Play Audio</button>
+      <button onClick={() => playAudioFromURL(songUrl)}>Play Audio</button>
     </div>
   );
 }

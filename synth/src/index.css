@@ -232,6 +232,18 @@ forgot-password span{
   cursor: pointer;
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex; /* Use flexbox to align items horizontally */
+  align-items: center; /* Align items vertically */
+  padding: 8px 0;
+  margin: 0;
+}
 
 .submit-container{
   display: flex;
@@ -342,7 +354,7 @@ forgot-password span{
 .img-display-after {
 height: 200px;
 width: 200px;
-border-radius: 30px;
+border-radius: 10px;
 }
 
 .img-pfp-display-after {

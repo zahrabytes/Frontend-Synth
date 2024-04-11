@@ -1,4 +1,26 @@
 import cors from "cors";
+
+/*
+const {Storage} = require('@google-cloud/storage');
+require('dotenv').config();
+
+const projectId = process.env.PROJECT_ID;
+const keyFilename = process.env.KEYFILENAME;
+const storage = new Storage({projectId, keyFilename});
+
+async function uploadFile(bucketName, file, fileOutputName){
+    try{
+        const bucket = storage.bucket(bucketName);
+        const ret = await bucket.upload(file,{
+            destination:fileOutputName
+        })
+        return ret;
+    }catch(error){
+        console.error('Error:', error);        
+    }
+}
+*/
+
 import express from "express";
 import mysql from "mysql2";
 /*
@@ -20,6 +42,18 @@ async function uploadFile(bucketName, file, fileOutputName){
         console.error('Error:', error);        
     }
 }
+
+async function generateLink(file_name, song_id){
+    //const file_name = 'Cherry Waves.mp3';
+    //const song_id = 'examplesongid.mp3';
+    const ret = await uploadFile(process.env.BUCKET_NAME, file_name, song_id);
+    const link = "https://storage.googleapis.com/bucket-tester-2/" + song_id;
+    console.log(link);
+}
+*/
+
+
+/*
 
 async function generateLink(file_name, song_id){
     //const file_name = 'Cherry Waves.mp3';
@@ -58,6 +92,7 @@ app.post('/post-song', async (req, res) => {
 
 });
 */
+
 // Jonathan work
 // create Account - 1st endpoint (user picks either artist or listener account and is take to the correct signup page)
 app.post('/createAccount', async (req, res) => {
@@ -336,6 +371,7 @@ app.post('/album', async (req, res) => {
 });
 
 // Album Display /////////////////////////////////////////////////////////////////////////
+
 // fetching songs
 
 app.get('/view-album/:albumID/song', async (req, res) =>{
@@ -388,8 +424,8 @@ app.get('/view-album/:albumID', async (req, res) =>{
 
 // Like Functionality ////////////////////////////////////////////////////////////////////
 // post song like
-app.post('/:listenerID/:songID/like-song', async (req, res) =>{
-    const listenerID_value = req.params.listenerID;
+app.post('/:id/:songID/like-song', async (req, res) =>{
+    const listenerID_value = req.params.id;
     const songID_value = req.params.songID;
     try {
         const query =`
@@ -405,8 +441,8 @@ app.post('/:listenerID/:songID/like-song', async (req, res) =>{
 });
 
 // TODO delete song like
-app.delete('/:listenerID/:songID/unlike-song', async (req, res) => {
-    const listenerID_value = req.params.listenerID;
+app.delete('/:id/:songID/unlike-song', async (req, res) => {
+    const listenerID_value = req.params.id;
     const songID_value = req.params.songID;
     try {
         const query = `
@@ -422,8 +458,8 @@ app.delete('/:listenerID/:songID/unlike-song', async (req, res) => {
 });
 
 // post album like
-app.post('/:listenerID/:albumID/like-album', async (req, res) =>{
-    const listenerID_value = req.params.listenerID;
+app.post('/:id/:albumID/like-album', async (req, res) =>{
+    const listenerID_value = req.params.id;
     const albumID_value = req.params.albumID;
     try {
         const query =`
@@ -548,7 +584,7 @@ app.get('/search-song', async (req, res) => {
 app.get('/search-album', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-        SELECT DISTINCT A.albumName, A.cover, ART.artistName
+        SELECT DISTINCT A.albumID, A.albumName, A.cover, ART.artistName
         FROM album AS A
         JOIN artist AS ART ON A.artistID = ART.artistID
         WHERE (A.albumName LIKE '%${searchTerm}%' 
@@ -590,9 +626,9 @@ app.get('/search-artist', async (req, res) => {
 
 // Library / Homepage Backend ////////////////////////////////////////////////////////////
 
-app.get('/:listenerID/:albumID/songs-liked', async (req, res) => {
+app.get('/:id/:albumID/songs-liked', async (req, res) => {
     const albumID = req.params.albumID;
-    const listenerID = req.params.listenerID;
+    const listenerID = req.params.id;
     const query = `
     SELECT DISTINCT song_like.songID 
     FROM song_like, song, album, listener

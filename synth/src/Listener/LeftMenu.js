@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { BiSearch } from "react-icons/bi";
-import { Link } from "react-router-dom"; // Import Link
+import { useNavigate, useParams } from "react-router-dom"; // Import Link
 import '../index.css';
 import './LeftMenu.css';
 import { Menu } from "./Menu";
 import { MenuList } from "./MenuList";
 import { MenuPlayList } from "./MenuPlaylist";
 import { TrackList } from "./TrackList";
-
 function LeftMenu() {
     const [searchTerm, setSearchTerm] = useState('');
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
@@ -17,6 +18,10 @@ function LeftMenu() {
             // You can call your search function here
             console.log('Search term:', searchTerm);
         }
+    };
+
+    const handleSearch = () => {
+        navigate(`/Search/${id}`);
     };
 
     return (
@@ -28,9 +33,7 @@ function LeftMenu() {
                     </i>
                 </div>
             </div>
-            <div className ="searchBox">
-                {/* Wrap the input and search icon with Link */}
-                <Link to="/Search">
+                {/* <Link to={`/Search/${listenerID}`}>
                     <input
                         type="text"
                         value={searchTerm}
@@ -41,8 +44,10 @@ function LeftMenu() {
                     <i>
                         <BiSearch />
                     </i>
-                </Link>
-            </div>
+                </Link> */}
+                <i onClick={handleSearch}>
+                    <BiSearch />
+                </i>
             
             <Menu title={"Menu"} menuObject={MenuList} />
             <MenuPlayList />
