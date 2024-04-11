@@ -564,7 +564,7 @@ app.delete('/:followerID/:followed_listenerID/unfollow-listener', async (req, re
 app.get('/search-song', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-        SELECT DISTINCT S.songTitle, ART.artistName
+        SELECT DISTINCT S.songTitle, ART.artistName, S.filePath
         FROM song AS S
         JOIN album AS A ON S.albumID = A.albumID
         JOIN artist AS ART ON A.artistID = ART.artistID

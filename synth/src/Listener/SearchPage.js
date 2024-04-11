@@ -26,10 +26,6 @@ function SearchPage({ onSongSelect }) {
     }
   };  
 
-  const handleSongSelect = (song) => {
-    onSongSelect(song); // Pass selected song to the parent component
-  };
-
   const handleAlbumSelect = (album) => {
     navigate(`/View-Album/${id}/${album}`);
   };
@@ -60,8 +56,9 @@ function SearchPage({ onSongSelect }) {
           <subheader>Song</subheader>
           <ul>
             {songResults.map((item, index) => (
-              <li key={index} onClick={() => handleSongSelect(item)}>
+              <li key={index} >
                 {item.songTitle}
+                <audio controls src={item.filePath}></audio>
               </li>
             ))}
           </ul>

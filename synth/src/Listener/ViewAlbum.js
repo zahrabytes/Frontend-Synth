@@ -12,6 +12,7 @@ function ViewAlbum() {
     const [likedSongs, setLikedSongs] = useState(new Set());
     const [flaggedSongs, setFlaggedSongs] = useState(new Set());
 
+    // Fetch only when albumID changes
     useEffect(() => {
         const fetchAlbum = async () => {
             try {
@@ -30,7 +31,7 @@ function ViewAlbum() {
 
         // Fetch liked songs when component mounts
         findLikedSongs();
-    }, [albumID]); // Fetch only when albumID changes
+    }, [albumID]);
 
 
     const findLikedSongs = async () => {
@@ -132,7 +133,6 @@ function ViewAlbum() {
                             }}>
                             {flaggedSongs.has(song.songID) ? <PiFlagFill /> : <PiFlag/>}
                         </div>
-                        <p>Song Duration: {song.songDuration}</p>
                     </li>
                 ))}
             </ul>
