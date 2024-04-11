@@ -30,7 +30,7 @@ function AdminLists({ notifications }) {
                                 <img src={notification.cover} alt={notification.songTitle} />
                             </div>
                             <div className="section">
-                                <p className="albumName">
+                                <p className="text">
                                     {notification.songTitle} 
                                     <span className="spanArtist"> {notification.artistName}</span>
                                 </p>
