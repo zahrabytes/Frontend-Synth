@@ -1,6 +1,6 @@
 import cors from "cors";
+import express from "express";
 import mysql from "mysql2";
-
 /*
 const {Storage} = require('@google-cloud/storage');
 require('dotenv').config();
@@ -20,12 +20,6 @@ async function uploadFile(bucketName, file, fileOutputName){
         console.error('Error:', error);        
     }
 }
-*/
-
-import express from "express";
-
-
-/*
 
 async function generateLink(file_name, song_id){
     //const file_name = 'Cherry Waves.mp3';
@@ -64,7 +58,7 @@ app.post('/post-song', async (req, res) => {
 
 });
 */
-
+// Jonathan work
 // create Account - 1st endpoint (user picks either artist or listener account and is take to the correct signup page)
 app.post('/createAccount', async (req, res) => {
     try {
@@ -342,8 +336,8 @@ app.post('/album', async (req, res) => {
 });
 
 // Album Display /////////////////////////////////////////////////////////////////////////
-
 // fetching songs
+
 app.get('/view-album/:albumID/song', async (req, res) =>{
     const albumID = req.params.albumID;
     try {
@@ -705,6 +699,92 @@ app.get("/", (req, res) => {
 app.get("/view-artist/:artistID" , (req,res) => {
     const artistID = req.params.artistID;
     db.query('SELECT * FROM artists WHERE artistID = ?')
+});
+
+//Fetch Albums from db
+app.get("/:id/albums", (req, res)=> {
+    const artistID = req.params.id;
+    const q = "SELECT * FROM album WHERE artistID = ?";
+    db.query(q, [artistID], (err, data)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json(data);
+    });
+});
+
+//Uploading Albums
+app.post("/:id/albums", (req, res)=>{
+    const artistId = req.params.id;
+    const q = "INSERT INTO album (`artistID`, `albumName`, `releaseDate`, `cover`) VALUES (?)";
+    const values = [artistId, req.body.albumName, req.body.releaseDate, req.body.cover];
+
+    db.query(q, [values], (err, data)=>{
+        if (err) {
+            return res.json(err);
+        }
+        return res.json({message: "Album added successfully!"});
+    });
+});
+
+//Updating Albums
+app.put("/:id/albums", (req, res)=>{
+    const albumId = req.params.id;
+    const q = "UPDATE album SET `albumName` = ?, `releaseDate` = ?, `cover` = ? WHERE albumID = ?";
+    const values = [req.body.albumName, req.body.releaseDate, req.body.cover];
+
+    db.query(q, [...values, albumId], (err, data)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json({message: "Album has updated successfully!"});
+    })
+})
+
+//Deleting Albums
+app.delete("/:id/albums", (req, res)=>{
+    const albumId = req.params.id;
+    const q = "DELETE FROM album WHERE albumID = ?";
+
+    db.query(q, [albumId], (err, data)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json({message: "Album deleted successfully!"});
+    });
+});
+
+//Handle Album Fetch on Song Upload Page
+app.get("/albums/:id/upload", (req, res) => {
+    const albumID = req.params.id;
+    const q = "SELECT * FROM album WHERE albumID = ?";
+
+    db.query(q, [albumID], (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]);
+        } else {
+            return res.json({ message: "Album not found" });
+        }
+    });
+});
+
+//Upload Songs to Album
+app.post("/albums/:id/upload", (req, res)=> {
+    const albumID = req.params.id;
+    const { songTitle, filePath, songDuration } = req.body;
+
+    const songData = {songTitle, albumID, filePath, songDuration};
+
+    const insertq = "INSERT INTO song SET ?";
+    db.query(insertq, songData, (err)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json({message: 'Song added successfully'});
+    });
 });
 
 // Start the server
