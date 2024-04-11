@@ -774,22 +774,6 @@ app.post('/admin/actions/delete-song', (req, res) => {
     }
 });
 
-app.delete('/:id/:songID/unlike-song', async (req, res) => {
-    const listenerID_value = req.params.id;
-    const songID_value = req.params.songID;
-    try {
-        const query = `
-            DELETE FROM song_like 
-            WHERE songID = ? AND listenerID = ?
-        `;
-        await db.promise().query(query, [songID_value, listenerID_value]);
-        res.status(200).send('Song unliked successfully');
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('Internal server error');
-    }
-});
-
 // Endpoint to handle rejecting a report
 app.post('/admin/actions/reject-report', (req, res) => {
     const songID = req.body.songID;
