@@ -1,8 +1,6 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import axios from 'axios'
-import { Link, useLocation } from 'react-router-dom'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Albums = () => {
     const [albums, setAlbums] = useState([])
@@ -32,7 +30,7 @@ const Albums = () => {
 
     return (
         <div>
-            <h1>Library</h1>
+            <h1 className='textwhite'>Library</h1>
             <div className="albums">
                 {albums.map((album) => (
                     <div className="album" key={album.albumID}>
@@ -51,7 +49,7 @@ const Albums = () => {
                     </div>
                 ))}
             </div>
-            <button>
+            <button className='submit add-album'>
                 <Link to={`/${artistId}/albums/add`}>Add new album</Link>
             </button>
         </div>

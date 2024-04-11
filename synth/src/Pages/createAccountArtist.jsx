@@ -2,8 +2,10 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const CreateAccountArtist = () => {
+    const navigate = useNavigate(); // Initialize navigate
     const [formData, setFormData] = useState({
         fname: '',
         lname: '',
@@ -31,11 +33,13 @@ const CreateAccountArtist = () => {
         try {
             const response = await axios.post('http://localhost:8800/createAccount/artist', formData);
             console.log(response.data);
+            navigate('/login-artist'); // Navigate to /login-artist after successful form submission
         } catch (error) {
             console.error('Error creating account: ', error);
             setError('An error occured while creating the account. Please try again later.');
         }
     };
+
     return (
         <div className='form'>
             <h1>Artist Registration</h1>
@@ -136,4 +140,4 @@ const CreateAccountArtist = () => {
     );
 };
 
-export default CreateAccountArtist
+export default CreateAccountArtist;
