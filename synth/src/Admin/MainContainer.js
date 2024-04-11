@@ -1,41 +1,43 @@
-import React, { useEffect } from "react";
+import axios from 'axios'; // Import axios for making HTTP requests
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AdminLists } from "./AdminLists";
 import './MainContainer.css';
 
 function MainContainer() {
+    const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
-        const allLi = document
-          .querySelector(".menuList")
-          .querySelectorAll("li");
-    
-        function changeMenuActive() {
-          allLi.forEach((n) => n.classList.remove("active"));
-          this.classList.add("active");
-        }
-    
-        allLi.forEach((n) => n.addEventListener("click", changeMenuActive));
-      }, []);
+        // Function to fetch notifications from backend
+        const fetchNotifications = async () => {
+            try {
+                const response = await axios.get('http://localhost:8800/fetch-notifications/1');
+                setNotifications(response.data);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+
+        fetchNotifications(); // Call the fetchNotifications function when component mounts
+    }, []);
 
     return (
-    <div className='mainContainer'>
-        <div className="menuList">
-            <ul>
-                <li>
-                    <a href="#">Active</a>
+        <div className='mainContainer'>
+            <div className="menuList">
+                <ul>
+                    <li>
+                        <a href="#">Active</a>
                     </li>
-                <li>
-                    <a href="#">Resolved</a>
+                    <li>
+                        <a href="#">Resolved</a>
                     </li>
                     <li>
                         <Link to="/" className="roundedButton">Logout</Link>
                     </li>
-            </ul>
-            
+                </ul>
+            </div>
+            <AdminLists notifications={notifications} /> {/* Pass notifications to AdminLists component */}
         </div>
-        <AdminLists />
-    </div>
     );
 }
 

@@ -1,6 +1,21 @@
-import React from 'react'
+import axios from 'axios';
+import React from 'react';
 
-function AdminLists() {
+function AdminLists({ notifications }) {
+    // Function to handle deleting a song
+    const handleDeleteSong = async (songID) => {
+        try {
+            // Send HTTP POST request to delete the song
+            await axios.post('/admin/actions/delete-song', { songID });
+            // Handle success
+            console.log('Song deleted successfully');
+            // You may want to update the state or fetch notifications again after deletion
+        } catch (error) {
+            // Handle error
+            console.error('Error deleting song:', error);
+        }
+    };
+
     return (
         <div className="adminlists">
             <h2 className="title">
@@ -8,32 +23,37 @@ function AdminLists() {
             </h2>
             <div className= "reportsContainer">
                 <div className="reports">
-                    <div className="report">
-                        <div className="imgBox">
-                            <img src="" alt=""/>
-                        </div>
-                    <div className="section">
-                        <p className="albumName">
-                            name
-                            <span className="spanArtist"> Artist Name</span>
-                        </p>
-                        <div className="removereject">
-                            <div className="RemoveContent">
-                                Remove Content
+                    {/* Map over notifications and render each notification */}
+                    {notifications.map(notification => (
+                        <div className="report" key={notification.notificationID}>
+                            <div className="imgBox">
+                                <img src={notification.cover} alt={notification.songTitle} />
                             </div>
-                            <div className="RejectReport">
-                                Reject Report
+                            <div className="section">
+                                <p className="albumName">
+                                    {notification.songTitle} 
+                                    <span className="spanArtist"> {notification.artistName}</span>
+                                </p>
+                                <div className="removereject">
+                                    {/* Add event handler to trigger deletion */}
+                                    <div className="RemoveContent" onClick={() => handleDeleteSong(notification.songID)}>
+                                        Remove Content
+                                    </div>
+                                    <div className="RejectReport">
+                                        Reject Report
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </div>
-        </div>
-    )
+    );
 }
 
-export { AdminLists }
+export { AdminLists };
+
 
 /*
 import React from 'react';

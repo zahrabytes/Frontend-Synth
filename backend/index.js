@@ -724,13 +724,13 @@ app.post('/flag-song/:songID', (req, res) => {
 app.post('/admin/actions/delete-song', (req, res) => {
     const songID = req.body.songID;
     // Perform necessary actions to delete the song from the database
-    db.query('DELETE FROM songs WHERE songID = ?', [songID], (err, result) => {
+    db.query('DELETE FROM song WHERE songID = ?', [songID], (err, result) => {
         if (err) {
             console.error('Error deleting song:', err);
             res.status(500).json({ error: 'Failed to delete song' });
         } else {
             // Remove the deleted song from the flagged songs data structure
-            flaggedSongs = flaggedSongs.filter(song => song.id !== songId);
+            //flaggedSongs = flaggedSongs.filter(song => song.id !== songId);
             res.status(200).json({ message: 'Song deleted successfully' });
         }
     });
