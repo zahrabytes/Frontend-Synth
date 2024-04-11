@@ -645,6 +645,44 @@ app.get('/:id/:albumID/songs-liked', async (req, res) => {
     });
 });
 
+// find albums liked
+app.get('/:id/albums-liked', async (req, res) => {
+    const listenerID = req.params.id;
+    const query = `
+    SELECT DISTINCT AL.albumID, A.albumName, ART.artistName, A.cover
+    FROM album AS A, album_like AS AL, artist AS ART
+    WHERE AL.listenerID = ? AND AL.albumID = A.albumID AND A.artistID = ART.artistID
+    `;
+
+    db.query(query, [listenerID], (err, results) => {
+      if (err) {
+        console.error('Error searching album_likes:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
+// find liked songs for listener
+app.get('/:id/songs-liked', async (req, res) => {
+    const listenerID = req.params.id;
+    const query = `
+    SELECT DISTINCT SL.songID, S.songTitle, A.albumName, S.filePath
+    FROM song_like AS SL, song AS S, album AS A, listener AS L
+    WHERE S.songID = SL.songID AND S.albumID = A.albumID AND SL.listenerID = ?
+    `;
+
+    db.query(query, [listenerID], (err, results) => {
+      if (err) {
+        console.error('Error searching songs:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
 // End of Library / Homepage Backend /////////////////////////////////////////////////////
 
 // Playlists ///
@@ -723,17 +761,17 @@ app.post('/flag-song/:songID', (req, res) => {
   //handle delete song
 app.post('/admin/actions/delete-song', (req, res) => {
     const songID = req.body.songID;
-    // Perform necessary actions to delete the song from the database
-    db.query('DELETE FROM song WHERE songID = ?', [songID], (err, result) => {
-        if (err) {
-            console.error('Error deleting song:', err);
-            res.status(500).json({ error: 'Failed to delete song' });
-        } else {
-            // Remove the deleted song from the flagged songs data structure
-            //flaggedSongs = flaggedSongs.filter(song => song.id !== songId);
-            res.status(200).json({ message: 'Song deleted successfully' });
-        }
-    });
+    try{
+        const query = `
+            DELETE FROM song 
+            WHERE songID = ?
+        `;
+        db.promise().query(query, [songID]);
+        res.status(200).send('Song unliked successfully');
+    } catch (error){
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 // Endpoint to handle rejecting a report
