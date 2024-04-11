@@ -146,8 +146,6 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer; /* Change cursor to pointer on hover to indicate clickability */
-  background-color: #ff6347; /* Set background color */
-  color: #fff; /* Set text color */
   padding: 10px 20px; /* Add padding for better clickability */
   border-radius: 5px;
 }
