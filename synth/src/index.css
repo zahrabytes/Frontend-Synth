@@ -129,6 +129,7 @@ code {
   display: flex;
   flex-direction: column;
   margin: auto;
+  margin-top: 50px;
   width: 600px;
   background: rgba(255, 255, 255, 0.3); /* Adjust the opacity to make it more milky white */
   backdrop-filter: blur(20px); /* Increase blur for a softer effect */
@@ -139,10 +140,11 @@ code {
   padding: 30px;
 }
 
-
 .header {
   display: flex;
   flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
   gap: 9px;
   width: 100%;
   margin-top: 30px;
@@ -154,6 +156,25 @@ code {
   color: #4476e3;
   font-size: 48px;
   font-weight: 700;
+}
+
+.textwhite{
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 700;
+  padding-left: 50px;
+}
+
+.textA{
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 700;
+  padding: 100px;
+  margin: auto;
+  display: flex; /* Set display to flex */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  width: 30%;
 }
 
 .underline{
@@ -265,13 +286,16 @@ li {
   cursor: pointer;
 }
 
-.options-banner {
+.login-options-container {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: 20px;
-  width: 480px;
-  margin: auto;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.options-banner {
+  position: absolute;
+  top: 50px;
+  right: 50px;
 }
 
 .option {
@@ -280,6 +304,14 @@ li {
   padding: 10px 20px;
   cursor: pointer;
   flex: 1;
+  border-radius: 30px; /* Add border-radius for rounded corners */
+  text-align: center; /* Center text horizontally */
+  margin-right: 10px; /* Add a margin-right for the gap between options */
+  text-decoration: none; /* Remove underline */
+}
+
+.option:last-child {
+  margin-right: 0; /* Remove margin-right for the last option */
 }
 
 .option:hover {
@@ -343,3 +375,4 @@ header-menu {
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+

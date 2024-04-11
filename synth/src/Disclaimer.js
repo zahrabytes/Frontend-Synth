@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.css'
+import './index.css';
 
 function Disclaimer () {
     return (
@@ -7,6 +7,7 @@ function Disclaimer () {
             <div className="hover">
                 <header className='center'>Synth</header>
             </div>
+            <div className='textA'>Music Library for exploring, discovering, and enjoying your favorite songs</div>
             <subheader>Disclaimer:</subheader>
             <div className='glass'>
             We do not claim ownership of any songs, albums, or artists featured on this site.

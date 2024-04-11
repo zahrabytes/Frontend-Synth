@@ -1,54 +1,54 @@
 import React from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import { AdminHome } from './Admin/AdminHome.js';
-import AlbumAdd from './AlbumAdd.js';
-import ArtistProfile from './ArtistProfile.js';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './index.css';
-import Home from './Home.js';
+
+// Import your components
+import { AdminHome } from './Admin/AdminHome.js';
+import AlbumAdd from './Artist/AlbumAdd.jsx';
+import AlbumUpdate from './Artist/AlbumUpdate.jsx';
+import Albums from './Artist/Albums.jsx';
+import SongAdd from './Artist/SongAdd.jsx';
+import SongsView from './Artist/SongsView.jsx';
+import ArtistProfile from './ArtistProfile.js';
+import Disclaimer from './Disclaimer.js';
+import Landing from './Landing.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
-import LoginSignup from './LoginSignup.jsx';
-import Disclaimer from './Disclaimer.js'; 
 import { SearchPage } from './Listener/SearchPage.js';
-import AudioPlayer from './Listener/AudioPlayer.js';
 import ViewAlbum from "./Listener/ViewAlbum.js";
+import CreateAccount from './Pages/createAccount.jsx';
+import CreateAccountArtist from './Pages/createAccountArtist.jsx';
+import CreateAccountListener from './Pages/createAccountListener.jsx';
+import LoginAdmin from './Pages/login-admin.jsx';
+import LoginArtist from './Pages/login-artist.jsx';
+import ListenerLogin from './Pages/login-listener.jsx';
+import { LeftMenu } from './Listener/LeftMenu.js';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <div className = "content">
-          <Switch>
-            <Route exact path ="/">
-              <Home />
-            </Route>
-            <Route path="/Login">
-              <LoginSignup />
-            </Route>
-            <Route path="/Artist">
-              <ArtistProfile />
-            </Route>
-            <Route path ="/Create-Album">
-              <AlbumAdd />
-            </Route>
-            <Route path ="/User-Home">
-            <ListenerHome />
-            </Route>
-            <Route path ="/Admin-Home">
-            <AdminHome />
-            </Route>
-            <Route path ="/audioplayer">
-              <AudioPlayer />
-            </Route>
-            <Route path ="/Disclaimer">
-              <Disclaimer />
-            </Route>
-            <Route path ="/Search">
-              <SearchPage />
-            </Route>
-            <Router>
-              <Route path="/View-Album/:listenerID/:albumID" component={ViewAlbum} />
-            </Router>
-          </Switch>
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/Artist" element={<ArtistProfile />} />
+            <Route path="/Create-Album" element={<AlbumAdd />} />
+            <Route path="/:id/user-home" element={<ListenerHome />} />
+            <Route path="/:id/Admin-Home" element={<AdminHome />} />
+            <Route path="/login-admin" element={<LoginAdmin />} />
+            <Route path="/:id/albums/add" element={<AlbumAdd />} />
+            <Route path="/:id/albums" element={<Albums />} />
+            <Route path="/:artistID/update/:id" element={<AlbumUpdate />} />
+            <Route path="/:artistID/upload/:id" element={<SongAdd />} />
+            <Route path="/Registration" element={<CreateAccount />} />
+            <Route path="/ListenerRegistration" element={<CreateAccountListener />} />
+            <Route path="/ArtistRegistration" element={<CreateAccountArtist />} />
+            <Route path="/login-listener" element={<ListenerLogin />} />
+            <Route path="/login-artist" element={<LoginArtist />} />
+            <Route path="/Disclaimer" element={<Disclaimer />} />
+            <Route path="/Search/:id" element={<SearchPage />} />
+            <Route path="/View-Album/:id/:albumID" element={<ViewAlbum />} />
+            <Route path =":artistID/albums/:albumID/songs" element ={<SongsView />} />
+          </Routes>
         </div>
       </div>
     </Router>

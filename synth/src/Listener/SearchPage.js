@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import React, { useState } from 'react';
 import '../index.css';
 
-// TODO integrate with left menu/ listener home
-function SearchPage() {
+function SearchPage({ onSongSelect }) {
+  const { id } = useParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [artistResults, setArtistResults] = useState([]);
   const [albumResults, setAlbumResults] = useState([]);
   const [songResults, setSongResults] = useState([]);
+  const navigate = useNavigate();
 
   const handleSearch = async () => {
     try {
@@ -23,6 +25,15 @@ function SearchPage() {
       console.error('Error searching:', error);
     }
   };  
+
+  const handleSongSelect = (song) => {
+    onSongSelect(song); // Pass selected song to the parent component
+  };
+
+  const handleAlbumSelect = (album) => {
+    navigate(`/View-Album/${id}/${album}`);
+  };
+
 
   return (
     <div>
@@ -49,7 +60,9 @@ function SearchPage() {
           <subheader>Song</subheader>
           <ul>
             {songResults.map((item, index) => (
-              <li key={index}>{item.songTitle}</li>
+              <li key={index} onClick={() => handleSongSelect(item)}>
+                {item.songTitle}
+              </li>
             ))}
           </ul>
         </div>
@@ -58,8 +71,8 @@ function SearchPage() {
       <ul>
         {albumResults.map((item, index) => (
           <li key={index}>
-            <div><img className='img-display-after' src={item.cover} alt={item.cover} /></div>
-            <div>{item.albumName}</div>
+              <div onClick={() => handleAlbumSelect(item.albumID)}><img className='img-display-after' src={item.cover} alt={item.cover} /></div>
+              <div onClick={() => handleAlbumSelect(item.albumID)}>{item.albumName}</div>
           </li>
         ))}
       </ul>
@@ -68,3 +81,4 @@ function SearchPage() {
 };
 
 export { SearchPage };
+

@@ -1,5 +1,4 @@
 import cors from "cors";
-import mysql from "mysql2"; 
 
 /*
 const {Storage} = require('@google-cloud/storage');
@@ -23,6 +22,35 @@ async function uploadFile(bucketName, file, fileOutputName){
 */
 
 import express from "express";
+import mysql from "mysql2";
+/*
+const {Storage} = require('@google-cloud/storage');
+require('dotenv').config();
+
+const projectId = process.env.PROJECT_ID;
+const keyFilename = process.env.KEYFILENAME;
+const storage = new Storage({projectId, keyFilename});
+
+async function uploadFile(bucketName, file, fileOutputName){
+    try{
+        const bucket = storage.bucket(bucketName);
+        const ret = await bucket.upload(file,{
+            destination:fileOutputName
+        })
+        return ret;
+    }catch(error){
+        console.error('Error:', error);        
+    }
+}
+
+async function generateLink(file_name, song_id){
+    //const file_name = 'Cherry Waves.mp3';
+    //const song_id = 'examplesongid.mp3';
+    const ret = await uploadFile(process.env.BUCKET_NAME, file_name, song_id);
+    const link = "https://storage.googleapis.com/bucket-tester-2/" + song_id;
+    console.log(link);
+}
+*/
 
 
 /*
@@ -65,6 +93,7 @@ app.post('/post-song', async (req, res) => {
 });
 */
 
+// Jonathan work
 // create Account - 1st endpoint (user picks either artist or listener account and is take to the correct signup page)
 app.post('/createAccount', async (req, res) => {
     try {
@@ -258,6 +287,36 @@ app.post('/admin-login', async (req, res) => {
     }
 });
 
+app.get("/:id/listener", (req, res) => {
+    const listenerID = req.params.id;
+    const q = "SELECT * FROM listener WHERE listenerID = ?";
+    db.query(q, [listenerID], (err, data) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        if (data.length > 0) {
+            return res.status(200).json(data[0]); // Return the first object directly
+        } else {
+            return res.status(404).json({ error: 'Listener not found' }); // Return 404 if listener not found
+        }
+    });
+});
+
+app.get("/:id/admin", (req, res) => {
+    const adminID = req.params.id;
+    const q = "SELECT * FROM admin WHERE adminID = ?";
+    db.query(q, [adminID], (err, data) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+        if (data.length > 0) {
+            return res.status(200).json(data[0]);
+        } else {
+            return res.status(404).json({ error: 'Admin not found' }); 
+        }
+    });
+});
+
 
 // Code to post an album ? it's not
 app.post('/album', async (req, res) => {
@@ -314,6 +373,7 @@ app.post('/album', async (req, res) => {
 // Album Display /////////////////////////////////////////////////////////////////////////
 
 // fetching songs
+
 app.get('/view-album/:albumID/song', async (req, res) =>{
     const albumID = req.params.albumID;
     try {
@@ -364,8 +424,8 @@ app.get('/view-album/:albumID', async (req, res) =>{
 
 // Like Functionality ////////////////////////////////////////////////////////////////////
 // post song like
-app.post('/:listenerID/:songID/like-song', async (req, res) =>{
-    const listenerID_value = req.params.listenerID;
+app.post('/:id/:songID/like-song', async (req, res) =>{
+    const listenerID_value = req.params.id;
     const songID_value = req.params.songID;
     try {
         const query =`
@@ -381,8 +441,8 @@ app.post('/:listenerID/:songID/like-song', async (req, res) =>{
 });
 
 // TODO delete song like
-app.delete('/:listenerID/:songID/unlike-song', async (req, res) => {
-    const listenerID_value = req.params.listenerID;
+app.delete('/:id/:songID/unlike-song', async (req, res) => {
+    const listenerID_value = req.params.id;
     const songID_value = req.params.songID;
     try {
         const query = `
@@ -398,8 +458,8 @@ app.delete('/:listenerID/:songID/unlike-song', async (req, res) => {
 });
 
 // post album like
-app.post('/:listenerID/:albumID/like-album', async (req, res) =>{
-    const listenerID_value = req.params.listenerID;
+app.post('/:id/:albumID/like-album', async (req, res) =>{
+    const listenerID_value = req.params.id;
     const albumID_value = req.params.albumID;
     try {
         const query =`
@@ -524,7 +584,7 @@ app.get('/search-song', async (req, res) => {
 app.get('/search-album', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-        SELECT DISTINCT A.albumName, A.cover, ART.artistName
+        SELECT DISTINCT A.albumID, A.albumName, A.cover, ART.artistName
         FROM album AS A
         JOIN artist AS ART ON A.artistID = ART.artistID
         WHERE (A.albumName LIKE '%${searchTerm}%' 
@@ -566,9 +626,9 @@ app.get('/search-artist', async (req, res) => {
 
 // Library / Homepage Backend ////////////////////////////////////////////////////////////
 
-app.get('/:listenerID/:albumID/songs-liked', async (req, res) => {
+app.get('/:id/:albumID/songs-liked', async (req, res) => {
     const albumID = req.params.albumID;
-    const listenerID = req.params.listenerID;
+    const listenerID = req.params.id;
     const query = `
     SELECT DISTINCT song_like.songID 
     FROM song_like, song, album, listener
@@ -586,6 +646,45 @@ app.get('/:listenerID/:albumID/songs-liked', async (req, res) => {
 });
 
 // End of Library / Homepage Backend /////////////////////////////////////////////////////
+
+// Playlists ///
+
+// Dummy array to hold playlists
+let playlists = [];
+
+// Route to create a new playlist
+app.post("/create-playlist", (req, res) => {
+    const { name, songs } = req.body;
+    if (!name) {
+      return res.status(400).json({ message: "Playlist name is required." });
+    }
+    const newPlaylist = {
+      id: playlists.length + 1,
+      name: name,
+      songs: songs || [],
+    };
+    playlists.push(newPlaylist);
+    return res.status(201).json(newPlaylist);
+  });
+  
+  // Route to add a song to a playlist
+  app.post("/playlist/:id/add-song", (req, res) => {
+    const { id } = req.params;
+    const { song } = req.body;
+    const playlist = playlists.find((playlist) => playlist.id === parseInt(id));
+    if (!playlist) {
+      return res.status(404).json({ message: "Playlist not found." });
+    }
+    playlist.songs.push(song);
+    return res.status(200).json(playlist);
+  });
+  
+  // Route to get all playlists
+  app.get("/playlists", (req, res) => {
+    return res.status(200).json(playlists);
+  });
+
+
 
 //Admin flags
 app.post('/flag-song', (req, res) => {
@@ -630,6 +729,112 @@ app.post('/admin/actions/reject-report', (req, res) => {
 // Main page
 app.get("/", (req, res) => {
     res.json("This is the main page");
+});
+
+///////// Jonathan backend for listener viewing an artist:
+app.get("/view-artist/:artistID" , (req,res) => {
+    const artistID = req.params.artistID;
+    db.query('SELECT * FROM artists WHERE artistID = ?')
+});
+
+//Fetch Albums from db
+app.get("/:id/albums", (req, res)=> {
+    const artistID = req.params.id;
+    const q = "SELECT * FROM album WHERE artistID = ?";
+    db.query(q, [artistID], (err, data)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json(data);
+    });
+});
+
+//Uploading Albums
+app.post("/:id/albums", (req, res)=>{
+    const artistId = req.params.id;
+    const q = "INSERT INTO album (`artistID`, `albumName`, `releaseDate`, `cover`) VALUES (?)";
+    const values = [artistId, req.body.albumName, req.body.releaseDate, req.body.cover];
+
+    db.query(q, [values], (err, data)=>{
+        if (err) {
+            return res.json(err);
+        }
+        return res.json({message: "Album added successfully!"});
+    });
+});
+
+//Updating Albums
+app.put("/:id/albums", (req, res)=>{
+    const albumId = req.params.id;
+    const q = "UPDATE album SET `albumName` = ?, `releaseDate` = ?, `cover` = ? WHERE albumID = ?";
+    const values = [req.body.albumName, req.body.releaseDate, req.body.cover];
+
+    db.query(q, [...values, albumId], (err, data)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json({message: "Album has updated successfully!"});
+    })
+})
+
+//Deleting Albums
+app.delete("/:id/albums", (req, res)=>{
+    const albumId = req.params.id;
+    const q = "DELETE FROM album WHERE albumID = ?";
+
+    db.query(q, [albumId], (err, data)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json({message: "Album deleted successfully!"});
+    });
+});
+
+//Handle Album Fetch on Song Upload Page
+app.get("/albums/:id/upload", (req, res) => {
+    const albumID = req.params.id;
+    const q = "SELECT * FROM album WHERE albumID = ?";
+
+    db.query(q, [albumID], (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]);
+        } else {
+            return res.json({ message: "Album not found" });
+        }
+    });
+});
+
+//Upload Songs to Album
+app.post("/albums/:id/upload", (req, res)=> {
+    const albumID = req.params.id;
+    const { songTitle, filePath, songDuration } = req.body;
+
+    const songData = {songTitle, albumID, filePath, songDuration};
+
+    const insertq = "INSERT INTO song SET ?";
+    db.query(insertq, songData, (err)=>{
+        if(err) {
+            return res.json(err);
+        }
+        return res.json({message: 'Song added successfully'});
+    });
+});
+
+app.get("/albums/:albumID/songs", (req, res) => {
+    const albumID = parseInt(req.params.albumID);
+
+    // Execute a MySQL query to fetch songs based on artistID and albumID
+    db.query('SELECT * FROM song WHERE albumID = ? ', [albumID], (error, results) => {
+        if (error) {
+            console.error("Error fetching songs:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    });
 });
 
 // Start the server

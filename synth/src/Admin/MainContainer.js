@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { AdminLists } from "./AdminLists";
 import './MainContainer.css';
 
@@ -26,6 +27,9 @@ function MainContainer() {
                     </li>
                 <li>
                     <a href="#">Resolved</a>
+                    </li>
+                    <li>
+                        <Link to="/" className="roundedButton">Logout</Link>
                     </li>
             </ul>
             

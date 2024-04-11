@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { PiHeartFill, PiHeartLight } from "react-icons/pi";
 import { useParams } from 'react-router-dom';
 import '../index.css';
-import { PiHeartLight } from "react-icons/pi";
-import { PiHeartFill } from "react-icons/pi";
 
-const ViewAlbum = () => {
-    const { listenerID, albumID} = useParams();
+function ViewAlbum() {
+    const { id, albumID} = useParams();
     const [albumResults, setAlbumResults] = useState([]);
     const [songResults, setSongResults] = useState([]);
     const [likedSongs, setLikedSongs] = useState(new Set());
     const [albumLike, setAlbumLike] = useState(false);
 
+    
     const findLikedSongs = async () => {
         try {
-            const songsP = await axios.get(`http://localhost:8800/${listenerID}/${albumID}/songs-liked`);
+            const songsP = await axios.get(`http://localhost:8800/${id}/${albumID}/songs-liked`);
             const songsLikedData = songsP.data;
             const transformedSongs = songsLikedData.map((song, index) => {
                 return { ...song, index: index + 1 };
@@ -26,9 +26,13 @@ const ViewAlbum = () => {
         }
     };
 
+    useEffect(() => {
+        findLikedSongs();
+    }, [id, albumID]);
+
     const handleLikeAlbum= async () => {
         try {
-            await axios.post(`http://localhost:8800/${listenerID}/${albumID}/like-album`);
+            await axios.post(`http://localhost:8800/${id}/${albumID}/like-album`);
             setAlbumLike(true);
             console.log('Album liked:', albumID);
         } catch (error) {
@@ -38,7 +42,7 @@ const ViewAlbum = () => {
   
     const handleUnlikeAlbum = async () => {
         try {
-            await axios.delete(`http://localhost:8800/${listenerID}/${albumID}/unlike-album`);
+            await axios.delete(`http://localhost:8800/${id}/${albumID}/unlike-album`);
             setAlbumLike(false);
             console.log('Album unliked:', albumID);
         } catch (error) {
@@ -48,7 +52,7 @@ const ViewAlbum = () => {
 
     const handleLikeSong = async (songID) => {
         try {
-            await axios.post(`http://localhost:8800/${listenerID}/${songID}/like-song`);
+            await axios.post(`http://localhost:8800/${id}/${songID}/like-song`);
             setLikedSongs(new Set([...likedSongs, songID]));
         } catch (error) {
             console.error('Error liking song:', error);
@@ -57,7 +61,7 @@ const ViewAlbum = () => {
   
     const handleUnlikeSong = async (songID) => {
         try {
-            await axios.delete(`http://localhost:8800/${listenerID}/${songID}/unlike-song`);
+            await axios.delete(`http://localhost:8800/${id}/${songID}/unlike-song`);
             const updatedLikedSongs = new Set(likedSongs);
             updatedLikedSongs.delete(songID);
             setLikedSongs(updatedLikedSongs);
@@ -79,10 +83,6 @@ const ViewAlbum = () => {
         }; 
         fetchAlbum(); 
     }, [albumID]);
-
-    useEffect(() => {
-        findLikedSongs();
-    }, [listenerID, albumID, findLikedSongs]);
     
     return (
         <div>
