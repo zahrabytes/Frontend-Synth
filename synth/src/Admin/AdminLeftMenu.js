@@ -1,9 +1,17 @@
 import React from "react";
 import { BiSearch } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 import { Menu } from "../Listener/Menu";
 import { AMenuList } from "./AdminMenu";
 
 function AdminPage() {
+  const navigate = useNavigate(); // Initialize useNavigate
+
+    const handleSearchClick = () => {
+        // Navigate to the search page when the search box is clicked
+        navigate("/search");
+    };
+
     return (
         <div>
           <div className="leftMenu">
@@ -14,7 +22,7 @@ function AdminPage() {
                 </i>
               </div>
             </div>
-            <div className="searchBox">
+            <div className="searchBox" onClick={handleSearchClick}>
               <input type="text" placeholder="Search..." />
               <i>
                 <BiSearch />

@@ -4,7 +4,7 @@ function AdminLists() {
     return (
         <div className="adminlists">
             <h2 className="title">
-                Reports <span> 12 reports</span>
+                Reports <span></span>
             </h2>
             <div className= "reportsContainer">
                 <div className="reports">

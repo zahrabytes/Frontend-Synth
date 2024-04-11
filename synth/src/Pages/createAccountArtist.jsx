@@ -66,8 +66,8 @@ const CreateAccountArtist = () => {
                 <div>
                     <label htmlFor="artistName">Artist Name</label>
                     <input
-                        type="artistName"
-                        id="artist"
+                        type="text"
+                        id="artistName"
                         name="artistName"
                         value={formData.artistName}
                         onChange={handleChange}
@@ -77,7 +77,7 @@ const CreateAccountArtist = () => {
                 <div>
                     <label htmlFor="genre">Genre</label>
                     <input
-                        type="genre"
+                        type="text"
                         id="genre"
                         name="genre"
                         value={formData.genre}
@@ -125,7 +125,7 @@ const CreateAccountArtist = () => {
                     <input
                         type="text"
                         id="profilePic"
-                        name="profilePich"
+                        name="profilePic"
                         value={formData.profilePic}
                         onChange={handleChange}
                     />
@@ -135,6 +135,5 @@ const CreateAccountArtist = () => {
         </div>
     );
 };
-
 
 export default CreateAccountArtist

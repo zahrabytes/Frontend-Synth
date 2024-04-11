@@ -1,0 +1,121 @@
+/* registration.css */
+
+.glass {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 50px;
+    width: 600px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    padding: 30px;
+}
+
+.textwhite {
+    color: #ffffff;
+    font-size: 40px; /* Adjust font size */
+    font-weight: 700;
+    text-align: center; /* Center align text */
+    margin-bottom: 20px; /* Add some spacing below text */
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* Add some spacing between inputs */
+}
+
+.input input {
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
+    transform: scale(0.8); /* Scale down the size of the radio buttons */
+}
+
+.text {
+    font-size: 25px; /* Reduce font size */
+}
+
+.submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Add some spacing above button */
+}
+
+.submit {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 30px; /* Adjust border radius */
+    background-color: #1a4ab3;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add transition effect */
+    text-decoration: none; /* Remove underline */
+}
+
+.submit:hover {
+    background-color: #113687; /* Change background color on hover */
+}
+
+.form {
+    width: 440px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.form h1 {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.form label {
+    font-size: 18px;
+    color: #fff;
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"],
+.form input[type="artistName"],
+.form input[type="genre"],
+.form input[type="profilePic"],
+.form button {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 16px;
+}
+
+.form button {
+    background-color: #1a4ab3;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form button:hover {
+    background-color: #113687;
+}

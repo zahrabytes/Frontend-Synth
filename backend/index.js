@@ -702,7 +702,7 @@ app.post('/flag-song', (req, res) => {
   });
 
 
-  //handle admin actions (e.g., delete song, reject report)
+  //handle delete song
 app.post('/admin/actions/delete-song', (req, res) => {
     const songId = req.body.songId;
     // Perform necessary actions to delete the song from the database
