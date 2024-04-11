@@ -34,7 +34,7 @@ const Albums = () => {
             <div className="albums">
                 {albums.map((album) => (
                     <div className="album" key={album.albumID}>
-                        {album.cover && <img src={album.cover} alt="" />}
+                        {album.cover && <img className='img-display-after' src={album.cover} alt="" />}
                         <h2>{album.albumName}</h2>
                         <button className='upload'>
                             <Link to={`/${artistId}/upload/${album.albumID}`}>Upload Songs</Link>
