@@ -1,8 +1,6 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import axios from 'axios'
-import { Link, useLocation } from 'react-router-dom'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Albums = () => {
     const [albums, setAlbums] = useState([])
@@ -23,7 +21,7 @@ const Albums = () => {
 
     const handleDelete = async (id)=>{
         try{
-            await axios.delete("http://localhost:80/"+id+"/albums")
+            await axios.delete("http://localhost:8800/"+id+"/albums")
             window.location.reload()
         } catch(err) {
             console.log(err)
@@ -32,11 +30,11 @@ const Albums = () => {
 
     return (
         <div>
-            <h1>Library</h1>
+            <h1 className='textwhite'>Library</h1>
             <div className="albums">
                 {albums.map((album) => (
                     <div className="album" key={album.albumID}>
-                        {album.cover && <img src={album.cover} alt="" />}
+                        {album.cover && <img className='img-display-after' src={album.cover} alt="" />}
                         <h2>{album.albumName}</h2>
                         <button className='upload'>
                             <Link to={`/${artistId}/upload/${album.albumID}`}>Upload Songs</Link>
@@ -51,8 +49,11 @@ const Albums = () => {
                     </div>
                 ))}
             </div>
-            <button>
+            <button className='submit add-album'>
                 <Link to={`/${artistId}/albums/add`}>Add new album</Link>
+            </button>
+            <button>
+                <Link to={`/${artistId}/reports`}>Run Report</Link>
             </button>
         </div>
     );

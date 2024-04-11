@@ -2,8 +2,10 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const CreateAccountListener = () => {
+    const navigate = useNavigate(); // Initialize navigate
     const [formData, setFormData] = useState({
         fname: '',
         lname: '',
@@ -31,6 +33,7 @@ const CreateAccountListener = () => {
         try {
             const response = await axios.post('http://localhost:8800/createAccount/listener', formData);
             console.log(response.data); // Handle successful response
+            navigate('/login-listener'); // Navigate to /login-listener after successful form submission
         } catch (error) {
             console.error('Error creating account: ', error);
             setError('An error occurred while creating the account. Please try again later.'); // Set error message

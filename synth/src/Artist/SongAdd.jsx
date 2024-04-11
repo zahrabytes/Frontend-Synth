@@ -53,7 +53,7 @@ const SongAdd = () => {
   useEffect(() => {
     const fetchCurrentAlbum = async () => {
       try {
-        const res = await axios.get(`http://localhost:80/albums/${id}/upload`);
+        const res = await axios.get(`http://localhost:8800/albums/${id}/upload`);
         setAlbum(res.data);
       } catch (err) {
         console.log(err);
@@ -66,7 +66,7 @@ const SongAdd = () => {
     <div>
       {album && (
         <div className="album" key={album.albumID}>
-          {album.cover && <img src={album.cover} alt="" />}
+          {album.cover && <img className='img-display-after' src={album.cover} alt="" />}
           <h2>{album.albumName}</h2>
         </div>
       )}
