@@ -24,7 +24,7 @@ const ListenerLogin = () => {
     return (
         <div className='glass'>
             <div className='header'>
-                <h1 className='text'>Listener Login</h1>
+                <h1 className='textwhite'>Listener Login</h1>
                 <div className='underline'></div>
             </div>
             <div className='inputs'>

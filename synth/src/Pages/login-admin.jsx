@@ -23,7 +23,7 @@ const LoginAdmin = () => {
     return (
         <div className='glass'>
             <div className='header'>
-                <h1 className='text'>Admin Login</h1>
+                <h1 className='textwhite'>Admin Login</h1>
                 <div className='underline'></div>
             </div>
             <div className='inputs'>

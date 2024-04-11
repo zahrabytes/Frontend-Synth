@@ -39,8 +39,9 @@ function App() {
             <Route path="/:artistID/update/:id" element={<AlbumUpdate />} />
             <Route path="/:artistID/upload/:id" element={<SongAdd />} />
             <Route path="/Registration" element={<CreateAccount />} />
-            <Route path="/ListenerRegistration" element={<CreateAccountListener />} />
-            <Route path="/ArtistRegistration" element={<CreateAccountArtist />} />
+            <Route path="onClick={handleSearchClick}" element={<CreateAccount />} />
+            <Route path="/registration/ListenerRegistration" element={<CreateAccountListener />} />
+            <Route path="/registration/artistRegistration" element={<CreateAccountArtist />} />
             <Route path="/login-listener" element={<ListenerLogin />} />
             <Route path="/login-artist" element={<LoginArtist />} />
             <Route path="/Disclaimer" element={<Disclaimer />} />
