@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios for making HTTP requests
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LoginArtist = () => {
@@ -20,23 +20,37 @@ const LoginArtist = () => {
     }
 
     return (
-        <div className='form'>
-            <h1>Login Artist</h1>
-            <input
-                type="text"
-                placeholder="Email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            ></input>
-            <input
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            ></input>
-            <button onClick={handleClick}>Login</button> {/* Removed parentheses */}
+        <div className='glass'>
+            <div className='header'>
+                <h1 className='textwhite'>Artist Login</h1>
+                <div className='underline'></div>
+            </div>
+            <div className='inputs'>
+                <div className='input'>
+                    <input
+                        type="text"
+                        placeholder=" Email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className='input'>
+                    <input
+                        type="password"
+                        placeholder=" Password"
+                        name="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <div className='forgot-password'>
+                    <span>Forgot Password?</span>
+                </div>
+            </div>
+            <div className='submit-container'>
+                <button className='submit' onClick={handleClick}>Login</button>
+            </div>
         </div>
     )
 }

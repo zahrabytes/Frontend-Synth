@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useHistory for navigation
 
 const ListenerLogin = () => {
@@ -22,23 +22,37 @@ const ListenerLogin = () => {
     }
 
     return (
-        <div className='form'>
-            <h1>Login Listener</h1>
-            <input
-                type="text"
-                placeholder="Email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={handleClick}>Login</button>
+        <div className='glass'>
+            <div className='header'>
+                <h1 className='text'>Listener Login</h1>
+                <div className='underline'></div>
+            </div>
+            <div className='inputs'>
+                <div className='input'>
+                    <input
+                        type="text"
+                        placeholder=" Email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className='input'>
+                    <input
+                        type="password"
+                        placeholder=" Password"
+                        name="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <div className='forgot-password'>
+                    <span>Forgot Password?</span>
+                </div>
+            </div>
+            <div className='submit-container'>
+                <button className='submit' onClick={handleClick}>Login</button>
+            </div>
         </div>
     )
 }
