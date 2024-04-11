@@ -7,6 +7,7 @@ import { AdminHome } from './Admin/AdminHome.js';
 import AlbumAdd from './Artist/AlbumAdd.jsx';
 import AlbumUpdate from './Artist/AlbumUpdate.jsx';
 import Albums from './Artist/Albums.jsx';
+import ArtistReport from './Artist/ArtistReport.jsx';
 import SongAdd from './Artist/SongAdd.jsx';
 import SongsView from './Artist/SongsView.jsx';
 import ArtistProfile from './ArtistProfile.js';
@@ -21,7 +22,6 @@ import CreateAccountListener from './Pages/createAccountListener.jsx';
 import LoginAdmin from './Pages/login-admin.jsx';
 import LoginArtist from './Pages/login-artist.jsx';
 import ListenerLogin from './Pages/login-listener.jsx';
-import { LeftMenu } from './Listener/LeftMenu.js';
 
 function App() {
   return (
@@ -49,6 +49,7 @@ function App() {
             <Route path="/Search/:id" element={<SearchPage />} />
             <Route path="/View-Album/:id/:albumID" element={<ViewAlbum />} />
             <Route path =":artistID/albums/:albumID/songs" element ={<SongsView />} />
+            <Route path="/:artistID/reports" element ={<ArtistReport />} />
           </Routes>
         </div>
       </div>

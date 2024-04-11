@@ -759,8 +759,8 @@ app.post('/flag-song/:songID', (req, res) => {
 
 
   //handle delete song
-app.post('/admin/actions/delete-song', (req, res) => {
-    const songID = req.body.songID;
+app.post('/admin/:songID/delete-song', (req, res) => {
+    const songID = req.params.songID;
     try{
         const query = `
             DELETE FROM song 
@@ -892,6 +892,29 @@ app.get("/albums/:albumID/songs", (req, res) => {
         }
     });
 });
+
+//Reports code
+app.get("/:id/reports", (req, res) => {
+    const artistID = req.params.id;
+    const query = `
+        SELECT s.*, a.albumName, a.cover 
+        FROM song s 
+        INNER JOIN (
+            SELECT albumID, MAX(numLikes) AS maxLikes 
+            FROM song 
+            GROUP BY albumID
+        ) maxLikesPerAlbum ON s.albumID = maxLikesPerAlbum.albumID AND s.numLikes = maxLikesPerAlbum.maxLikes
+        INNER JOIN album a ON s.albumID = a.albumID
+        WHERE a.artistID = ?
+        ORDER BY a.albumID;
+    `;
+    db.query(query, [artistID], (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        return res.json(data);
+    });
+})
 
 
 // Start the server

@@ -53,7 +53,7 @@ const SongAdd = () => {
   useEffect(() => {
     const fetchCurrentAlbum = async () => {
       try {
-        const res = await axios.get(`http://localhost:80/albums/${id}/upload`);
+        const res = await axios.get(`http://localhost:8800/albums/${id}/upload`);
         setAlbum(res.data);
       } catch (err) {
         console.log(err);

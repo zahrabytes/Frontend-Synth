@@ -6,7 +6,7 @@ function AdminLists({ notifications }) {
     const handleDeleteSong = async (songID) => {
         try {
             // Send HTTP POST request to delete the song
-            await axios.post('/admin/actions/delete-song', { songID });
+            await axios.post(`/admin/${songID}/delete-song`);
             // Handle success
             console.log('Song deleted successfully');
             // You may want to update the state or fetch notifications again after deletion

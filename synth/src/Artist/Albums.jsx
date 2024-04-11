@@ -21,7 +21,7 @@ const Albums = () => {
 
     const handleDelete = async (id)=>{
         try{
-            await axios.delete("http://localhost:80/"+id+"/albums")
+            await axios.delete("http://localhost:8800/"+id+"/albums")
             window.location.reload()
         } catch(err) {
             console.log(err)
@@ -51,6 +51,9 @@ const Albums = () => {
             </div>
             <button className='submit add-album'>
                 <Link to={`/${artistId}/albums/add`}>Add new album</Link>
+            </button>
+            <button>
+                <Link to={`/${artistId}/reports`}>Run Report</Link>
             </button>
         </div>
     );
