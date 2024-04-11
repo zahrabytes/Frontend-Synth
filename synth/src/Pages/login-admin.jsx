@@ -1,11 +1,11 @@
-import axios from 'axios'; // Import Axios for making HTTP requests
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import axios from 'axios'; // Import Axios for making HTTP requests
+import { useNavigate } from 'react-router-dom';
 
 const LoginAdmin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const history = useHistory(); // Initialize useHistory
+    const navigate = useNavigate(); // Initialize useHistory
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -13,7 +13,7 @@ const LoginAdmin = () => {
             const response = await axios.post('http://localhost:8800/admin-login', { email, password });
             console.log(response.data); // Handle response from the server
             const id = response.data.user.adminID;
-            history.push(`/${id}/Admin-Home`);
+            navigate(`/${id}/Admin-Home`);
         } catch (error) {
             console.error('Error during login:', error);
             // Handle error response from the server
@@ -21,38 +21,23 @@ const LoginAdmin = () => {
     }
 
     return (
-        <div className='glass'>
-            <div className='header'>
-                <h1 className='textwhite'>Login Admin</h1>
-                <div className='underline'></div>
-            </div>
-            <div className='inputs'>
-                <div className='input'>
-                    <input
-                        type="text"
-                        placeholder=" Email"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className='input'>
-                    <input
-                        type="password"
-                        placeholder=" Password"
-                        name="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <div className='forgot-password'>
-                    <span>Forgot Password?</span>
-                    </div>
-            </div>
-            <div className='submit-container'>
-                <button className='submit' onClick={handleClick}>Login</button>
-                
-            </div>
+        <div className='form'>
+            <h1>Login Admin</h1>
+            <input
+                type="text"
+                placeholder="Email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            ></input>
+            <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            ></input>
+            <button onClick={handleClick}>Login</button>
         </div>
     )
 }
