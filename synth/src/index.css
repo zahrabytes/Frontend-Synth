@@ -140,9 +140,8 @@ code {
   padding: 30px;
 }
 
-
 .header {
-  disonslay: flex;
+  display: flex;
   flex-direction: column;
   justify-content: center; /* Center vertically */
   align-items: center; /* Center horizontally */
