@@ -21,12 +21,30 @@ function ViewAlbum() {
             });
             setLikedSongs(new Set(transformedSongs));
             console.log('Songs found');
+            console.log(likedSongs);
         } catch (error) {
             console.error('Error finding songs:', error);
         }
     };
 
+    const fetchAlbum = async () => {
+        try {
+            const album = await axios.get(`http://localhost:8800/view-album/${albumID}`); 
+            setAlbumResults(album.data);
+            const song = await axios.get(`http://localhost:8800/view-album/${albumID}/song/`); 
+            setSongResults(song.data);
+            console.log('Songs found');
+            console.log(likedSongs);
+        } catch (error) {
+        console.error('Error searching:', error);
+        }
+    }; 
+
     useEffect(() => {
+        fetchAlbum();
+        if (likedSongs.length !== 0) {
+        return; 
+        } 
         findLikedSongs();
     }, [id, albumID]);
 
@@ -70,20 +88,6 @@ function ViewAlbum() {
         }
     };
 
-    useEffect(() => {
-        const fetchAlbum = async () => {
-            try {
-                const album = await axios.get(`http://localhost:8800/view-album/${albumID}`); 
-                setAlbumResults(album.data);
-                const song = await axios.get(`http://localhost:8800/view-album/${albumID}/song/`); 
-                setSongResults(song.data);
-            } catch (error) {
-            console.error('Error searching:', error);
-            }
-        }; 
-        fetchAlbum(); 
-    }, [albumID]);
-    
     return (
         <div>
             <ul>
