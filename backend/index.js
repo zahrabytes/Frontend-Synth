@@ -787,6 +787,20 @@ app.post("/albums/:id/upload", (req, res)=> {
     });
 });
 
+app.get("/albums/:albumID/songs", (req, res) => {
+    const albumID = parseInt(req.params.albumID);
+
+    // Execute a MySQL query to fetch songs based on artistID and albumID
+    db.query('SELECT * FROM song WHERE albumID = ? ', [albumID], (error, results) => {
+        if (error) {
+            console.error("Error fetching songs:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
 // Start the server
 app.listen(8800, () => {
     console.log("Connected to backend!");
