@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { PiHeartFill, PiHeartLight } from "react-icons/pi";
+import { PiHeartFill, PiHeartLight, PiFlag, PiFlagFill  } from "react-icons/pi";
 import { useParams } from 'react-router-dom';
 import '../index.css';
 
@@ -8,8 +8,9 @@ function ViewAlbum() {
     const { id, albumID } = useParams();
     const [albumResults, setAlbumResults] = useState([]);
     const [songResults, setSongResults] = useState([]);
-    const [likedSongs, setLikedSongs] = useState(new Set());
     const [albumLike, setAlbumLike] = useState(false);
+    const [likedSongs, setLikedSongs] = useState(new Set());
+    const [flaggedSongs, setFlaggedSongs] = useState(new Set());
 
     useEffect(() => {
         const fetchAlbum = async () => {
@@ -31,6 +32,7 @@ function ViewAlbum() {
         findLikedSongs();
     }, [albumID]); // Fetch only when albumID changes
 
+
     const findLikedSongs = async () => {
         try {
             const songsP = await axios.get(`http://localhost:8800/${id}/${albumID}/songs-liked`);
@@ -40,6 +42,16 @@ function ViewAlbum() {
             console.log('Liked songs found');
         } catch (error) {
             console.error('Error finding liked songs:', error);
+        }
+    };
+
+    const handleFlag = async (songID) => {
+        try {
+            await axios.post(`http://localhost:8800/flag-song/${songID}`);
+            setFlaggedSongs(prevFlaggedSongs => new Set([...prevFlaggedSongs, songID]));
+            console.log('Song Flagged');
+        } catch (error) {
+            console.error('Error Flagging Song', error);
         }
     };
 
@@ -112,6 +124,13 @@ function ViewAlbum() {
                         <audio controls src={song.filePath}></audio>
                         <div onClick={() => likedSongs.has(song.songID) ? handleUnlikeSong(song.songID) : handleLikeSong(song.songID)}>
                             {likedSongs.has(song.songID) ? <PiHeartFill /> : <PiHeartLight />}
+                        </div>
+                        <div onClick={() => {
+                            if (!flaggedSongs.has(song.songID)) {
+                                handleFlag(song.songID);
+                            }
+                            }}>
+                            {flaggedSongs.has(song.songID) ? <PiFlagFill /> : <PiFlag/>}
                         </div>
                         <p>Song Duration: {song.songDuration}</p>
                     </li>

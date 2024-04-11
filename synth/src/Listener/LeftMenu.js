@@ -12,13 +12,14 @@ function LeftMenu() {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    /*
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             // Perform search when Enter key is pressed
             // You can call your search function here
             console.log('Search term:', searchTerm);
         }
-    };
+    };*/
 
     const handleSearch = () => {
         navigate(`/Search/${id}`);
