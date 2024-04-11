@@ -55,6 +55,9 @@ const Albums = () => {
             <button>
                 <Link to={`/${artistId}/reports`}>Run Report</Link>
             </button>
+            <button className="roundedButton">
+                <Link to="/">Logout</Link>
+            </button>
         </div>
     );
 };
