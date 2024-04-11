@@ -35,7 +35,7 @@ const ArtistReport = () => {
 
         return Object.values(albumsWithSongs).map(album => (
             <div className="album" key={album.albumID}>
-                {album.cover && <img src={album.cover} alt={`Cover for ${album.albumName}`} />}
+                {album.cover && <img className='img-display-after' src={album.cover} alt={`Cover for ${album.albumName}`} />}
                 <h2>{album.albumName}</h2>
                 {album.songs.map((song, index) => (
                     <div key={index}>

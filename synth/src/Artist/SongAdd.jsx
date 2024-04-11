@@ -66,7 +66,7 @@ const SongAdd = () => {
     <div>
       {album && (
         <div className="album" key={album.albumID}>
-          {album.cover && <img src={album.cover} alt="" />}
+          {album.cover && <img className='img-display-after' src={album.cover} alt="" />}
           <h2>{album.albumName}</h2>
         </div>
       )}
