@@ -30,7 +30,6 @@ function SearchPage({ onSongSelect }) {
     navigate(`/View-Album/${id}/${album}`);
   };
 
-
   return (
     <div>
       <input 
@@ -43,14 +42,14 @@ function SearchPage({ onSongSelect }) {
       <div className='flex-container'>
         <div className='left-align-container'>
           <subheader>Artist</subheader>
-          <ul>
+          <div className='scrollbar'>
             {artistResults.map((item, index) => (
-              <li key={index}>
+              <div className='artist-item' key={index}>
                 <div><img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} /></div>
                 <div>{item.artistName}</div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
         <div className='right-align-container'>
           <subheader>Song</subheader>
@@ -65,14 +64,18 @@ function SearchPage({ onSongSelect }) {
         </div>
       </div>
       <subheader>Album</subheader>
-      <ul>
-        {albumResults.map((item, index) => (
-          <li key={index}>
-              <div onClick={() => handleAlbumSelect(item.albumID)}><img className='img-display-after' src={item.cover} alt={item.cover} /></div>
-              <div onClick={() => handleAlbumSelect(item.albumID)}>{item.albumName}</div>
-          </li>
-        ))}
-      </ul>
+        <div className="scrollbar">
+          {albumResults.map((item, index) => (
+            <div key={index} className="album-item">
+            <div onClick={() => handleAlbumSelect(item.albumID)}>
+                <img className='img-display-after' src={item.cover} alt={item.cover} />
+            </div>
+            <div onClick={() => handleAlbumSelect(item.albumID)}>
+                {item.albumName}
+            </div>
+            </div>
+          ))}
+        </div>      
     </div>
   );
 };

@@ -128,7 +128,7 @@ app.post('/createAccount/:userType', async (req, res) => {
 
         // Define required fields based on user type
         if (userType === 'artist') {
-            requiredFields = ['fname', 'lname', 'artistName', 'email', 'password', 'DoB'];
+            requiredFields = ['fname', 'lname', 'artistName', 'genre', 'email', 'password', 'DoB', 'profilePic'];
         } 
         else if (userType === 'listener') {
             requiredFields = ['fname', 'lname', 'email', 'username', 'password', 'DoB', 'profilePic'];
@@ -604,10 +604,8 @@ app.get('/search-album', async (req, res) => {
 app.get('/search-artist', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-        SELECT DISTINCT ART.artistName, ART.profilePic
-        FROM song AS S
-        JOIN album AS A ON S.albumID = A.albumID
-        JOIN artist AS ART ON A.artistID = ART.artistID
+        SELECT DISTINCT ART.artistName, ART.profilePic, ART.artistID
+        FROM song AS S, album AS A, artist AS ART
         WHERE S.songTitle LIKE '%${searchTerm}%' 
         OR A.albumName LIKE '%${searchTerm}%'
         OR ART.genre LIKE '%${searchTerm}%' 

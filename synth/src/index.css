@@ -376,17 +376,21 @@ header-menu {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.album-container {
-  display: flex;
-  flex-wrap: nowrap; /* Ensures items do not wrap to next line */
-  overflow-x: auto; /* Enables horizontal scrolling if necessary */
-}
-
 .album-item {
   margin-right: 20px; /* Adjust as needed for spacing between items */
   cursor: pointer; /* Change cursor to indicate clickable */
 }
 
-.album-item:last-child {
-  margin-right: 0; /* Remove margin for the last item */
+.artist-item {
+  margin-top: 20px;
+  cursor: pointer; /* Change cursor to indicate clickable */
 }
+
+.scrollbar {
+            height: 300px;
+            width: 50%;
+            overflow: auto;
+            padding: 0 10px;
+        }
+
+        
