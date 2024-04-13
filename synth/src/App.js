@@ -9,8 +9,7 @@ import AlbumUpdate from './Artist/AlbumUpdate.jsx';
 import Albums from './Artist/Albums.jsx';
 import ArtistReport from './Artist/ArtistReport.jsx';
 import SongAdd from './Artist/SongAdd.jsx';
-import SongsView from './Artist/SongsView.jsx';
-import ArtistProfile from './ArtistProfile.js';
+import SongsView from './Artist/ViewAlbumArtist.jsx';
 import Disclaimer from './Disclaimer.js';
 import Landing from './Landing.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
@@ -29,8 +28,7 @@ function App() {
       <div className="App">
         <div className="content">
           <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/Artist" element={<ArtistProfile />} />
+            <Route path="/" element={<Landing />} />]
             <Route path="/Create-Album" element={<AlbumAdd />} />
             <Route path="/:id/user-home" element={<ListenerHome />} />
             <Route path="/:id/Admin-Home" element={<AdminHome />} />

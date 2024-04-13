@@ -792,8 +792,8 @@ app.get("/view-artist/:artistID" , (req,res) => {
 });
 
 //Fetch Albums from db
-app.get("/:id/albums", (req, res)=> {
-    const artistID = req.params.id;
+app.get("/:artistID/albums", (req, res)=> {
+    const artistID = req.params.artistID;
     const q = "SELECT * FROM album WHERE artistID = ?";
     db.query(q, [artistID], (err, data)=>{
         if(err) {
