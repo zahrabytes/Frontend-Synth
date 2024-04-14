@@ -101,7 +101,7 @@ function ViewArtist() {
                 <artistName>
                 <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
                 {item.artistName}</artistName>
-                <div onClick={() => isFollower ? handleFollowArtist() : handleUnfollowArtist()}>
+                <div onClick={() => isFollower ? handleUnfollowArtist() : handleFollowArtist()}>
                             {isFollower ? <PiHeartFill /> : <PiHeartLight />}
                 </div>
               </div> 
