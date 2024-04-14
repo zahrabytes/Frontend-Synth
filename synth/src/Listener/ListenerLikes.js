@@ -2,12 +2,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import React, { useState, useEffect} from 'react';
 import '../index.css';
+import { AudioPlayerBar } from './AudioPlayerBar.js';
+
 
 function ListenerLikes() {
   const { id } = useParams();
   const [artistResults, setArtistResults] = useState([]);
   const [albumResults, setAlbumResults] = useState([]);
   const [songResults, setSongResults] = useState([]);
+  const [showPlayer, setShowPlayer] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +39,16 @@ function ListenerLikes() {
     navigate(`/View-Artist/${id}/${artist}`)
   };
 
+  const handleSongPlay = async (songID) => {
+    setShowPlayer(!showPlayer)
+    try {
+      await axios.post(`http://localhost:8800/${songID}/stream-song`, { songID });
+      console.log('Song play request successful');
+    } catch (error) {
+      console.error('Error playing song:', error);
+    }
+  };
+  
   return (
     <div>
         <div className='flex-container'>
@@ -52,12 +65,19 @@ function ListenerLikes() {
           </div>
         </div>
         <div className='right-align-container'>
-          <subheader>Song</subheader>
+          <subheader>Song</subheader> 
           <ul>
             {songResults.map((item, index) => (
               <li key={index}>
+                <div>
                 {item.songTitle}
-                <audio controls src={item.filePath}></audio>
+                <button onClick={() => handleSongPlay(item.songID)}>Play</button></div>
+                {showPlayer && (
+                  <AudioPlayerBar
+                    songTitle={item.songTitle}
+                    filePath={item.filePath}
+                  />
+                )}
               </li>
             ))}
           </ul>
@@ -80,4 +100,4 @@ function ListenerLikes() {
   );
 };
 
-export { ListenerLikes };
+export { ListenerLikes }; 

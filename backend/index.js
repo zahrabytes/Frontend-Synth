@@ -1011,6 +1011,24 @@ app.get("/:id/reports", (req, res) => {
     });
 })
 
+// post a stream given the songID
+app.post('/:songID/stream-song', async (req, res) =>{
+    const songID = req.params.songID;
+    try {
+        const query =`
+        UPDATE song
+        SET streams = streams + 1
+        WHERE songID = ?
+        `;
+        await db.promise().query(query, [songID]);
+        res.status(200).send('Song streamed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+
 
 // Start the server
 app.listen(8800, () => {

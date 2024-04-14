@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { PiHeartFill, PiHeartLight, PiFlag, PiFlagFill  } from "react-icons/pi";
 import { useParams } from 'react-router-dom';
+import { formatDate } from '../DateFormat.js';
 import '../index.css';
 
 function ViewAlbum() {
@@ -108,8 +109,8 @@ function ViewAlbum() {
                         <div><img className='img-display-after' src={album.cover} alt={album.cover} /></div>
                         <div>
                             <h1>{album.albumName}</h1>
-                            <p>Release Date: {album.releaseDate}</p>
-                            <p>Genre: {album.genre}</p>
+                            <p>{formatDate(album.releaseDate)}</p>
+                            <p>{album.genre}</p>
                         </div>
                         <div onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
                             {albumLike ? <PiHeartFill /> : <PiHeartLight />}
