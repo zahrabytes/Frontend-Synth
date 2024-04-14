@@ -588,13 +588,13 @@ app.get('/:artistID/artist-follower', async (req, res) => {
     });
 });
 
-// get listener followed artists
+// get artists followed by particular listener
 app.get('/:id/followed-artists', async (req, res) => {
     const listenerID = req.params.id;
     const query = `
-    SELECT DISTINCT artist_follower.artistID
-    FROM artist_follower
-    WHERE artist_follower.listenerID = ?
+    SELECT DISTINCT A.artistName, A.profilePic, A.artistID
+    FROM artist_follower, artist AS A
+    WHERE artist_follower.listenerID = ? AND artist_follower.artistID = A.artistID
     `;
 
     db.query(query, [listenerID], (err, results) => {
@@ -607,7 +607,7 @@ app.get('/:id/followed-artists', async (req, res) => {
     });
 });
 
-// get artist followers 
+// does listener follow particular artist
 app.get('/:artistID/:id/is-follower', async (req, res) => {
     const artistID = req.params.artistID;
     const listenerID = req.params.id;

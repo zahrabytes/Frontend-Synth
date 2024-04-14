@@ -13,8 +13,8 @@ function ListenerLikes() {
   useEffect(() => {
     const loadPage = async () => {
         try {
-         // const artist = await axios.get(`http://localhost:8800//albums-liked`);
-          //setArtistResults(artist.data);
+          const artist = await axios.get(`http://localhost:8800/${id}/followed-artists`); 
+          setArtistResults(artist.data);
     
           const album = await axios.get(`http://localhost:8800/${id}/albums-liked`);
           setAlbumResults(album.data);
@@ -32,19 +32,24 @@ function ListenerLikes() {
     navigate(`/View-Album/${id}/${album}`);
   };
 
+  const handleArtistSelect = (artist) => {
+    navigate(`/View-Artist/${id}/${artist}`)
+  };
+
   return (
     <div>
         <div className='flex-container'>
         <div className='left-align-container'>
           <subheader>Artist</subheader>
-          <ul>
+          <div className='scrollbar'>
             {artistResults.map((item, index) => (
-              <li key={index}>
-                <div><img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} /></div>
-                <div>{item.artistName}</div>
+              <li key={index} className="album-item">
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <img div onClick={() => handleArtistSelect(item.artistID)} className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
+                  {item.artistName}</div>
               </li>
             ))}
-          </ul>
+          </div>
         </div>
         <div className='right-align-container'>
           <subheader>Song</subheader>

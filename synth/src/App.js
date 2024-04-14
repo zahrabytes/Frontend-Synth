@@ -29,7 +29,7 @@ function App() {
       <div className="App">
         <div className="content">
           <Routes>
-            <Route path="/" element={<Landing />} />]
+            <Route path="/" element={<Landing />} />
             <Route path="/Create-Album" element={<AlbumAdd />} />
             <Route path="/:id/user-home" element={<ListenerHome />} />
             <Route path="/:id/Admin-Home" element={<AdminHome />} />
