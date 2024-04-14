@@ -538,8 +538,8 @@ app.delete('/:listenerID/:albumID/unlike-album', async (req, res) => {
 
 // Following Functionality //////////////////////////////////////////////////////////////
 // post artist follower
-app.post('/:listenerID/:artistID/follow-artist', async (req, res) =>{
-    const listenerID_value = req.params.listenerID;
+app.post('/:id/:artistID/follow-artist', async (req, res) =>{
+    const listenerID_value = req.params.id;
     const artistID_value = req.params.artistID;
     try {
         const query =`
@@ -555,7 +555,7 @@ app.post('/:listenerID/:artistID/follow-artist', async (req, res) =>{
 });
 // post artist unfollow
 app.delete('/:listenerID/:artistID/unfollow-artist', async (req, res) =>{
-    const listenerID_value = req.params.listenerID;
+    const listenerID_value = req.params.id;
     const artistID_value = req.params.artistID;
     try {
         const query =`
@@ -569,6 +569,64 @@ app.delete('/:listenerID/:artistID/unfollow-artist', async (req, res) =>{
         res.status(500).send('Internal server error');
     }
 });
+// get artist followers 
+app.get('/:artistID/artist-follower', async (req, res) => {
+    const artistID = req.params.artistID;
+    const query = `
+    SELECT DISTINCT artist_follower.listenerID
+    FROM artist_follower
+    WHERE artist_follower.artistID = ?
+    `;
+
+    db.query(query, [artistID], (err, results) => {
+      if (err) {
+        console.error('Error searching songs:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
+// get listener followed artists
+app.get('/:id/followed-artists', async (req, res) => {
+    const listenerID = req.params.id;
+    const query = `
+    SELECT DISTINCT artist_follower.artistID
+    FROM artist_follower
+    WHERE artist_follower.listenerID = ?
+    `;
+
+    db.query(query, [listenerID], (err, results) => {
+      if (err) {
+        console.error('Error searching artists for followers:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
+// get artist followers 
+app.get('/:artistID/:id/is-follower', async (req, res) => {
+    const artistID = req.params.artistID;
+    const listenerID = req.params.id;
+    const query = `
+    SELECT artist_follower.listenerID, artist_follower.artistID
+    FROM artist_follower
+    WHERE artist_follower.artistID = ? AND artist_follower.listenerID = ?
+    `;
+
+    db.query(query, [artistID, listenerID], (err, results) => {
+      if (err) {
+        console.error('Error searching if listener follows artist:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
 // post listener follow
 app.post('/:followerID/:followed_listenerID/follow-listener', async (req, res) =>{
     const followerID_value = req.params.followerID;

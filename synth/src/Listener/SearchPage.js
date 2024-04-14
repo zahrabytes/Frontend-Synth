@@ -30,6 +30,10 @@ function SearchPage({ onSongSelect }) {
     navigate(`/View-Album/${id}/${album}`);
   };
 
+  const handleArtistSelect = (artist) => {
+    navigate(`/View-Artist/${id}/${artist}`)
+  };
+
   return (
     <div>
       <input 
@@ -45,8 +49,8 @@ function SearchPage({ onSongSelect }) {
           <div className='scrollbar'>
             {artistResults.map((item, index) => (
               <div className='artist-item' key={index}>
-                <div><img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} /></div>
-                <div>{item.artistName}</div>
+                <div onClick={() => handleArtistSelect(item.artistID)}><img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} /></div>
+                <div onClick={() => handleArtistSelect(item.artistID)}>{item.artistName}</div>
               </div>
             ))}
           </div>
