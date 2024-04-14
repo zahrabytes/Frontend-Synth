@@ -21,6 +21,7 @@ import CreateAccountListener from './Pages/createAccountListener.jsx';
 import LoginAdmin from './Pages/login-admin.jsx';
 import LoginArtist from './Pages/login-artist.jsx';
 import ListenerLogin from './Pages/login-listener.jsx';
+import ViewArtist from "./Listener/ViewArtist.js"
 
 function App() {
   return (
@@ -46,7 +47,8 @@ function App() {
             <Route path="/Disclaimer" element={<Disclaimer />} />
             <Route path="/Search/:id" element={<SearchPage />} />
             <Route path="/View-Album/:id/:albumID" element={<ViewAlbum />} />
-            <Route path =":artistID/albums/:albumID/songs" element ={<SongsView />} />
+            <Route path="/View-Artist/:id/:artistID" element={<ViewArtist />} />
+            <Route path ="/:artistID/albums/:albumID/songs" element ={<SongsView />} />
             <Route path="/:artistID/reports" element ={<ArtistReport />} />
           </Routes>
         </div>

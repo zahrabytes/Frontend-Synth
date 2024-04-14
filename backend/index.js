@@ -369,11 +369,54 @@ app.post('/album', async (req, res) => {
         return res.status(500).json({ error: 'Error creating user' });
     }
 });
+// Artist Display /////////////////////////////////////////////////////////////////////////
+
+app.get('/view-artist/:artistID/', async (req, res) =>{
+    const artistID = req.params.artistID;
+    try {
+        const query = `
+            SELECT artistName, genre, profilePic
+            FROM artist
+            WHERE artistID = ?
+        `;
+        const [artistResults] = await db.promise().query(query, [artistID]);
+        console.log('Artist found successfully');
+        res.json(artistResults);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// fetching album
+app.get('/view-album/:artistID', async (req, res) =>{
+    // Get the album ID from the URL
+    const artistID = req.params.artistID;
+    try {
+        // Define query to search for album
+        const query = `
+            SELECT A.albumName, A.releaseDate, A.cover, ART.genre, ART.profilePic, A.albumID
+            FROM album as A, artist as ART
+            WHERE ART.artistID = ? AND A.artistID = ART.artistID
+        `;
+        // Execute album query
+        const [albumResults] = await db.promise().query(query, [artistID]);
+        if (albumResults.length === 0) {
+            res.status(404).json({ error: 'Album not found' });
+            return;
+        }   
+        res.json(albumResults);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// End of Artist Display /////////////////////////////////////////////////////////////////
 
 // Album Display /////////////////////////////////////////////////////////////////////////
 
 // fetching songs
-
 app.get('/view-album/:albumID/song', async (req, res) =>{
     const albumID = req.params.albumID;
     try {
@@ -440,7 +483,7 @@ app.post('/:id/:songID/like-song', async (req, res) =>{
     }
 });
 
-// TODO delete song like
+// delete song like
 app.delete('/:id/:songID/unlike-song', async (req, res) => {
     const listenerID_value = req.params.id;
     const songID_value = req.params.songID;
@@ -786,14 +829,10 @@ app.get("/", (req, res) => {
 });
 
 ///////// Jonathan backend for listener viewing an artist:
-app.get("/view-artist/:artistID" , (req,res) => {
-    const artistID = req.params.artistID;
-    db.query('SELECT * FROM artists WHERE artistID = ?')
-});
 
 //Fetch Albums from db
-app.get("/:artistID/albums", (req, res)=> {
-    const artistID = req.params.artistID;
+app.get("/:id/albums", (req, res)=> {
+    const artistID = req.params.id;
     const q = "SELECT * FROM album WHERE artistID = ?";
     db.query(q, [artistID], (err, data)=>{
         if(err) {
