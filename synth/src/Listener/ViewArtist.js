@@ -17,7 +17,7 @@ function ViewArtist() {
               const artist = await axios.get(`http://localhost:8800/view-artist/${artistID}/`);
               setArtistResult(artist.data);
         
-              const album = await axios.get(`http://localhost:8800/view-album/${artistID}/`);
+              const album = await axios.get(`http://localhost:8800/view-albums/${artistID}/`);
               setAlbumResults(album.data);
             } catch (error) {
               console.error('Error searching:', error);

@@ -11,7 +11,7 @@ function ViewAlbum() {
     const [albumLike, setAlbumLike] = useState(false);
     const [likedSongs, setLikedSongs] = useState(new Set());
     const [flaggedSongs, setFlaggedSongs] = useState(new Set());
-
+    
     // Fetch only when albumID changes
     useEffect(() => {
         const fetchAlbum = async () => {

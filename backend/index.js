@@ -389,7 +389,7 @@ app.get('/view-artist/:artistID/', async (req, res) =>{
 });
 
 // fetching album
-app.get('/view-album/:artistID', async (req, res) =>{
+app.get('/view-albums/:artistID', async (req, res) =>{
     // Get the album ID from the URL
     const artistID = req.params.artistID;
     try {
@@ -445,7 +445,7 @@ app.get('/view-album/:albumID', async (req, res) =>{
     try {
         // Define query to search for album
         const query = `
-            SELECT A.albumName, A.releaseDate, A.cover , ART.artistName, ART.genre, ART.profilePic
+            SELECT A.albumName, A.releaseDate, A.cover, ART.artistName, ART.genre, ART.profilePic
             FROM album as A, artist as ART
             WHERE A.albumID = ? AND ART.artistID = A.artistID
         `;
