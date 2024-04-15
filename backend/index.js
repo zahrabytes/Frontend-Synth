@@ -857,7 +857,7 @@ app.post('/flag-song/:songID', (req, res) => {
   app.get('/fetch-notifications/:adminID', (req, res) => {
     const { adminID } = req.params;
     const query = `
-    SELECT DISTINCT notificationID, songID, notificationDate, artistName, songTitle, cover
+    SELECT DISTINCT notificationID, songID, notificationDate, artistName, songTitle, cover, artistID, albumID
     FROM admin_notifications
     WHERE adminID = ?
     `;
@@ -874,28 +874,38 @@ app.post('/flag-song/:songID', (req, res) => {
   });
 
 
-  //handle delete song
-app.delete('/admin/:songID/delete-song', (req, res) => {
+//handle delete song
+app.delete('/admin/:songID/delete-song', async (req, res) => {
     const songID = req.params.songID;
     try{
         const query = `
             DELETE FROM song 
             WHERE songID = ?
         `;
-        db.promise().query(query, [songID]);
-        res.status(200).send('Song unliked successfully');
+        await db.promise().query(query, [songID]);
+        await db.promise().query(deleteAdminNotificationQuery, [songID]);
+        res.status(200).send('Song deleted from song and admin_notification table successfully');
     } catch (error){
         console.error('Error:', error);
         res.status(500).send('Internal server error');
     }
 });
 
-// Endpoint to handle rejecting a report
-app.post('/admin/actions/reject-report', (req, res) => {
-    const songID = req.body.songID;
-    // Remove the song from the flagged songs data structure
-    flaggedSongs = flaggedSongs.filter(song => song.songID !== songID);
-    res.status(200).json({ message: 'Report rejected successfully' });
+//rejecting report
+app.delete('/admin/:songID/reject-report', async (req, res) => {
+    const songID = req.params.songID;
+    try{
+        const deleteAdminNotificationQuery = `
+            DELETE FROM admin_notifications 
+            WHERE songID = ?
+        `;
+        await db.promise().query(deleteAdminNotificationQuery, [songID]);
+
+        res.status(200).send('Song deleted from admin_notification table successfully');
+    } catch (error){
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 // Main page
