@@ -759,20 +759,21 @@ app.post('/flag-song/:songID', (req, res) => {
 
 
   //handle delete song
-app.post('/admin/:songID/delete-song', (req, res) => {
+  app.post('/admin/:songID/delete-song', async (req, res) => {
     const songID = req.params.songID;
-    try{
+    try {
         const query = `
             DELETE FROM song 
             WHERE songID = ?
         `;
-        db.promise().query(query, [songID]);
-        res.status(200).send('Song unliked successfully');
-    } catch (error){
+        await db.promise().query(query, [songID]);
+        res.status(200).send('Song deleted successfully');
+    } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal server error');
     }
 });
+
 
 // Endpoint to handle rejecting a report
 app.post('/admin/actions/reject-report', (req, res) => {

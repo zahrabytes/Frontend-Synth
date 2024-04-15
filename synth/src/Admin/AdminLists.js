@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 
-function AdminLists({ notifications }) {
+function AdminLists({ notification }) {
     // Function to handle deleting a song
     const handleDeleteSong = async (songID) => {
         try {
@@ -18,34 +18,32 @@ function AdminLists({ notifications }) {
 
     return (
         <div className="adminlists">
-            <h2 className="title">
-                Reports <span></span>
+            <h2>
+                 <span></span>
             </h2>
-            <div className= "reportsContainer">
+            <div>
                 <div className="reports">
-                    {/* Map over notifications and render each notification */}
-                    {notifications.map(notification => (
-                        <div className="report" key={notification.notificationID}>
-                            <div className="imgBox">
-                                <img src={notification.cover} alt={notification.songTitle} />
-                            </div>
-                            <div className="section">
-                                <p className="text">
-                                    {notification.songTitle} 
-                                    <span className="spanArtist"> {notification.artistName}</span>
-                                </p>
-                                <div className="removereject">
-                                    {/* Add event handler to trigger deletion */}
-                                    <div className="RemoveContent" onClick={() => handleDeleteSong(notification.songID)}>
-                                        Remove Content
-                                    </div>
-                                    <div className="RejectReport">
-                                        Reject Report
-                                    </div>
+                    <div className="report" key={notification.notificationID}>
+                        <div className="imgBox">
+                        
+                        {notification.cover && <img className='imgBox' src={notification.cover} alt="" />}
+                        </div>
+                        <div className="section">
+                            <p>
+                                {notification.songTitle} 
+                                <span className="spanArtist"> {notification.artistName}</span>
+                            </p>
+                            <div className="removereject">
+                                {/* Add event handler to trigger deletion */}
+                                <div className="RemoveContent" onClick={() => handleDeleteSong(notification.songID)}>
+                                    Remove Content
+                                </div>
+                                <div className="RejectReport">
+                                    Reject Report
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    </div>
                 </div>
             </div>
         </div>

@@ -74,12 +74,22 @@
 
   .adminlists .title {
     font-size: 18px;
-    color:#f1f1f1
+    color:#ffffff;
+    cursor: pointer; 
   }
 
 .adminlists .title span {
     color:#c5c5c5;
     font-size: 12px;
+    cursor: pointer; 
+}
+
+.adminlists .reports .report .section p {
+  /* CSS properties for <p> elements */
+  cursor: pointer; 
+  padding-left: 15px;
+  color: #ffffff;
+  font-size: 22px; /* Adjust the font size as needed */
 }
 
 .reportsContainer{
@@ -105,10 +115,11 @@
 }
 
 .report {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    border-bottom: 1px solid rgba(225,225,225,0.1);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.1);
+  height: 40px; /* Adjust the height as needed */
 }
 
 .report .imgBox {
@@ -185,3 +196,14 @@
   background-color: #113687;
 }
 
+.notificationsContainer {
+  display: flex;
+  flex-direction: column; /* Ensure notifications stack vertically */
+  gap: -30px; /* Adjust the gap between notifications as needed */
+}
+
+.removereject .RemoveContent,
+.removereject .RejectReport {
+  color: #ffffff;
+  font-size: 18px; /* Adjust the font size as needed */
+}

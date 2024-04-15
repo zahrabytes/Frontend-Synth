@@ -1,4 +1,4 @@
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AdminLists } from "./AdminLists";
@@ -36,7 +36,12 @@ function MainContainer() {
                     </li>
                 </ul>
             </div>
-            <AdminLists notifications={notifications} /> {/* Pass notifications to AdminLists component */}
+            <div>
+            {/* Map over notifications and render AdminLists for each notification */}
+            {notifications.map(notification => (
+                <AdminLists key={notification.notificationID} notification={notification} />
+            ))}
+            </div>
         </div>
     );
 }
