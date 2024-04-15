@@ -53,7 +53,7 @@ function ListenerLikes() {
     <div>
         <div className='flex-container'>
         <div className='left-align-container'>
-          <subheader>Artist</subheader>
+          <subheader>Liked Artists</subheader>
           <div className='scrollbar'>
             {artistResults.map((item, index) => (
               <li key={index} className="album-item">
@@ -65,7 +65,7 @@ function ListenerLikes() {
           </div>
         </div>
         <div className='right-align-container'>
-          <subheader>Song</subheader> 
+          <subheader>Liked Songs</subheader> 
           <ul>
             {songResults.map((item, index) => (
               <li key={index}>
@@ -83,7 +83,7 @@ function ListenerLikes() {
           </ul>
         </div>
       </div>
-      <subheader>Album</subheader>
+      <subheader>Liked Albums</subheader>
       <div className="album-container">
     {albumResults.map((item, index) => (
         <div key={index} className="album-item">

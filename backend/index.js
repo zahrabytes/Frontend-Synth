@@ -875,7 +875,7 @@ app.post('/flag-song/:songID', (req, res) => {
 
 
   //handle delete song
-app.post('/admin/:songID/delete-song', (req, res) => {
+app.delete('/admin/:songID/delete-song', (req, res) => {
     const songID = req.params.songID;
     try{
         const query = `
