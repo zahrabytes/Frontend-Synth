@@ -131,7 +131,7 @@ app.post('/createAccount/:userType', async (req, res) => {
             requiredFields = ['fname', 'lname', 'artistName', 'genre', 'email', 'password', 'DoB', 'profilePic'];
         } 
         else if (userType === 'listener') {
-            requiredFields = ['fname', 'lname', 'email', 'username', 'password', 'DoB', 'profilePic'];
+            requiredFields = ['fname', 'lname', 'email', 'username', 'password', 'gender', 'DoB', 'profilePic'];
         } 
         else {
             return res.status(400).json({ error: 'Invalid user type' });
@@ -541,12 +541,21 @@ app.delete('/:listenerID/:albumID/unlike-album', async (req, res) => {
 app.post('/:id/:artistID/follow-artist', async (req, res) =>{
     const listenerID_value = req.params.id;
     const artistID_value = req.params.artistID;
+    
     try {
+        const queryIncrementCount = `
+            UPDATE artist
+            SET num_followers = num_followers + 1
+            WHERE artistID = ?
+        `;
+        await db.promise().query(queryIncrementCount, [artistID_value]);
+
         const query =`
         INSERT INTO artist_follower (artistID, listenerID) 
         VALUES (?, ?)
         `;
         await db.promise().query(query, [artistID_value, listenerID_value]);
+
         res.status(200).send('Artist followed successfully');
     } catch (error) {
         console.error('Error:', error);
@@ -554,9 +563,17 @@ app.post('/:id/:artistID/follow-artist', async (req, res) =>{
     }
 });
 // post artist unfollow
-app.delete('/:listenerID/:artistID/unfollow-artist', async (req, res) =>{
+app.delete('/:id/:artistID/unfollow-artist', async (req, res) =>{
     const listenerID_value = req.params.id;
     const artistID_value = req.params.artistID;
+
+    const queryDecrementCount = `
+            UPDATE artist
+            SET num_followers = num_followers - 1
+            WHERE artistID = ?
+        `;
+        await db.promise().query(queryDecrementCount, [artistID_value]);
+
     try {
         const query =`
         DELETE FROM artist_follower
@@ -665,7 +682,7 @@ app.delete('/:followerID/:followed_listenerID/unfollow-listener', async (req, re
 app.get('/search-song', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-        SELECT DISTINCT S.songTitle, ART.artistName, S.filePath
+        SELECT DISTINCT S.songTitle, ART.artistName, S.filePath, A.cover
         FROM song AS S
         JOIN album AS A ON S.albumID = A.albumID
         JOIN artist AS ART ON A.artistID = ART.artistID

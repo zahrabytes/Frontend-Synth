@@ -357,6 +357,12 @@ width: 200px;
 border-radius: 10px;
 }
 
+.img-song-display-after {
+  height: 50px;
+  width: 50px;
+  border-radius: 10px;
+  }
+
 .img-pfp-display-after {
   height: 200px;
   width: 200px;
@@ -393,6 +399,13 @@ header-menu {
   flex-direction: column;
   align-items: center;
   }
+
+  .song-scrollbar {
+    height: 300px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    }
 
 artistName {
   display: flex;

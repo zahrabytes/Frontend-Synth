@@ -12,6 +12,7 @@ const CreateAccountListener = () => {
         email: '',
         username: '',
         password: '',
+        gender: ' ',
         DoB: null,
         profilePic: '',
     });
@@ -101,14 +102,20 @@ const CreateAccountListener = () => {
                     />
                 </div>
                 <div>
+                <label htmlFor="gender">Gender:</label>
+                    <select id="gender" name="gender" value={formData.gender} onChange={handleChange} required>
+                        <option value="">Select Gender</option>
+                        <option value="F">Female</option>
+                        <option value="M">Male</option>
+                        <option value="OTHER">Other</option> 
+                    </select>
+                </div>
+                <div>
                     <label htmlFor="DoB">Date of Birth</label>
-                    <br />
                     <DatePicker
-                        id="DoB"
-                        name="DoB"
                         selected={formData.DoB}
                         onChange={handleDateChange}
-                        dateFormat="MM/dd/yyyy"
+                        dateFormat="yyyy/MM/dd"
                         placeholderText="Select Date of Birth"
                         required
                     />
@@ -123,7 +130,7 @@ const CreateAccountListener = () => {
                         onChange={handleChange}
                     />
                 </div>
-                <button type="submit">Submit</button>
+                <button type="submit" className="custom-button custom-button-primary">Submit</button>
             </form>
         </div>
     );
