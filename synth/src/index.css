@@ -17,6 +17,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #748b9e;
+  font-family: Arial, sans-serif; 
 }
 
 .center{
@@ -36,6 +37,8 @@ header {
   justify-content: space-around;
   align-items: center;
 }
+
+
 
 subheader {
   display: flex;
