@@ -26,14 +26,13 @@ function SearchPage({ onSongSelect }) {
     }
   };  
 
-  const handleSongSelect = (song) => {
-    onSongSelect(song); // Pass selected song to the parent component
-  };
-
   const handleAlbumSelect = (album) => {
     navigate(`/View-Album/${id}/${album}`);
   };
 
+  const handleArtistSelect = (artist) => {
+    navigate(`/View-Artist/${id}/${artist}`)
+  };
 
   return (
     <div>
@@ -47,35 +46,41 @@ function SearchPage({ onSongSelect }) {
       <div className='flex-container'>
         <div className='left-align-container'>
           <subheader>Artist</subheader>
-          <ul>
-            {artistResults.map((item, index) => (
-              <li key={index}>
-                <div><img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} /></div>
-                <div>{item.artistName}</div>
-              </li>
+          <div className='scrollbar'>
+            {artistResults.map((item, index) => ( 
+              <div key={index} className="album-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div onClick={() => handleArtistSelect(item.artistID)}><img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} /></div>
+                <div onClick={() => handleArtistSelect(item.artistID)}>{item.artistName}</div>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
         <div className='right-align-container'>
           <subheader>Song</subheader>
-          <ul>
+          <ul className="song-scrollbar">
             {songResults.map((item, index) => (
-              <li key={index} onClick={() => handleSongSelect(item)}>
-                {item.songTitle}
+              <li key={index}>
+                  <img className='img-song-display-after' src={item.cover} alt={item.cover} />
+                  {item.songTitle}
+                  <audio controls src={item.filePath}></audio>
               </li>
             ))}
           </ul>
         </div>
       </div>
       <subheader>Album</subheader>
-      <ul>
-        {albumResults.map((item, index) => (
-          <li key={index}>
-              <div onClick={() => handleAlbumSelect(item.albumID)}><img className='img-display-after' src={item.cover} alt={item.cover} /></div>
-              <div onClick={() => handleAlbumSelect(item.albumID)}>{item.albumName}</div>
-          </li>
-        ))}
-      </ul>
+        <div className="scrollbar">
+          {albumResults.map((item, index) => (
+            <div key={index}>
+            <div onClick={() => handleAlbumSelect(item.albumID)}>
+                <img className='img-display-after' src={item.cover} alt={item.cover} />
+            </div>
+            <div onClick={() => handleAlbumSelect(item.albumID)}>
+                {item.albumName}
+            </div>
+            </div>
+          ))}
+        </div>      
     </div>
   );
 };

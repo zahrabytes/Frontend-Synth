@@ -95,6 +95,7 @@
 .form input[type="email"],
 .form input[type="password"],
 .form input[type="artistName"],
+.form input[type="gender"],
 .form input[type="genre"],
 .form input[type="profilePic"],
 .form button {
@@ -108,7 +109,8 @@
     font-size: 16px;
 }
 
-.form button {
+.form .custom-button-primary {
+    width: 95%;
     background-color: #1a4ab3;
     color: #fff;
     font-weight: bold;
@@ -116,6 +118,11 @@
     transition: background-color 0.3s ease;
 }
 
-.form button:hover {
+.form .custom-button-primary:hover {
     background-color: #113687;
+}
+
+.react-datepicker__navigation--previous,
+.react-datepicker__navigation--next {
+    font-size: 1em; /* Adjust the font size of the arrow */
 }

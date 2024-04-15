@@ -9,8 +9,7 @@ import AlbumUpdate from './Artist/AlbumUpdate.jsx';
 import Albums from './Artist/Albums.jsx';
 import ArtistReport from './Artist/ArtistReport.jsx';
 import SongAdd from './Artist/SongAdd.jsx';
-import SongsView from './Artist/SongsView.jsx';
-import ArtistProfile from './ArtistProfile.js';
+import SongsView from './Artist/ViewAlbumArtist.jsx';
 import Disclaimer from './Disclaimer.js';
 import Landing from './Landing.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
@@ -22,6 +21,7 @@ import CreateAccountListener from './Pages/createAccountListener.jsx';
 import LoginAdmin from './Pages/login-admin.jsx';
 import LoginArtist from './Pages/login-artist.jsx';
 import ListenerLogin from './Pages/login-listener.jsx';
+import ViewArtist from "./Listener/ViewArtist.js"
 
 function App() {
   return (
@@ -30,7 +30,6 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/Artist" element={<ArtistProfile />} />
             <Route path="/Create-Album" element={<AlbumAdd />} />
             <Route path="/:id/user-home" element={<ListenerHome />} />
             <Route path="/:id/Admin-Home" element={<AdminHome />} />
@@ -48,7 +47,8 @@ function App() {
             <Route path="/Disclaimer" element={<Disclaimer />} />
             <Route path="/Search/:id" element={<SearchPage />} />
             <Route path="/View-Album/:id/:albumID" element={<ViewAlbum />} />
-            <Route path =":artistID/albums/:albumID/songs" element ={<SongsView />} />
+            <Route path="/View-Artist/:id/:artistID" element={<ViewArtist />} />
+            <Route path ="/:artistID/albums/:albumID/songs" element ={<SongsView />} />
             <Route path="/:artistID/reports" element ={<ArtistReport />} />
           </Routes>
         </div>

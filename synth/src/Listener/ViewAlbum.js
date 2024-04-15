@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { PiHeartFill, PiHeartLight, PiFlag, PiFlagFill  } from "react-icons/pi";
 import { useParams } from 'react-router-dom';
+import { formatDate } from '../DateFormat.js';
 import '../index.css';
 
 function ViewAlbum() {
@@ -11,7 +12,8 @@ function ViewAlbum() {
     const [albumLike, setAlbumLike] = useState(false);
     const [likedSongs, setLikedSongs] = useState(new Set());
     const [flaggedSongs, setFlaggedSongs] = useState(new Set());
-
+    
+    // Fetch only when albumID changes
     useEffect(() => {
         const fetchAlbum = async () => {
             try {
@@ -30,7 +32,7 @@ function ViewAlbum() {
 
         // Fetch liked songs when component mounts
         findLikedSongs();
-    }, [albumID]); // Fetch only when albumID changes
+    }, [albumID]);
 
 
     const findLikedSongs = async () => {
@@ -107,8 +109,8 @@ function ViewAlbum() {
                         <div><img className='img-display-after' src={album.cover} alt={album.cover} /></div>
                         <div>
                             <h1>{album.albumName}</h1>
-                            <p>Release Date: {album.releaseDate}</p>
-                            <p>Genre: {album.genre}</p>
+                            <p>{formatDate(album.releaseDate)}</p>
+                            <p>{album.genre}</p>
                         </div>
                         <div onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
                             {albumLike ? <PiHeartFill /> : <PiHeartLight />}
@@ -132,7 +134,6 @@ function ViewAlbum() {
                             }}>
                             {flaggedSongs.has(song.songID) ? <PiFlagFill /> : <PiFlag/>}
                         </div>
-                        <p>Song Duration: {song.songDuration}</p>
                     </li>
                 ))}
             </ul>

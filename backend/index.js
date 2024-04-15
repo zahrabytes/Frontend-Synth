@@ -128,10 +128,10 @@ app.post('/createAccount/:userType', async (req, res) => {
 
         // Define required fields based on user type
         if (userType === 'artist') {
-            requiredFields = ['fname', 'lname', 'artistName', 'email', 'password', 'DoB'];
+            requiredFields = ['fname', 'lname', 'artistName', 'genre', 'email', 'password', 'DoB', 'profilePic'];
         } 
         else if (userType === 'listener') {
-            requiredFields = ['fname', 'lname', 'email', 'username', 'password', 'DoB', 'profilePic'];
+            requiredFields = ['fname', 'lname', 'email', 'username', 'password', 'gender', 'DoB', 'profilePic'];
         } 
         else {
             return res.status(400).json({ error: 'Invalid user type' });
@@ -369,11 +369,54 @@ app.post('/album', async (req, res) => {
         return res.status(500).json({ error: 'Error creating user' });
     }
 });
+// Artist Display /////////////////////////////////////////////////////////////////////////
+
+app.get('/view-artist/:artistID/', async (req, res) =>{
+    const artistID = req.params.artistID;
+    try {
+        const query = `
+            SELECT artistName, genre, profilePic
+            FROM artist
+            WHERE artistID = ?
+        `;
+        const [artistResults] = await db.promise().query(query, [artistID]);
+        console.log('Artist found successfully');
+        res.json(artistResults);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// fetching album
+app.get('/view-albums/:artistID', async (req, res) =>{
+    // Get the album ID from the URL
+    const artistID = req.params.artistID;
+    try {
+        // Define query to search for album
+        const query = `
+            SELECT A.albumName, A.releaseDate, A.cover, ART.genre, ART.profilePic, A.albumID
+            FROM album as A, artist as ART
+            WHERE ART.artistID = ? AND A.artistID = ART.artistID
+        `;
+        // Execute album query
+        const [albumResults] = await db.promise().query(query, [artistID]);
+        if (albumResults.length === 0) {
+            res.status(404).json({ error: 'Album not found' });
+            return;
+        }   
+        res.json(albumResults);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// End of Artist Display /////////////////////////////////////////////////////////////////
 
 // Album Display /////////////////////////////////////////////////////////////////////////
 
 // fetching songs
-
 app.get('/view-album/:albumID/song', async (req, res) =>{
     const albumID = req.params.albumID;
     try {
@@ -402,7 +445,7 @@ app.get('/view-album/:albumID', async (req, res) =>{
     try {
         // Define query to search for album
         const query = `
-            SELECT A.albumName, A.releaseDate, A.cover , ART.artistName, ART.genre, ART.profilePic
+            SELECT A.albumName, A.releaseDate, A.cover, ART.artistName, ART.genre, ART.profilePic
             FROM album as A, artist as ART
             WHERE A.albumID = ? AND ART.artistID = A.artistID
         `;
@@ -440,7 +483,7 @@ app.post('/:id/:songID/like-song', async (req, res) =>{
     }
 });
 
-// TODO delete song like
+// delete song like
 app.delete('/:id/:songID/unlike-song', async (req, res) => {
     const listenerID_value = req.params.id;
     const songID_value = req.params.songID;
@@ -495,15 +538,24 @@ app.delete('/:listenerID/:albumID/unlike-album', async (req, res) => {
 
 // Following Functionality //////////////////////////////////////////////////////////////
 // post artist follower
-app.post('/:listenerID/:artistID/follow-artist', async (req, res) =>{
-    const listenerID_value = req.params.listenerID;
+app.post('/:id/:artistID/follow-artist', async (req, res) =>{
+    const listenerID_value = req.params.id;
     const artistID_value = req.params.artistID;
+    
     try {
+        const queryIncrementCount = `
+            UPDATE artist
+            SET num_followers = num_followers + 1
+            WHERE artistID = ?
+        `;
+        await db.promise().query(queryIncrementCount, [artistID_value]);
+
         const query =`
         INSERT INTO artist_follower (artistID, listenerID) 
         VALUES (?, ?)
         `;
         await db.promise().query(query, [artistID_value, listenerID_value]);
+
         res.status(200).send('Artist followed successfully');
     } catch (error) {
         console.error('Error:', error);
@@ -511,9 +563,17 @@ app.post('/:listenerID/:artistID/follow-artist', async (req, res) =>{
     }
 });
 // post artist unfollow
-app.delete('/:listenerID/:artistID/unfollow-artist', async (req, res) =>{
-    const listenerID_value = req.params.listenerID;
+app.delete('/:id/:artistID/unfollow-artist', async (req, res) =>{
+    const listenerID_value = req.params.id;
     const artistID_value = req.params.artistID;
+
+    const queryDecrementCount = `
+            UPDATE artist
+            SET num_followers = num_followers - 1
+            WHERE artistID = ?
+        `;
+        await db.promise().query(queryDecrementCount, [artistID_value]);
+
     try {
         const query =`
         DELETE FROM artist_follower
@@ -526,6 +586,64 @@ app.delete('/:listenerID/:artistID/unfollow-artist', async (req, res) =>{
         res.status(500).send('Internal server error');
     }
 });
+// get artist followers 
+app.get('/:artistID/artist-follower', async (req, res) => {
+    const artistID = req.params.artistID;
+    const query = `
+    SELECT DISTINCT artist_follower.listenerID
+    FROM artist_follower
+    WHERE artist_follower.artistID = ?
+    `;
+
+    db.query(query, [artistID], (err, results) => {
+      if (err) {
+        console.error('Error searching songs:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
+// get artists followed by particular listener
+app.get('/:id/followed-artists', async (req, res) => {
+    const listenerID = req.params.id;
+    const query = `
+    SELECT DISTINCT A.artistName, A.profilePic, A.artistID
+    FROM artist_follower, artist AS A
+    WHERE artist_follower.listenerID = ? AND artist_follower.artistID = A.artistID
+    `;
+
+    db.query(query, [listenerID], (err, results) => {
+      if (err) {
+        console.error('Error searching artists for followers:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
+// does listener follow particular artist
+app.get('/:artistID/:id/is-follower', async (req, res) => {
+    const artistID = req.params.artistID;
+    const listenerID = req.params.id;
+    const query = `
+    SELECT artist_follower.listenerID, artist_follower.artistID
+    FROM artist_follower
+    WHERE artist_follower.artistID = ? AND artist_follower.listenerID = ?
+    `;
+
+    db.query(query, [artistID, listenerID], (err, results) => {
+      if (err) {
+        console.error('Error searching if listener follows artist:', err);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+      }
+      res.json(results);
+    });
+});
+
 // post listener follow
 app.post('/:followerID/:followed_listenerID/follow-listener', async (req, res) =>{
     const followerID_value = req.params.followerID;
@@ -564,7 +682,7 @@ app.delete('/:followerID/:followed_listenerID/unfollow-listener', async (req, re
 app.get('/search-song', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-        SELECT DISTINCT S.songTitle, ART.artistName
+        SELECT DISTINCT S.songTitle, ART.artistName, S.filePath, A.cover
         FROM song AS S
         JOIN album AS A ON S.albumID = A.albumID
         JOIN artist AS ART ON A.artistID = ART.artistID
@@ -604,10 +722,8 @@ app.get('/search-album', async (req, res) => {
 app.get('/search-artist', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const query = `
-        SELECT DISTINCT ART.artistName, ART.profilePic
-        FROM song AS S
-        JOIN album AS A ON S.albumID = A.albumID
-        JOIN artist AS ART ON A.artistID = ART.artistID
+        SELECT DISTINCT ART.artistName, ART.profilePic, ART.artistID
+        FROM song AS S, album AS A, artist AS ART
         WHERE S.songTitle LIKE '%${searchTerm}%' 
         OR A.albumName LIKE '%${searchTerm}%'
         OR ART.genre LIKE '%${searchTerm}%' 
@@ -759,16 +875,16 @@ app.post('/flag-song/:songID', (req, res) => {
 
 
   //handle delete song
-  app.post('/admin/:songID/delete-song', async (req, res) => {
+  app.delete('/admin/:songID/delete-song', (req, res) => {
     const songID = req.params.songID;
-    try {
+    try{
         const query = `
             DELETE FROM song 
             WHERE songID = ?
         `;
-        await db.promise().query(query, [songID]);
-        res.status(200).send('Song deleted successfully');
-    } catch (error) {
+        db.promise().query(query, [songID]);
+        res.status(200).send('Song unliked successfully');
+    } catch (error){
         console.error('Error:', error);
         res.status(500).send('Internal server error');
     }
@@ -789,10 +905,6 @@ app.get("/", (req, res) => {
 });
 
 ///////// Jonathan backend for listener viewing an artist:
-app.get("/view-artist/:artistID" , (req,res) => {
-    const artistID = req.params.artistID;
-    db.query('SELECT * FROM artists WHERE artistID = ?')
-});
 
 //Fetch Albums from db
 app.get("/:id/albums", (req, res)=> {
@@ -916,6 +1028,24 @@ app.get("/:id/reports", (req, res) => {
         return res.json(data);
     });
 })
+
+// post a stream given the songID
+app.post('/:songID/stream-song', async (req, res) =>{
+    const songID = req.params.songID;
+    try {
+        const query =`
+        UPDATE song
+        SET streams = streams + 1
+        WHERE songID = ?
+        `;
+        await db.promise().query(query, [songID]);
+        res.status(200).send('Song streamed successfully');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
 
 
 // Start the server

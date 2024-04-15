@@ -1,16 +1,20 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import '../index.css';
 
 const Albums = () => {
     const [albums, setAlbums] = useState([])
     const location = useLocation();
-    const artistId = location.pathname.split("/")[1]
+    const { id } = useParams();
+
+    const navigate = useNavigate();
+
 
     useEffect(()=>{
         const fetchAllAlbums = async () => {
             try {
-                const res = await axios.get("http://localhost:8800/"+artistId+"/albums")
+                const res = await axios.get(`http://localhost:8800/${id}/albums`)
                 setAlbums(res.data)
             } catch(err) {
                 console.log(err)
@@ -21,39 +25,45 @@ const Albums = () => {
 
     const handleDelete = async (id)=>{
         try{
-            await axios.delete("http://localhost:8800/"+id+"/albums")
+            await axios.delete(`http://localhost:8800/${id}/albums`)
             window.location.reload()
         } catch(err) {
             console.log(err)
         }
     }
 
+    const handleAlbumSelect = (albumID) => {
+        navigate(`/${id}/albums/${albumID}/songs`);
+      };
+
     return (
         <div>
             <h1 className='textwhite'>Library</h1>
             <div className="albums">
                 {albums.map((album) => (
-                    <div className="album" key={album.albumID}>
+                    <div  key={album.albumID}>
+                        <div className="album-item" onClick={() => handleAlbumSelect(album.albumID)}>
                         {album.cover && <img className='img-display-after' src={album.cover} alt="" />}
-                        <h2>{album.albumName}</h2>
+                        </div>
+                        <h2 onClick={() => handleAlbumSelect(album.albumID)}>{album.albumName}</h2>
                         <button className='upload'>
-                            <Link to={`/${artistId}/upload/${album.albumID}`}>Upload Songs</Link>
+                            <Link to={`/${id}/upload/${album.albumID}`}>Upload Songs</Link>
                         </button>
                         <button className='update'>
-                            <Link to={`/${artistId}/update/${album.albumID}`}>Update</Link>
+                            <Link to={`/${id}/update/${album.albumID}`}>Update</Link>
                         </button>
                         <button className='delete' onClick={() => handleDelete(album.albumID)}>Delete</button>
                         <button className='view-songs'>
-                            <Link to={`/${artistId}/albums/${album.albumID}/songs`}>View Songs</Link>
+                            <Link to={`/${id}/albums/${album.albumID}/songs`}>View Songs</Link>
                         </button>
                     </div>
                 ))}
             </div>
             <button className='submit add-album'>
-                <Link to={`/${artistId}/albums/add`}>Add new album</Link>
+                <Link to={`/${id}/albums/add`}>Add new album</Link>
             </button>
             <button>
-                <Link to={`/${artistId}/reports`}>Run Report</Link>
+                <Link to={`/${id}/reports`}>Run Report</Link>
             </button>
             <button className="roundedButton">
                 <Link to="/">Logout</Link>

@@ -12,6 +12,7 @@ const CreateAccountArtist = () => {
         artistName: '',
         email: '',
         password: '',
+        genre: '',
         DoB: '',
         profilePic: '',
     });
