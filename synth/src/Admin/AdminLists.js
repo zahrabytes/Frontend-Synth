@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link component
 
 function AdminLists({ notification }) {
     // Function to handle deleting a song
@@ -25,12 +26,12 @@ function AdminLists({ notification }) {
                 <div className="reports">
                     <div className="report" key={notification.notificationID}>
                         <div className="imgBox">
-                        
-                        {notification.cover && <img className='imgBox' src={notification.cover} alt="" />}
+                            {notification.cover && <img className='imgBox' src={notification.cover} alt="" />}
                         </div>
                         <div className="section">
+                            {/* Wrap song title in Link component */}
                             <p>
-                                {notification.songTitle} 
+                                <Link to={`/1/${notification.albumID}`}>{notification.songTitle}</Link>
                                 <span className="spanArtist"> {notification.artistName}</span>
                             </p>
                             <div className="removereject">
@@ -51,6 +52,7 @@ function AdminLists({ notification }) {
 }
 
 export { AdminLists };
+
 
 
 /*
