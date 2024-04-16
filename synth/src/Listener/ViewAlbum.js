@@ -16,24 +16,34 @@ function ViewAlbum() {
     // Fetch only when albumID changes
     useEffect(() => {
         const fetchAlbum = async () => {
+
             try {
                 // Fetch album details
-                const album = await axios.get(`http://localhost:8800/view-album/${albumID}`); 
+                const album = await axios.get(`http://localhost:8800/view-album/${albumID}`);
                 setAlbumResults(album.data);
-                
-                // Fetch song details
-                const song = await axios.get(`http://localhost:8800/view-album/${albumID}/song/`); 
-                setSongResults(song.data);
             } catch (error) {
+                // Handle album fetch error
                 console.error('Error fetching album:', error);
             }
-        }; 
-        fetchAlbum(); 
+
+            try {
+                // Fetch songs details
+                const songs = await axios.get(`http://localhost:8800/view-album/${albumID}/song/`);
+                setSongResults(songs.data);
+            } catch (error) {
+                console.error('Error fetching songs:', error);
+            }
+        };
+
+        fetchAlbum();
 
         // Fetch liked songs when component mounts
         findLikedSongs();
-    }, [albumID]);
 
+        // Fetch liked album when component mounts
+        findLikedAlbum();
+
+    }, [albumID]);
 
     const findLikedSongs = async () => {
         try {
@@ -44,6 +54,16 @@ function ViewAlbum() {
             console.log('Liked songs found');
         } catch (error) {
             console.error('Error finding liked songs:', error);
+        }
+    };
+
+    const findLikedAlbum = async () => {
+        try {
+            const likedAlbum = await axios.get(`http://localhost:8800/${id}/albums-liked`);
+            // If the liked album in the album_like table matches the albumID in the params, set the albumLike hook to true
+            setAlbumLike(likedAlbum.data.some(album => album.albumID === parseInt(albumID)));
+        } catch (error) {
+            console.error('Error finding liked album', error);
         }
     };
 
@@ -102,37 +122,37 @@ function ViewAlbum() {
     };
 
     return (
-        <div>
-            <ul>
-                {albumResults.map((album, index) => (
-                    <li key={index}>
-                        <div><img className='img-display-after' src={album.cover} alt={album.cover} /></div>
-                        <div>
-                            <h1>{album.albumName}</h1>
-                            <p>{formatDate(album.releaseDate)}</p>
-                            <p>{album.genre}</p>
-                        </div>
-                        <div onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
-                            {albumLike ? <PiHeartFill /> : <PiHeartLight />}
-                        </div>
-                    </li>
-                ))}
-            </ul>
+        <div className="container-album">
+            {albumResults.map((album, index) => (
+                <div key={index} className="album-info">
+                    <img className="album-cover" src={album.cover} alt={album.cover} />
+                    <div className="album-details">
+                        <h1>{album.albumName}</h1>
+                        <p>{formatDate(album.releaseDate)}</p>
+                        <p>{album.genre}</p>
+                    </div>
+                    <div className="like-button" onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
+                        {albumLike ? <PiHeartFill /> : <PiHeartLight />}
+                    </div>
+                </div>
+            ))}
 
-            <ul>
+            <ul className="song-list">
                 {songResults.map((song, index) => (
-                    <li key={index}>
-                        <h2>{song.songTitle}</h2>
+                    <li key={index} className="song-item">
                         <audio controls src={song.filePath}></audio>
-                        <div onClick={() => likedSongs.has(song.songID) ? handleUnlikeSong(song.songID) : handleLikeSong(song.songID)}>
-                            {likedSongs.has(song.songID) ? <PiHeartFill /> : <PiHeartLight />}
-                        </div>
-                        <div onClick={() => {
-                            if (!flaggedSongs.has(song.songID)) {
-                                handleFlag(song.songID);
-                            }
+                        <h2>{song.songTitle}</h2>
+                        <div className="song-actions">
+                            <div onClick={() => likedSongs.has(song.songID) ? handleUnlikeSong(song.songID) : handleLikeSong(song.songID)}>
+                                {likedSongs.has(song.songID) ? <PiHeartFill /> : <PiHeartLight />}
+                            </div>
+                            <div onClick={() => {
+                                if (!flaggedSongs.has(song.songID)) {
+                                    handleFlag(song.songID);
+                                }
                             }}>
-                            {flaggedSongs.has(song.songID) ? <PiFlagFill /> : <PiFlag/>}
+                                {flaggedSongs.has(song.songID) ? <PiFlagFill /> : <PiFlag />}
+                            </div>
                         </div>
                     </li>
                 ))}

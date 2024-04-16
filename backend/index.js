@@ -1,4 +1,23 @@
 import cors from "cors";
+import mysql from "mysql2";
+import { Storage } from "@google-cloud/storage";
+import multer from 'multer';
+import fs from 'fs';
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './temp_uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+const projectId = process.env.PROJECT_ID;
+const keyFilename = process.env.KEYFILENAME;
+const googleStorage = new Storage({ projectId, keyFilename });
 
 /*
 const {Storage} = require('@google-cloud/storage');
@@ -20,29 +39,31 @@ async function uploadFile(bucketName, file, fileOutputName){
     }
 }
 */
+
+
+/*
+const {Storage} = require('@google-cloud/storage');
+require('dotenv').config();
+
+const projectId = process.env.PROJECT_ID;
+const keyFilename = process.env.KEYFILENAME;
+const storage = new Storage({projectId, keyFilename});
+
+async function uploadFile(bucketName, file, fileOutputName){
+    try{
+        const bucket = storage.bucket(bucketName);
+        const ret = await bucket.upload(file,{
+            destination:fileOutputName
+        })
+        return ret;
+    }catch(error){
+        console.error('Error:', error);        
+    }
+}*/
 
 import express from "express";
-import mysql from "mysql2";
+
 /*
-const {Storage} = require('@google-cloud/storage');
-require('dotenv').config();
-
-const projectId = process.env.PROJECT_ID;
-const keyFilename = process.env.KEYFILENAME;
-const storage = new Storage({projectId, keyFilename});
-
-async function uploadFile(bucketName, file, fileOutputName){
-    try{
-        const bucket = storage.bucket(bucketName);
-        const ret = await bucket.upload(file,{
-            destination:fileOutputName
-        })
-        return ret;
-    }catch(error){
-        console.error('Error:', error);        
-    }
-}
-
 async function generateLink(file_name, song_id){
     //const file_name = 'Cherry Waves.mp3';
     //const song_id = 'examplesongid.mp3';
@@ -51,22 +72,20 @@ async function generateLink(file_name, song_id){
     console.log(link);
 }
 */
-
-
-/*
-
-async function generateLink(file_name, song_id){
-    //const file_name = 'Cherry Waves.mp3';
-    //const song_id = 'examplesongid.mp3';
-    const ret = await uploadFile(process.env.BUCKET_NAME, file_name, song_id);
-    const link = "https://storage.googleapis.com/bucket-tester-2/" + song_id;
-    console.log(link);
-}
-*/
-
 const app = express();
-
 app.use(express.json());
+
+
+/*
+
+async function generateLink(file_name, song_id){
+    //const file_name = 'Cherry Waves.mp3';
+    //const song_id = 'examplesongid.mp3';
+    const ret = await uploadFile(process.env.BUCKET_NAME, file_name, song_id);
+    const link = "https://storage.googleapis.com/bucket-tester-2/" + song_id;
+    console.log(link);
+}
+*/
 
 //Middleware for CORS
 app.use(cors());
@@ -86,12 +105,6 @@ const db = mysql.createConnection({
     port: "3306"
 });
 
-/*
-// initial song posting helper
-app.post('/post-song', async (req, res) => {
-
-});
-*/
 
 // Jonathan work
 // create Account - 1st endpoint (user picks either artist or listener account and is take to the correct signup page)
@@ -857,7 +870,7 @@ app.post('/flag-song/:songID', (req, res) => {
   app.get('/fetch-notifications/:adminID', (req, res) => {
     const { adminID } = req.params;
     const query = `
-    SELECT DISTINCT notificationID, songID, notificationDate, artistName, songTitle, cover
+    SELECT DISTINCT notificationID, songID, notificationDate, artistName, songTitle, cover, artistID, albumID
     FROM admin_notifications
     WHERE adminID = ?
     `;
@@ -874,29 +887,37 @@ app.post('/flag-song/:songID', (req, res) => {
   });
 
 
-  //handle delete song
-  app.delete('/admin/:songID/delete-song', (req, res) => {
+//handle delete song
+app.delete('/admin/:songID/delete-song', async (req, res) => {
     const songID = req.params.songID;
     try{
         const query = `
             DELETE FROM song 
             WHERE songID = ?
         `;
-        db.promise().query(query, [songID]);
-        res.status(200).send('Song unliked successfully');
+        await db.promise().query(query, [songID]);
+        res.status(200).send('Song deleted from song and admin_notification table successfully');
     } catch (error){
         console.error('Error:', error);
         res.status(500).send('Internal server error');
     }
 });
 
+//rejecting report
+app.delete('/admin/:songID/reject-report', async (req, res) => {
+    const songID = req.params.songID;
+    try{
+        const deleteAdminNotificationQuery = `
+            DELETE FROM admin_notifications 
+            WHERE songID = ?
+        `;
+        await db.promise().query(deleteAdminNotificationQuery, [songID]);
 
-// Endpoint to handle rejecting a report
-app.post('/admin/actions/reject-report', (req, res) => {
-    const songID = req.body.songID;
-    // Remove the song from the flagged songs data structure
-    flaggedSongs = flaggedSongs.filter(song => song.songID !== songID);
-    res.status(200).json({ message: 'Report rejected successfully' });
+        res.status(200).send('Song deleted from admin_notification table successfully');
+    } catch (error){
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 // Main page
@@ -959,20 +980,40 @@ app.delete("/:id/albums", (req, res)=>{
     });
 });
 
-//Handle Album Fetch on Song Upload Page
-app.get("/albums/:id/upload", (req, res) => {
+//Upload Songs to Album
+app.post("/albums/:id/upload", upload.single('song'), async (req, res) => {
     const albumID = req.params.id;
-    const q = "SELECT * FROM album WHERE albumID = ?";
+    const bucketName = process.env.BUCKET_NAME;
+    const songFile = req.file
+    const { songTitle, songDuration } = req.body;
 
-    db.query(q, [albumID], (err, data) => {
+    console.log(songFile.path)
+    console.log(songFile)
+
+    // Upload the song file to Google Cloud Storage
+    try {
+        const bucket = googleStorage.bucket(bucketName);
+        const ret = await bucket.upload( songFile.path, {
+            destination: songFile.filename
+        })
+    } catch (error) {
+        console.error('Error:', error);        
+    }
+
+    // Construct the public URL
+    const filePath = `https://storage.googleapis.com/bucket-tester-2/` + songFile.filename;
+
+    const songData = { songTitle, albumID, filePath, songDuration };
+
+    // Delete the local file after successful upload to the bucket
+    fs.unlinkSync(songFile.path);
+
+    const insertq = "INSERT INTO song SET ?";
+    db.query(insertq, songData, (err) => {
         if (err) {
-            return res.json({ error: err.message });
+            return res.json(err);
         }
-        if (data.length > 0) {
-            return res.json(data[0]);
-        } else {
-            return res.json({ message: "Album not found" });
-        }
+        return res.json({ message: 'Song added successfully' });
     });
 });
 

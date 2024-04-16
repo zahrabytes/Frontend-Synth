@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Audiowide');
+@import url('https://fonts.googleapis.com/css?family=Inter');
 
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
@@ -17,6 +18,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #748b9e;
+  font-family: 'Inter', sans-serif;
 }
 
 .center{
@@ -37,12 +39,13 @@ header {
   align-items: center;
 }
 
+
+
 subheader {
   display: flex;
-  font-family: Arial, sans-serif; 
   color: black;
   font-size: 30px;
-  padding: 20px;
+  padding: 5px;
   font-weight: bold;
   justify-content: space-around;
   align-items: center;
@@ -52,10 +55,7 @@ header:hover {
   animation: bounce 2s ease infinite; /* Apply the bounce animation for 0.5 seconds, infinitely */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+
 
 
 .container{
@@ -100,8 +100,41 @@ code {
 }
 
 
-.left-align-container, .right-align-container {
+.left-align-container {
   flex: 1; /* Each container takes up equal space */
+  background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
+  backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+  -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
+  
+  margin-left: 20px;
+  margin-right: 5px;
+}
+
+.right-align-container {
+  flex: 1; /* Each container takes up equal space */
+  background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
+  backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+  -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
+  
+  margin-right: 20px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.bottom-align-container {
+  flex: 1; /* Each container takes up equal space */
+  background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
+  backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+  -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
+  
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .flex-container {
@@ -352,6 +385,15 @@ border-radius: 10px;
   height: 50px;
   width: 50px;
   border-radius: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  }
+
+  songDisplay {
+    font-weight: bold;
+    right: 0;
+    margin-right: 15px;
+    position: fixed;
   }
 
 .img-pfp-display-after {
@@ -383,13 +425,45 @@ header-menu {
   transform: scale(1.1); /* Scale the item on hover */
 }
 
-.scrollbar {
-  height: 300px;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  .scrollbar {
+    height: 240px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
+    background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
+    backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+    -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
+    border-bottom-left-radius: 10px; 
+    border-bottom-right-radius: 10px;
   }
+
+  .scrollbar-album {
+    height: auto;
+    overflow-y: auto;
+    display: flex;
+    background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
+    backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+    -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
+    border-bottom-left-radius: 10px; 
+    border-bottom-right-radius: 10px;
+    bottom: 0;
+    }
+
+    .song-scrollbar {
+      height: 240px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
+      backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+      -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
+      border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
+      border-bottom-left-radius: 10px; 
+      border-bottom-right-radius: 10px;
+      }
 
   .glass-album-page {
     height: 300px;
@@ -408,16 +482,10 @@ header-menu {
     margin-bottom: 10px;
   }
 
-  .song-scrollbar {
-    height: 300px;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    }
+
 
 artistName {
   display: flex;
-  font-family: 'Circular', sans-serif;
   color: black;
   font-size: 100px;
   margin-top: 20px;
@@ -462,3 +530,87 @@ artistName {
     margin-left: 10px;
   }
   
+   /* Album and songs at /View-Album/:id/:albumID */
+
+.container-album {
+  max-width: 800px;
+  margin: 50px auto 0;
+  background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
+  backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+  -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  padding: 15px;
+}
+
+.album-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.album-cover {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 4px;
+}
+
+.album-details h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.album-details p {
+  margin: 5px 0;
+}
+
+.like-button {
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.song-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.song-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.song-item h2 {
+  font-size: 18px;
+  margin: auto auto auto 20px;
+}
+
+.song-item audio {
+  border-radius: 10px;
+}
+
+.song-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.song-actions > div {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* SongAdd.jsx */
+
+.album-add-songs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formButton {
+  margin-top: 15px; 
+}
