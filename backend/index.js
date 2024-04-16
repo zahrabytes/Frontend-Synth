@@ -892,7 +892,7 @@ app.delete('/admin/:songID/delete-song', async (req, res) => {
     const songID = req.params.songID;
     try{
         const query = `
-            DELETE FROM song 
+            DELETE FROM song
             WHERE songID = ?
         `;
         await db.promise().query(query, [songID]);

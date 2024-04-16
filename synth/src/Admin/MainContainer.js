@@ -25,7 +25,7 @@ function MainContainer() {
 const handleDeleteSong = async (songID) => {
     try {
         // Send HTTP POST request to delete the song
-        await axios.post(`http://localhost:8800/admin/${songID}/delete-song`);
+        await axios.delete(`http://localhost:8800/admin/${songID}/delete-song`);
         dispatch({ type: 'DELETE_ADMIN', payload: { _id: songID } });
         // Handle success
         console.log('Song deleted successfully');
