@@ -17,7 +17,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #748b9e;
-  font-family: Arial, sans-serif; 
 }
 
 .center{
@@ -42,7 +41,6 @@ header {
 
 subheader {
   display: flex;
-  font-family: Arial, sans-serif; 
   color: black;
   font-size: 30px;
   padding: 20px;
@@ -55,10 +53,7 @@ header:hover {
   animation: bounce 2s ease infinite; /* Apply the bounce animation for 0.5 seconds, infinitely */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+
 
 
 .container{
@@ -420,7 +415,6 @@ header-menu {
 
 artistName {
   display: flex;
-  font-family: 'Circular', sans-serif;
   color: black;
   font-size: 100px;
   margin-top: 20px;
@@ -465,3 +459,82 @@ artistName {
     margin-left: 10px;
   }
   
+   /* Album and songs at /View-Album/:id/:albumID */
+
+.container-album {
+  max-width: 800px;
+  margin: 50px auto 0;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.album-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.album-cover {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 4px;
+}
+
+.album-details h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.album-details p {
+  margin: 5px 0;
+}
+
+.like-button {
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.song-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.song-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.song-item h2 {
+  font-size: 18px;
+  margin: auto auto auto 20px;
+}
+
+.song-item audio {
+  border-radius: 10px;
+}
+
+.song-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.song-actions > div {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* SongAdd.jsx */
+
+.album-add-songs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formButton {
+  margin-top: 15px; 
+}
