@@ -68,23 +68,23 @@
     color: #c5c5c5;
   }
   
-  .adminlists {
+  .admin-lists {
     padding: 10px 30px;
   }
 
-  .adminlists .title {
+  .admin-lists .title {
     font-size: 18px;
     color:#ffffff;
     cursor: pointer; 
   }
 
-.adminlists .title span {
+.admin-lists .title span {
     color:#c5c5c5;
     font-size: 12px;
     cursor: pointer; 
 }
 
-.adminlists .reports .report .section p {
+.admin-lists .reports .report .section p {
   /* CSS properties for <p> elements */
   cursor: pointer; 
   padding-left: 15px;
