@@ -1,8 +1,8 @@
-import cors from "cors";
-import mysql from "mysql2";
 import { Storage } from "@google-cloud/storage";
-import multer from 'multer';
+import cors from "cors";
 import fs from 'fs';
+import multer from 'multer';
+import mysql from "mysql2";
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -892,7 +892,7 @@ app.delete('/admin/:songID/delete-song', async (req, res) => {
     const songID = req.params.songID;
     try{
         const query = `
-            DELETE FROM song 
+            DELETE FROM song
             WHERE songID = ?
         `;
         await db.promise().query(query, [songID]);
@@ -919,6 +919,8 @@ app.delete('/admin/:songID/reject-report', async (req, res) => {
         res.status(500).send('Internal server error');
     }
 });
+
+
 
 // Main page
 app.get("/", (req, res) => {
