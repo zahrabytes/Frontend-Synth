@@ -38,7 +38,7 @@ function ListenerLikes() {
   const handleArtistSelect = (artist) => {
     navigate(`/View-Artist/${id}/${artist}`)
   };
-
+/*
   const handleSongPlay = async (songID) => {
     setShowPlayer(!showPlayer)
     try {
@@ -47,7 +47,7 @@ function ListenerLikes() {
     } catch (error) {
       console.error('Error playing song:', error);
     }
-  };
+  };*/
   
   return (
     <div>
@@ -65,37 +65,32 @@ function ListenerLikes() {
           </div>
         </div>
         <div className='right-align-container'>
-          <subheader>Liked Songs</subheader> 
-          <ul>
+          <subheader>Liked Songs</subheader>
+          <ul className="song-scrollbar">
             {songResults.map((item, index) => (
-              <li key={index}>
-                <div>
-                {item.songTitle}
-                <button onClick={() => handleSongPlay(item.songID)}>Play</button></div>
-                {showPlayer && (
-                  <AudioPlayerBar
-                    songTitle={item.songTitle}
-                    filePath={item.filePath}
-                  />
-                )}
+              <li key={index} className="song-item">
+                  <img className='img-song-display-after' src={item.cover} alt={item.cover} />
+                  <audio controls src={item.filePath}></audio>
+                  <songDisplay>{item.songTitle}</songDisplay>
               </li>
             ))}
           </ul>
         </div>
       </div>
+      <div className='bottom-align-container'>
       <subheader>Liked Albums</subheader>
-      <div className="album-container">
-    {albumResults.map((item, index) => (
-        <div key={index} className="album-item">
+        <div className="scrollbar-album">
+          {albumResults.map((item, index) => (
+            <div key={index}>
             <div onClick={() => handleAlbumSelect(item.albumID)}>
                 <img className='img-display-after' src={item.cover} alt={item.cover} />
             </div>
             <div onClick={() => handleAlbumSelect(item.albumID)}>
                 {item.albumName}
             </div>
+            </div>
+          ))}</div>
         </div>
-    ))}
-    </div>
     </div>
   );
 };

@@ -440,7 +440,7 @@ header-menu {
   }
 
   .scrollbar-album {
-    height: auto;
+    min-height: 240px;
     overflow-y: auto;
     display: flex;
     background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
@@ -449,6 +449,7 @@ header-menu {
     border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
     border-bottom-left-radius: 10px; 
     border-bottom-right-radius: 10px;
+    justify-content: space-between;
     bottom: 0;
     }
 
