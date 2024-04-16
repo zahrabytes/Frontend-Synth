@@ -59,17 +59,18 @@ function SearchPage({ onSongSelect }) {
           <subheader>Song</subheader>
           <ul className="song-scrollbar">
             {songResults.map((item, index) => (
-              <li key={index}>
+              <li key={index} className="song-item">
                   <img className='img-song-display-after' src={item.cover} alt={item.cover} />
-                  {item.songTitle}
                   <audio controls src={item.filePath}></audio>
+                  <songDisplay>{item.songTitle}</songDisplay>
               </li>
             ))}
           </ul>
         </div>
       </div>
+      <div className='bottom-align-container'>
       <subheader>Album</subheader>
-        <div className="scrollbar">
+        <div className="scrollbar-album">
           {albumResults.map((item, index) => (
             <div key={index}>
             <div onClick={() => handleAlbumSelect(item.albumID)}>
@@ -79,7 +80,7 @@ function SearchPage({ onSongSelect }) {
                 {item.albumName}
             </div>
             </div>
-          ))}
+          ))}</div>
         </div>      
     </div>
   );
