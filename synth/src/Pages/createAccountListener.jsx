@@ -130,7 +130,7 @@ const CreateAccountListener = () => {
                         onChange={handleChange}
                     />
                 </div>
-                <button type="submit" className="custom-button custom-button-primary">Submit</button>
+                <button className="custom-button custom-button-primary">Submit</button>
             </form>
         </div>
     );

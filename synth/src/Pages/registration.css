@@ -15,14 +15,6 @@
     padding: 30px;
 }
 
-.textwhite {
-    color: #ffffff;
-    font-size: 40px; /* Adjust font size */
-    font-weight: 700;
-    text-align: center; /* Center align text */
-    margin-bottom: 20px; /* Add some spacing below text */
-}
-
 .inputs {
     display: flex;
     flex-direction: column;
@@ -48,7 +40,7 @@
 .submit-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px; /* Add some spacing above button */
+    
 }
 
 .submit {
@@ -60,7 +52,8 @@
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease; /* Add transition effect */
-    text-decoration: none; /* Remove underline */
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
 }
 
 .submit:hover {
@@ -98,7 +91,7 @@
 .form input[type="gender"],
 .form input[type="genre"],
 .form input[type="profilePic"],
-.form button {
+.form input, select {
     width: 95%;
     padding: 10px;
     margin-bottom: 15px;
@@ -120,9 +113,4 @@
 
 .form .custom-button-primary:hover {
     background-color: #113687;
-}
-
-.react-datepicker__navigation--previous,
-.react-datepicker__navigation--next {
-    font-size: 1em; /* Adjust the font size of the arrow */
 }

@@ -20,13 +20,10 @@ const LoginArtist = () => {
     }
 
     return (
-        <div className='glass'>
-            <div className='header'>
-                <h1 className='textwhite'>Artist Login</h1>
-                <div className='underline'></div>
-            </div>
-            <div className='inputs'>
-                <div className='input'>
+        <div className='form'>
+            <h1>Artist Login</h1>
+                <div>
+                <label htmlFor="fname">Email</label>
                     <input
                         type="text"
                         placeholder=" Email"
@@ -35,7 +32,8 @@ const LoginArtist = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
-                <div className='input'>
+                <div>
+                <label htmlFor="fname">Password</label>
                     <input
                         type="password"
                         placeholder=" Password"
@@ -44,13 +42,7 @@ const LoginArtist = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <div className='forgot-password'>
-                    <span>Forgot Password?</span>
-                </div>
-            </div>
-            <div className='submit-container'>
-                <button className='submit' onClick={handleClick}>Login</button>
-            </div>
+                <button type="submit" className="custom-button custom-button-primary" onClick={handleClick}>Login</button>
         </div>
     )
 }
