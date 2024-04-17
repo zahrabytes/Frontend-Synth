@@ -1090,6 +1090,68 @@ app.post('/:songID/stream-song', async (req, res) =>{
 });
 
 
+app.get("/artist-gender-report", (req, res) => {
+    //const artistID = req.params.id;
+    const query = `
+    SELECT 
+    gender,
+    gender_count,
+            ROUND((gender_count / total_count) * 100, 2) AS percentage
+        FROM (SELECT 
+                listener.gender,
+                COUNT(*) AS gender_count,
+                (SELECT COUNT(*) FROM artist_follower WHERE artistID = 56) AS total_count
+            FROM 
+                artist_follower
+            JOIN 
+                listener ON listener.listenerID = artist_follower.listenerID
+            WHERE 
+                artistID = 56
+            GROUP BY 
+                listener.gender
+        ) AS gender_counts
+    `;
+    db.query(query, /*[artistID],*/ (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        return res.json(data);
+        res.status(200).send('gender report successful');
+    });
+});
+
+app.get("/artist-age-report", (req, res) => {
+    //const artistID = req.params.id;
+    const query = `
+    SELECT 
+    CASE
+        WHEN age >= 18 AND age <= 24 THEN '18-24'
+        WHEN age >= 25 AND age <= 34 THEN '25-34'
+        WHEN age >= 35 AND age <= 44 THEN '35-44'
+        WHEN age >= 45 AND age <= 54 THEN '45-54'
+        WHEN age >= 55 AND age <= 64 THEN '55-64'
+        WHEN age >= 65 THEN '65+'
+        END AS age_bracket,
+        COUNT(*) AS followers_count
+    FROM 
+        artist_follower
+    JOIN 
+        listener ON listener.listenerID = artist_follower.listenerID
+    WHERE 
+        artistID = 56 
+    GROUP BY 
+        age_bracket
+    ORDER BY 
+        age_bracket
+    `;
+    db.query(query, /*[artistID],*/ (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        return res.json(data);
+        res.status(200).send('age report successful');
+    });
+});
 
 // Start the server
 app.listen(8800, () => {

@@ -24,6 +24,7 @@ import ListenerLogin from './Pages/login-listener.jsx';
 import ViewArtist from "./Listener/ViewArtist.js"
 import ArtistHome from "./Artist/ArtistHome.jsx"
 ///import Home from './IsolatedCSS/Home.js';
+import TestReport from './Artist/Reports.jsx';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/Test/:artistID" element={<ArtistHome />} />
+            <Route path="/TestReport" element={<TestReport />} />
             <Route path="/Create-Album" element={<AlbumAdd />} />
             <Route path="/:id/user-home" element={<ListenerHome />} />
             <Route path="/:id/Admin-Home" element={<AdminHome />} />
