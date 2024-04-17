@@ -759,7 +759,7 @@ app.get('/:id/:albumID/songs-liked', async (req, res) => {
     const albumID = req.params.albumID;
     const listenerID = req.params.id;
     const query = `
-    SELECT DISTINCT song_like.songID 
+    SELECT DISTINCT song_like.songID
     FROM song_like, song, album, listener
     WHERE song.songID = song_like.songID AND song.albumID = ? AND song_like.listenerID = ?
     `;
@@ -797,7 +797,7 @@ app.get('/:id/albums-liked', async (req, res) => {
 app.get('/:id/songs-liked', async (req, res) => {
     const listenerID = req.params.id;
     const query = `
-    SELECT DISTINCT SL.songID, S.songTitle, A.albumName, S.filePath
+    SELECT DISTINCT SL.songID, S.songTitle, A.albumName, S.filePath, A.cover
     FROM song_like AS SL, song AS S, album AS A, listener AS L
     WHERE S.songID = SL.songID AND S.albumID = A.albumID AND SL.listenerID = ?
     `;

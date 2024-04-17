@@ -381,6 +381,12 @@ width: 200px;
 border-radius: 10px;
 }
 
+.img-album-display-after {
+  height: 150px;
+  width: 150px;
+  border-radius: 10px;
+  }
+
 .img-song-display-after {
   height: 50px;
   width: 50px;

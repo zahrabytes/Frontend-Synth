@@ -112,12 +112,17 @@ const CreateAccountListener = () => {
                 </div>
                 <div>
                     <label htmlFor="DoB">Date of Birth</label>
-                    <DatePicker
+                        <DatePicker
+                        closeOnScroll={(e) => e.target === document}
                         selected={formData.DoB}
                         onChange={handleDateChange}
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Select Date of Birth"
-                        required
+                        required                    
                     />
                 </div>
                 <div>
