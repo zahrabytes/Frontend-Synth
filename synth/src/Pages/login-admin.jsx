@@ -12,7 +12,7 @@ const LoginAdmin = () => {
         try {
             const response = await axios.post('http://localhost:8800/admin-login', { email, password });
             console.log(response.data); // Handle response from the server
-            const id = response.data.user.adminID;
+            //const id = response.data.user.adminID;
             navigate('/1/Admin-Home');
         } catch (error) {
             console.error('Error during login:', error);

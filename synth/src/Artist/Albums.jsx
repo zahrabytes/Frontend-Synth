@@ -42,8 +42,8 @@ const Albums = () => {
             <div className="albums">
                 {albums.map((album) => (
                     <div  key={album.albumID}>
-                        <div className="album-item" onClick={() => handleAlbumSelect(album.albumID)}>
-                        {album.cover && <img className='img-display-after' src={album.cover} alt="" />}
+                        <div onClick={() => handleAlbumSelect(album.albumID)}>
+                        <img className='album-cover' src={album.cover} alt="" />
                         </div>
                         <h2 onClick={() => handleAlbumSelect(album.albumID)}>{album.albumName}</h2>
                         <button className='upload'>

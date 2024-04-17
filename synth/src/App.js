@@ -22,6 +22,7 @@ import LoginAdmin from './Pages/login-admin.jsx';
 import LoginArtist from './Pages/login-artist.jsx';
 import ListenerLogin from './Pages/login-listener.jsx';
 import ViewArtist from "./Listener/ViewArtist.js"
+import ArtistHome from "./Artist/ArtistHome.jsx"
 ///import Home from './IsolatedCSS/Home.js';
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<Landing />} />
-            {/*<Route path="/Test" element={<Home />} />*/}
+            <Route path="/Test/:artistID" element={<ArtistHome />} />
             <Route path="/Create-Album" element={<AlbumAdd />} />
             <Route path="/:id/user-home" element={<ListenerHome />} />
             <Route path="/:id/Admin-Home" element={<AdminHome />} />
