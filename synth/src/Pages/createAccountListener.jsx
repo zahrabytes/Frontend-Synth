@@ -13,7 +13,7 @@ const CreateAccountListener = () => {
         username: '',
         password: '',
         gender: ' ',
-        DoB: null,
+        DoB: '',
         profilePic: '',
     });
 
@@ -102,7 +102,7 @@ const CreateAccountListener = () => {
                     />
                 </div>
                 <div>
-                <label htmlFor="gender">Gender:</label>
+                <label htmlFor="gender">Gender:</label> 
                     <select id="gender" name="gender" value={formData.gender} onChange={handleChange} required>
                         <option value="">Select Gender</option>
                         <option value="F">Female</option>

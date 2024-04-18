@@ -37,7 +37,6 @@ const TestReport = () => {
     }, []);
 
     const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
         datasets: [
             {
                 data: genderReport.map((data) => data.percentage),
