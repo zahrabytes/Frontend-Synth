@@ -36,7 +36,7 @@ const TestReport = () => {
         fetchReport();
     }, []);
 
-    const data = {
+    const dataGender = {
         datasets: [
             {
                 data: genderReport.map((data) => data.percentage),
@@ -60,7 +60,7 @@ const TestReport = () => {
         }),
       };
     
-      const options = {
+      const optionsGender = {
         plugins: {
             legend: {
                 position: 'bottom', 
@@ -78,11 +78,10 @@ const TestReport = () => {
         <div>
             <h1>Listener Demographics</h1>
             <div className='doughnut'>
-            <Doughnut options={options} data={data} />
+            <Doughnut options={optionsGender} data={dataGender} />
             </div>
             <div className='doughnut'>
             <Bar
-            
                 data={{
                     labels: ageReport.map((data) => data.age_bracket),
                     datasets: [

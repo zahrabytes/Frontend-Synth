@@ -12,7 +12,8 @@ const LoginArtist = () => {
         try {
             const response = await axios.post('http://localhost:8800/artist-login', { email, password });
             console.log(response.data); // Handle response from the server
-            navigate(`/${response.data.user.artistID}/albums`);
+            const artistID = response.data.user.artistID;
+            navigate(`/${artistID}/Artist-Home`);
         } catch (error) {
             console.error('Error during login:', error);
             // Handle error response from the server

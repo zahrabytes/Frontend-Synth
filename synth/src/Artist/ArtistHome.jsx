@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../index.css';
 import { formatDate } from '../DateFormat.js';
+import { TbDiscountCheckFilled } from "react-icons/tb";
 
 function ArtistHome() {
     const { artistID } = useParams();
@@ -36,7 +37,7 @@ function ArtistHome() {
     }
 
     const handleAlbumSelect = (albumID) => {
-        navigate(`/${artistID}/albums/${albumID}/songs`);
+        navigate(`/ViewAlbumArtist/${artistID}/${albumID}`); 
       };
 
     return (
@@ -45,11 +46,15 @@ function ArtistHome() {
               <div key={index}>
                 <artistName>
                 <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
-                {item.artistName}</artistName>
+                {item.artistName}
+                {item.verified ? <TbDiscountCheckFilled /> : null}
+                </artistName>
               </div> 
             ))}
             <div class="rectangle-backdrop"></div>
-
+            <button onClick={ () => navigate(`/${artistID}/albums/add`)}>
+                Add new album
+            </button>
             {albumResults.map((album) => (
                     <div  key={album.albumID}>
                         <div onClick={() => handleAlbumSelect(album.albumID)}>
@@ -63,14 +68,11 @@ function ArtistHome() {
                             Update
                         </button>
                         <button onClick={() => handleDelete(album.albumID)}>Delete</button>
-                        <button onClick={ () => navigate(`/${artistID}/albums/${album.albumID}/songs`)}>
+                        <button onClick={ () => navigate(`/ViewAlbumArtist/${artistID}/${album.albumID}`)}>
                             View Songs
                         </button>
                     </div>
                 ))}
-            <button onClick={ () => navigate(`/${artistID}/albums/add`)}>
-                Add new album
-            </button>
         </div>
     );
   }

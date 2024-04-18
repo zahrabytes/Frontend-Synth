@@ -16,7 +16,7 @@ const AlbumAdd = () => {
     const location = useLocation();
     const artistId = location.pathname.split("/")[1]
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleChange = (e) =>{
         setAlbum(prev=>({...prev, [e.target.name]: e.target.value }))
@@ -31,7 +31,7 @@ const AlbumAdd = () => {
         e.preventDefault()
         try{
             await axios.post("http://localhost:8800/"+artistId+"/albums", album);
-            navigate("/"+artistId+"/albums");
+            navigate(`/${artistId}/Artist-Home`);
         } catch(err) {
             console.log(err)
         }

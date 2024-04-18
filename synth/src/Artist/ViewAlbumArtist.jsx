@@ -7,7 +7,7 @@ import { formatDate } from "../DateFormat.js";
 
 import '../index.css';
 
-function ViewAlbum() {
+function ViewAlbumArtist() {
     const { artistID, albumID } = useParams();
     const { songs, dispatch } = useContext(SongContext);
     const [albumResults, setAlbumResults] = useState([]);
@@ -72,4 +72,4 @@ function ViewAlbum() {
     );
 };
 
-export default ViewAlbum;
+export default ViewAlbumArtist;

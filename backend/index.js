@@ -388,7 +388,7 @@ app.get('/view-artist/:artistID/', async (req, res) =>{
     const artistID = req.params.artistID;
     try {
         const query = `
-            SELECT artistName, genre, profilePic
+            SELECT artistName, genre, profilePic, verified
             FROM artist
             WHERE artistID = ?
         `;

@@ -31,7 +31,7 @@ const AlbumUpdate = () => {
         e.preventDefault()
         try{
             await axios.put("http://localhost:8800/"+id+"/albums", album)
-            navigate("/"+artistID+"/albums")
+            navigate(`/${artistID}/Artist-Home`);
         } catch(err) {
             console.log(err)
         }
@@ -43,11 +43,11 @@ const AlbumUpdate = () => {
         <div className="form">
             <h1>Update the Album</h1>
             <input type="text" placeholder='album name' onChange={handleChange} name='albumName' />
-            <label>Release Date</label>
-                        <DatePicker
+            <label htmlFor='releaseDate'>Release Date</label>
+                    <DatePicker
                         closeOnScroll={(e) => e.target === document}
-                        onChange={handleChange}
                         selected={album.releaseDate}
+                        onChange={handleDateChange}
                         peekNextMonth
                         showMonthDropdown
                         showYearDropdown

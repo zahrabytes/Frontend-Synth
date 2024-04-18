@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 const SongAdd = () => {
@@ -11,15 +11,15 @@ const SongAdd = () => {
   const [album, setAlbum] = useState(null);
 
   // Used to set all the variables we are going to pass to the post operation
-  const [songTitle, setTitle] = useState('')
-  const [songDuration, setDuration] = useState('')
-  const [songFile, setFile] = useState(null)
+  const [songTitle, setTitle] = useState('');
+  const [songDuration, setDuration] = useState('');
+  const [songFile, setFile] = useState(null);
 
   // To set and pending message when uploading a song
-  const [isPending, setIsPending] = useState(false)
+  const [isPending, setIsPending] = useState(false);
 
   // To set error messages and display them when posting fails
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
 
   // Used for navigating the user after the post operation is successfull
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ const SongAdd = () => {
       setDuration('')
       setError(null)
       // after the operation navigate to this url
-      navigate(`/${artistID}/albums`);
+      navigate(`/${artistID}/Artist-Home`);
     } catch (err) {
       setIsPending(false)
       setError(error)
@@ -69,7 +69,7 @@ const SongAdd = () => {
 
   }
   return (
-    <div className="container-album">
+    <div>
       {album && (
         <div>
           <div className="album-add-songs" key={album.albumID}>
