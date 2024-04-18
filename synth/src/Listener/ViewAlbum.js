@@ -4,7 +4,6 @@ import { PiHeartFill, PiHeartLight, PiFlag, PiFlagFill  } from "react-icons/pi";
 import { useParams } from 'react-router-dom';
 import { formatDate } from '../DateFormat.js';
 import '../index.css';
-import '../modal/Modal.css'
 
 function ViewAlbum() {
     const { id, albumID } = useParams();
@@ -13,10 +12,6 @@ function ViewAlbum() {
     const [albumLike, setAlbumLike] = useState(false);
     const [likedSongs, setLikedSongs] = useState(new Set());
     const [flaggedSongs, setFlaggedSongs] = useState(new Set());
-    const [modal, setModal] = useState(false); //this is what you will use for the pop up
-
-    const [modalStates, setModalStates] = useState({});
-
     
     // Fetch only when albumID changes
     useEffect(() => {
@@ -75,23 +70,11 @@ function ViewAlbum() {
     const handleFlag = async (songID) => {
         try {
             await axios.post(`http://localhost:8800/flag-song/${songID}`);
+            setFlaggedSongs(prevFlaggedSongs => new Set([...prevFlaggedSongs, songID]));
             console.log('Song Flagged');
         } catch (error) {
             console.error('Error Flagging Song', error);
         }
-    };
-
-    const toggleModal = (songID) => {
-        setModalStates(prevState => ({
-            ...prevState,
-            [songID]: !prevState[songID]
-        }));
-    };
-    
-
-    const closeModal = (songID) => {        
-        handleFlag(songID);
-        toggleModal(songID);
     };
 
     // Like album
@@ -138,13 +121,6 @@ function ViewAlbum() {
         }
     };
 
-  
-    if(modal) {
-      document.body.classList.add('active-modal')
-    } else {
-      document.body.classList.remove('active-modal')
-    }
-
     return (
         <div className="container-album">
             {albumResults.map((album, index) => (
@@ -171,29 +147,11 @@ function ViewAlbum() {
                                 {likedSongs.has(song.songID) ? <PiHeartFill /> : <PiHeartLight />}
                             </div>
                             <div onClick={() => {
-                                    if (!flaggedSongs.has(song.songID)) {
-                                        toggleModal(song.songID);  
-                                    }
-                                }}>
+                                if (!flaggedSongs.has(song.songID)) {
+                                    handleFlag(song.songID);
+                                }
+                            }}>
                                 {flaggedSongs.has(song.songID) ? <PiFlagFill /> : <PiFlag />}
-                                {modalStates[song.songID] && (
-                                    <div className="modal">
-                                        <div className="modal-content">
-                                            <h2>Hello Modal</h2>
-                                            <p>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-                                                perferendis suscipit officia recusandae, eveniet quaerat assumenda
-                                                id fugit, dignissimos maxime non natus placeat illo iusto!
-                                                Sapiente dolorum id maiores dolores? Illum pariatur possimus
-                                                quaerat ipsum quos molestiae rem aspernatur dicta tenetur. Sunt
-                                                placeat tempora vitae enim incidunt porro fuga ea.
-                                            </p>
-                                            <button onClick={() => closeModal(song.songID)}>
-                                                CLOSE
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </li>
