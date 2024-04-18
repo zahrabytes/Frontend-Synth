@@ -25,6 +25,7 @@ import ViewArtist from "./Listener/ViewArtist.js"
 import ArtistHome from "./Artist/ArtistHome.jsx"
 ///import Home from './IsolatedCSS/Home.js';
 import TestReport from './Artist/Reports.jsx';
+import Modal from './modal/Modal.js'; 
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/Modal" element={<Modal />} />
             <Route path="/Test/:artistID" element={<ArtistHome />} />
             <Route path="/TestReport" element={<TestReport />} />
             <Route path="/Create-Album" element={<AlbumAdd />} />

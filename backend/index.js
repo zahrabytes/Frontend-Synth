@@ -1121,37 +1121,47 @@ app.get("/artist-gender-report", (req, res) => {
 });
 
 app.get("/artist-age-report", (req, res) => {
-    //const artistID = req.params.id;
     const query = `
-    SELECT 
-    CASE
-        WHEN age >= 18 AND age <= 24 THEN '18-24'
-        WHEN age >= 25 AND age <= 34 THEN '25-34'
-        WHEN age >= 35 AND age <= 44 THEN '35-44'
-        WHEN age >= 45 AND age <= 54 THEN '45-54'
-        WHEN age >= 55 AND age <= 64 THEN '55-64'
-        WHEN age >= 65 THEN '65+'
-        END AS age_bracket,
-        COUNT(*) AS followers_count
-    FROM 
-        artist_follower
-    JOIN 
-        listener ON listener.listenerID = artist_follower.listenerID
-    WHERE 
-        artistID = 56 
-    GROUP BY 
-        age_bracket
-    ORDER BY 
-        age_bracket
+        SELECT 
+            CASE
+            WHEN age < 18 THEN 'Under 18'
+            WHEN age >= 18 AND age <= 24 THEN '18-24'
+            WHEN age >= 25 AND age <= 29 THEN '25-29'
+            WHEN age >= 30 AND age <= 34 THEN '30-34'
+            WHEN age >= 35 AND age <= 39 THEN '35-39'
+            WHEN age >= 40 AND age <= 44 THEN '40-44'
+            WHEN age >= 45 AND age <= 49 THEN '45-49'
+            WHEN age >= 50 AND age <= 54 THEN '50-54'
+            WHEN age >= 55 AND age <= 59 THEN '55-59'
+            WHEN age >= 60 AND age <= 64 THEN '60-64'
+            WHEN age >= 65 THEN '65+'
+            END AS age_bracket,
+            COUNT(*) AS followers_count
+        FROM 
+            artist_follower
+        JOIN 
+            listener ON listener.listenerID = artist_follower.listenerID
+        WHERE 
+            artistID = 56 
+        GROUP BY 
+            age_bracket
+        ORDER BY 
+            age_bracket
     `;
-    db.query(query, /*[artistID],*/ (err, data) => {
+    
+    db.query(query, (err, data) => {
         if (err) {
-            return res.json({ error: err.message });
+            return res.status(500).json({ error: err.message });
         }
-        return res.json(data);
-        res.status(200).send('age report successful');
+
+        // Filter out entries where age_bracket is null or empty
+        const filteredData = data.filter(entry => entry.age_bracket);
+
+        // Send the filtered data as JSON response
+        res.json(filteredData);
     });
 });
+
 
 // Start the server
 app.listen(8800, () => {
