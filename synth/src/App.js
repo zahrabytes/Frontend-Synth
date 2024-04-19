@@ -7,6 +7,7 @@ import { AdminHome } from './Admin/AdminHome.js';
 import AlbumAdd from './Artist/AlbumAdd.jsx';
 import AlbumUpdate from './Artist/AlbumUpdate.jsx';
 import Albums from './Artist/Albums.jsx';
+import { ArtistHome } from './Artist/ArtistHome.jsx';
 import ArtistReport from './Artist/ArtistReport.jsx';
 import SongAdd from './Artist/SongAdd.jsx';
 import SongsView from './Artist/ViewAlbumArtist.jsx';
@@ -39,6 +40,7 @@ function App() {
             <Route path="/login-admin" element={<LoginAdmin />} />
             <Route path="/:id/albums/add" element={<AlbumAdd />} />
             <Route path="/:id/albums" element={<Albums />} />
+            <Route path="/:id/artist-home" element={<ArtistHome />} />
             <Route path="/:artistID/update/:id" element={<AlbumUpdate />} />
             <Route path="/:artistID/upload/:id" element={<SongAdd />} />
             <Route path="/Registration" element={<CreateAccount />} />

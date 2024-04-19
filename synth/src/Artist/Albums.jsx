@@ -36,37 +36,35 @@ const Albums = () => {
         navigate(`/${id}/albums/${albumID}/songs`);
       };
 
-    return (
+      return (
         <div>
-            <h1 className='textwhite'>Library</h1>
-            <div className="albums">
-                {albums.map((album) => (
-                    <div  key={album.albumID}>
-                        <div className="album-item" onClick={() => handleAlbumSelect(album.albumID)}>
-                        {album.cover && <img className='img-display-after' src={album.cover} alt="" />}
-                        </div>
-                        <h2 onClick={() => handleAlbumSelect(album.albumID)}>{album.albumName}</h2>
-                        <button className='upload'>
-                            <Link to={`/${id}/upload/${album.albumID}`}>Upload Songs</Link>
-                        </button>
-                        <button className='update'>
-                            <Link to={`/${id}/update/${album.albumID}`}>Update</Link>
-                        </button>
-                        <button className='delete' onClick={() => handleDelete(album.albumID)}>Delete</button>
-                        <button className='view-songs'>
-                            <Link to={`/${id}/albums/${album.albumID}/songs`}>View Songs</Link>
-                        </button>
-                    </div>
-                ))}
+          <h1 className='textwhite'>Library</h1>
+          <div className="albums">
+            {albums.map((album) => (
+              <div key={album.albumID} className="album-container">
+                <div className="album-info">
+                  <div className="album-item" onClick={() => handleAlbumSelect(album.albumID)}>
+                    {album.cover && <img className='img-display-after' src={album.cover} alt="" />}
+                  </div>
+                  <div>
+                    <h2 onClick={() => handleAlbumSelect(album.albumID)}>{album.albumName}</h2>
+                    <button className='button'>
+                      <Link to={`/${id}/upload/${album.albumID}`} style={{ textDecoration: 'none', color: 'inherit' }}>Upload Songs</Link>
+                    </button>
+                    <button className='button'>
+                      <Link to={`/${id}/update/${album.albumID}`} style={{ textDecoration: 'none', color: 'inherit' }}>Update</Link>
+                    </button>
+                    <button className='button' onClick={() => handleDelete(album.albumID)}>Delete</button>
+                    <button className='button'>
+                      <Link to={`/${id}/albums/${album.albumID}/songs`} style={{ textDecoration: 'none', color: 'inherit' }}>View Songs</Link>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
             </div>
-            <button className='submit add-album'>
-                <Link to={`/${id}/albums/add`}>Add new album</Link>
-            </button>
-            <button>
-                <Link to={`/${id}/reports`}>Run Report</Link>
-            </button>
-            <button className="roundedButton">
-                <Link to="/">Logout</Link>
+            <button className="logout-button">
+                <Link to="/"style={{ textDecoration: 'none', color: 'inherit' }}>Logout</Link>
             </button>
         </div>
     );

@@ -615,3 +615,83 @@ artistName {
 .formButton {
   margin-top: 15px; 
 }
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #1a4ab3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none; /* Remove underline */
+}
+
+.logout-button:hover {
+  background: #153b90; /* Change background color on hover */
+  text-decoration: none; /* Remove underline on hover */
+}
+
+.logout-button:visited {
+  color: white; /* Set color for visited links */
+  text-decoration: none; /* Remove underline for visited links */
+}
+
+.logout-button button {
+  background: #1a4ab3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none; 
+}
+
+.button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.button:hover {
+  background-color: #0e2f6e; /* Darker shade on hover */
+}
+
+.albums {
+  color: white; /* Set text color to white */
+}
+
+.album-container {
+  position: relative; /* Make the container position relative */
+  padding-bottom: 10px; /* Add some spacing between albums */
+  margin-bottom: 30px; /* Add some spacing below each album container */
+}
+
+.album-container::after {
+  content: ""; /* Add content to the pseudo-element */
+  position: absolute; /* Position the pseudo-element absolutely */
+  bottom: 0; /* Align the pseudo-element to the bottom of the container */
+  left: 0; /* Align the pseudo-element to the left edge */
+  width: 100%; /* Set the width to 100% to cover the entire container */
+  border-bottom: 1px solid #ccc; /* Add a bottom border to the pseudo-element */
+}
+
+.album-info {
+  display: flex;
+  align-items: center;
+}
+
+.album-item {
+  margin-right: 10px; /* Add some space between the album cover and the album details */
+}
+
+.album-details {
+  display: flex;
+  flex-direction: row;
+}
