@@ -1,18 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Audiowide');
 @import url('https://fonts.googleapis.com/css?family=Inter');
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-30px);
-  }
-  60% {
-    transform: translateY(-15px);
-  }
-}
-
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
@@ -27,7 +15,7 @@ body {
   align-items: center;
 }
 
-header {
+headerSynth {
   display: flex;
   font-family: 'Audiowide', cursive;
   color: black;
@@ -39,8 +27,6 @@ header {
   align-items: center;
 }
 
-
-
 subheader {
   display: flex;
   color: black;
@@ -50,13 +36,6 @@ subheader {
   justify-content: space-around;
   align-items: center;
 }
-
-header:hover {
-  animation: bounce 2s ease infinite; /* Apply the bounce animation for 0.5 seconds, infinitely */
-}
-
-
-
 
 .container{
   display: flex;
@@ -123,6 +102,22 @@ header:hover {
   margin-right: 20px;
   margin-left: 5px;
   margin-bottom: 5px;
+}
+
+.chart-container {
+  flex: 1; /* Each container takes up equal space */
+  background: rgba(255, 255, 255, 0.8); /* Adjust the opacity to make it more milky white */
+  backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+  -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  margin: 20px;
+  width: auto;
+  height: 300px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .bottom-align-container {
@@ -381,6 +376,12 @@ width: 200px;
 border-radius: 10px;
 }
 
+.img-album-display-after {
+  height: 150px;
+  width: 150px;
+  border-radius: 10px;
+  }
+
 .img-song-display-after {
   height: 50px;
   width: 50px;
@@ -496,7 +497,8 @@ artistName {
   align-items: center;
   position: relative;
 }
-  
+
+
 .rectangle-backdrop {
     position: absolute;
     top: 0;

@@ -5,7 +5,7 @@ import { ArtistMenuList } from "./ArtistMenuList";
 import "./LeftMenu.css";
 
 function ArtistLeft() {
-  const { id } = useParams();
+  const { artistID } = useParams();
 
   return (
     <div>
@@ -20,8 +20,8 @@ function ArtistLeft() {
         <ul className="menuContainer">
           {/* Render each menu option as a list item */}
           {ArtistMenuList.map((item) => (
-            <li key={item.id}>
-              <Link to={`/${id}${item.path}`}>
+            <li key={item.artistID}>
+              <Link to={`/${artistID}${item.path}`}>
                 {item.icon} {item.name}
               </Link>
             </li>

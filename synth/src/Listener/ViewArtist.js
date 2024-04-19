@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '../DateFormat.js';
 import '../index.css';
 import { LeftMenu } from './LeftMenu.js';
+import { TbDiscountCheckFilled } from "react-icons/tb";
 
 function ViewArtist() {
     const { id, artistID } = useParams();
@@ -54,7 +55,7 @@ function ViewArtist() {
         }
     };
     */
-
+    
     const findIsFollower = async () => { 
         try {
             const followerTuple = await axios.get(`http://localhost:8800/${artistID}/${id}/is-follower`);
@@ -103,10 +104,14 @@ function ViewArtist() {
               <div key={index}>
                 <artistName>
                 <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
-                {item.artistName}</artistName>
+                {item.artistName}
+                <div className="flex row">{item.verified ? <TbDiscountCheckFilled /> : null}</div>
+                </artistName>
+                
                 <div onClick={() => isFollower ? handleUnfollowArtist() : handleFollowArtist()}>
                             {isFollower ? <PiHeartFill /> : <PiHeartLight />}
                 </div>
+                
               </div> 
             ))}
             <div class="rectangle-backdrop"></div>

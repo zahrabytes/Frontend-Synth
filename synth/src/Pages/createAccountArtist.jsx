@@ -116,13 +116,16 @@ const CreateAccountArtist = () => {
                     <label htmlFor="DoB">Date of Birth</label>
                     <br />
                     <DatePicker
-                        id="DoB"
-                        name="DoB"
+                        closeOnScroll={(e) => e.target === document}
                         selected={formData.DoB}
                         onChange={handleDateChange}
-                        dateFormat="MM/dd/yyyy"
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="yyyy/MM/dd"
                         placeholderText="Select Date of Birth"
-                        required
+                        required                    
                     />
                 </div>
                 <div>

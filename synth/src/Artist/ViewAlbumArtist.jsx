@@ -8,7 +8,7 @@ import { SongContext } from '../context/SongContext';
 import '../index.css';
 import { ArtistLeft } from './LeftMenu.js';
 
-function ViewAlbum() {
+function ViewAlbumArtist() {
     const { artistID, albumID } = useParams();
     const { songs, dispatch } = useContext(SongContext);
     const [albumResults, setAlbumResults] = useState([]);
@@ -76,4 +76,4 @@ function ViewAlbum() {
     );
 };
 
-export default ViewAlbum;
+export default ViewAlbumArtist;

@@ -6,20 +6,20 @@ import { ArtistLeft } from './LeftMenu';
 const SongAdd = () => {
 
   // Get the params from the URL
-  const { artistID, id } = useParams();
+  const { artistID, albumID } = useParams();
   // To grab the data when fetching the album
   const [album, setAlbum] = useState(null);
 
   // Used to set all the variables we are going to pass to the post operation
-  const [songTitle, setTitle] = useState('')
-  const [songDuration, setDuration] = useState('')
-  const [songFile, setFile] = useState(null)
+  const [songTitle, setTitle] = useState('');
+  const [songDuration, setDuration] = useState('');
+  const [songFile, setFile] = useState(null);
 
   // To set and pending message when uploading a song
-  const [isPending, setIsPending] = useState(false)
+  const [isPending, setIsPending] = useState(false);
 
   // To set error messages and display them when posting fails
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
 
   // Used for navigating the user after the post operation is successfull
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const SongAdd = () => {
 
     const fetchAlbum = async () => {
       try {
-        const album = await axios.get(`http://localhost:8800/albums/${id}/upload`);
+        const album = await axios.get(`http://localhost:8800/albums/${albumID}/upload`);
         setAlbum(album.data);
       } catch (error) {
         console.log('There was an error fetching the album:', error);
@@ -36,7 +36,7 @@ const SongAdd = () => {
     };
     // Call the fetchAlbum function to fetch the album when the component renders
     fetchAlbum();
-  }, [id]);
+  }, [albumID]);
 
   const handleSongUpload = async (e) => {
     // If the operation is not successfull dont clear the input out of the form
@@ -50,7 +50,7 @@ const SongAdd = () => {
     formData.append('song', songFile);
 
     try {
-      await axios.post(`http://localhost:8800/albums/${id}/upload`, formData, {
+      await axios.post(`http://localhost:8800/albums/${albumID}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -60,7 +60,7 @@ const SongAdd = () => {
       setDuration('')
       setError(null)
       // after the operation navigate to this url
-      navigate(`/${artistID}/albums`);
+      navigate(`/${artistID}/Artist-Home`);
     } catch (err) {
       setIsPending(false)
       setError(error)
@@ -72,6 +72,7 @@ const SongAdd = () => {
     <div className="adminContainer">
             <ArtistLeft />
     <div className="container-album">
+    <div>
       {album && (
         <div>
           <div className="album-add-songs" key={album.albumID}>
@@ -95,6 +96,7 @@ const SongAdd = () => {
           {error && <div>{error}</div>}
         </form>
       </div>
+    </div>
     </div>
     </div>
   );

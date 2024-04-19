@@ -10,10 +10,9 @@ import Albums from './Artist/Albums.jsx';
 import { ArtistHome } from './Artist/ArtistHome.jsx';
 import ArtistReport from './Artist/ArtistReport.jsx';
 import SongAdd from './Artist/SongAdd.jsx';
-import SongsView from './Artist/ViewAlbumArtist.jsx';
 import Disclaimer from './Disclaimer.js';
 import Home from './Home.js';
-import Landing from './Landing.js';
+// import Landing from './Landing.js';
 import FlagOptions from './Listener/FlagOptions.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
 import { SearchPage } from './Listener/SearchPage.js';
@@ -25,6 +24,11 @@ import CreateAccountListener from './Pages/createAccountListener.jsx';
 import LoginAdmin from './Pages/login-admin.jsx';
 import LoginArtist from './Pages/login-artist.jsx';
 import ListenerLogin from './Pages/login-listener.jsx';
+// import ViewArtist from "./Listener/ViewArtist.js"
+// import ArtistHome from "./Artist/ArtistHome.jsx"
+import Landing from './IsolatedCSS/Landing.js';
+import TestReport from './Artist/Reports.jsx';
+import ViewAlbumArtist from "./Artist/ViewAlbumArtist.jsx";
 
 function App() {
   return (
@@ -33,16 +37,16 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/Test" element={<Home />} />
-            <Route path="/Create-Album" element={<AlbumAdd />} />
+            <Route path='/Home' element={<Home/>} />
+            <Route path="/TestReport" element={<TestReport />} />
             <Route path="/:id/user-home" element={<ListenerHome />} />
             <Route path="/:id/Admin-Home" element={<AdminHome />} />
             <Route path="/login-admin" element={<LoginAdmin />} />
-            <Route path="/:id/albums/add" element={<AlbumAdd />} />
-            <Route path="/:id/albums" element={<Albums />} />
-            <Route path="/:id/artist-home" element={<ArtistHome />} />
-            <Route path="/:artistID/update/:id" element={<AlbumUpdate />} />
-            <Route path="/:artistID/upload/:id" element={<SongAdd />} />
+            <Route path="/:artistID/albums/add" element={<AlbumAdd />} />
+            <Route path="/:artistID/albums" element={<Albums />} />
+            <Route path="/:artistID/artist-home" element={<ArtistHome />} />
+            <Route path="/:artistID/update/:albumID" element={<AlbumUpdate />} />
+            <Route path="/:artistID/upload/:albumID" element={<SongAdd />} />
             <Route path="/Registration" element={<CreateAccount />} />
             <Route path="onClick={handleSearchClick}" element={<CreateAccount />} />
             <Route path="/registration/ListenerRegistration" element={<CreateAccountListener />} />
@@ -54,7 +58,7 @@ function App() {
             <Route path="/submit-report/:id/:songID" element={<FlagOptions />} />
             <Route path="/View-Album/:id/:albumID" element={<ViewAlbum />} />
             <Route path="/View-Artist/:id/:artistID" element={<ViewArtist />} />
-            <Route path ="/:artistID/albums/:albumID/songs" element ={<SongsView />} />
+            <Route path="/ViewAlbumArtist/:artistID/:albumID" element={<ViewAlbumArtist />} />
             <Route path="/:artistID/reports" element ={<ArtistReport />} />
           </Routes>
         </div>
