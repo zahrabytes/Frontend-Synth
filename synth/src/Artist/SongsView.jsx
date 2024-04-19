@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ArtistLeft } from './LeftMenu';
 
 const AlbumSongs = () => {
     const { albumID } = useParams();
@@ -20,6 +21,8 @@ const AlbumSongs = () => {
     }, [albumID]);
 
     return (
+        <div className="adminContainer">
+            <ArtistLeft />
         <div>
             <h1>Songs</h1>
             <div className="songs">
@@ -29,6 +32,7 @@ const AlbumSongs = () => {
                     </div>
                 ))}
             </div>
+        </div>
         </div>
     );
 };

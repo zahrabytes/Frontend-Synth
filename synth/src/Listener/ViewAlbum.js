@@ -4,6 +4,7 @@ import { PiFlagFill, PiHeartFill, PiHeartLight } from "react-icons/pi";
 import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '../DateFormat.js';
 import '../index.css';
+import { LeftMenu } from './LeftMenu.js';
 
 function ViewAlbum() {
     const { id, albumID } = useParams();
@@ -123,6 +124,8 @@ function ViewAlbum() {
     };
 
     return (
+        <div className="listener-container">
+            <LeftMenu />
         <div className="container-album">
             {albumResults.map((album, index) => (
                 <div key={index} className="album-info">
@@ -159,6 +162,7 @@ function ViewAlbum() {
                     </li>
                 ))}
             </ul>
+        </div>
         </div>
     );
 };

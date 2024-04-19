@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { PiHeartFill, PiHeartLight, PiFlag, PiFlagFill  } from "react-icons/pi";
+import { PiHeartFill, PiHeartLight } from "react-icons/pi";
 import { useNavigate, useParams } from 'react-router-dom';
-import '../index.css';
 import { formatDate } from '../DateFormat.js';
+import '../index.css';
+import { LeftMenu } from './LeftMenu.js';
 
 function ViewArtist() {
     const { id, artistID } = useParams();
@@ -95,6 +96,8 @@ function ViewArtist() {
     };
 
     return (
+        <div className="listener-container">
+            <LeftMenu />
         <div>
             {artistResult.map((item, index) => (
               <div key={index}>
@@ -120,6 +123,7 @@ function ViewArtist() {
                         </div>
                     </li>
                 ))}
+        </div>
         </div>
     );
   }

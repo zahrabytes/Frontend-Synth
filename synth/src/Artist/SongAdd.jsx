@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ArtistLeft } from './LeftMenu';
 
 const SongAdd = () => {
 
@@ -69,6 +69,8 @@ const SongAdd = () => {
 
   }
   return (
+    <div className="adminContainer">
+            <ArtistLeft />
     <div className="container-album">
       {album && (
         <div>
@@ -93,6 +95,7 @@ const SongAdd = () => {
           {error && <div>{error}</div>}
         </form>
       </div>
+    </div>
     </div>
   );
 };

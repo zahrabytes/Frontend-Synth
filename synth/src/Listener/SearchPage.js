@@ -1,7 +1,8 @@
-import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../index.css';
+import { LeftMenu } from './LeftMenu';
 
 function SearchPage({ onSongSelect }) {
   const { id } = useParams();
@@ -35,6 +36,8 @@ function SearchPage({ onSongSelect }) {
   };
 
   return (
+    <div className="listener-container">
+      <LeftMenu />
     <div>
       <input 
         type="text" 
@@ -82,6 +85,7 @@ function SearchPage({ onSongSelect }) {
             </div>
           ))}</div>
         </div>      
+    </div>
     </div>
   );
 };

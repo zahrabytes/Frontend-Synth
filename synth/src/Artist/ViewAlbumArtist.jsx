@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { PiTrash } from "react-icons/pi";
 import React, { useContext, useEffect, useState } from 'react';
+import { PiTrash } from "react-icons/pi";
 import { useParams } from 'react-router-dom';
-import { SongContext } from '../context/SongContext';
 import { formatDate } from "../DateFormat.js";
+import { SongContext } from '../context/SongContext';
 
 import '../index.css';
+import { ArtistLeft } from './LeftMenu.js';
 
 function ViewAlbum() {
     const { artistID, albumID } = useParams();
@@ -42,6 +43,8 @@ function ViewAlbum() {
     };
 
     return (
+        <div className="adminContainer">
+            <ArtistLeft />
         <div className="container-album">
             <ul>
                 {albumResults.map((album, index) => (
@@ -68,6 +71,7 @@ function ViewAlbum() {
                     </li>
                 ))}
             </ul>
+        </div>
         </div>
     );
 };
