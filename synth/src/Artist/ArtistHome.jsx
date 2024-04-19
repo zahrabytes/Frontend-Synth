@@ -47,8 +47,8 @@ function ArtistHome() {
                 <artistName>
                 <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
                 {item.artistName}
-                {item.verified ? <TbDiscountCheckFilled /> : null}
                 </artistName>
+                <div className="flex row">{item.verified ? <TbDiscountCheckFilled /> : null}</div>
               </div> 
             ))}
             <div class="rectangle-backdrop"></div>

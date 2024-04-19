@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "../index.css";
 
 import { Chart as ChartJS, 
     ArcElement,   
@@ -18,6 +19,7 @@ ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tool
 const TestReport = () => {
     const [genderReport, setGenderReport] = useState([]);
     const [ageReport, setAgeReport] = useState([]);
+    const [timestamp, setTimestamp] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,6 +30,9 @@ const TestReport = () => {
 
                 const age = await axios.get(`http://localhost:8800/artist-age-report`);
                 setAgeReport(age.data);
+
+                const timestamp = await axios.get(`http://localhost:8800/artist-age-timestamp`);
+                setTimestamp(timestamp.data);
                 
             } catch (err) {
                 console.log(err);
@@ -47,15 +52,16 @@ const TestReport = () => {
                 ],
                 borderColor: [
                     'rgb(227,232,236)',
-                ],
-            }
+                ],hoverOffset: 8
+            },
+            
         ],labels: genderReport.map((data) => {
             if (data.gender === 'F') {
-                return "% of Female followers";
+                return data.percentage + "% of your followers are Female";
             } else if (data.gender === 'M') {
-                return "% of Male followers";
+                return data.percentage + "% of your followers are Male";
             } else { 
-                return "% of Other followers";
+                return data.percentage + "% of your followers are Other";
             }
         }),
       };
@@ -73,29 +79,31 @@ const TestReport = () => {
         },
       };
 
-      
+    //   dataTimestamp
     return (
         <div>
             <h1>Listener Demographics</h1>
-            <div className='doughnut'>
+            <div className='flex-container'>
+            <div className='chart-container'>
             <Doughnut options={optionsGender} data={dataGender} />
             </div>
-            <div className='doughnut'>
-            <Bar
-                data={{
-                    labels: ageReport.map((data) => data.age_bracket),
-                    datasets: [
-                    {
-                        data: ageReport.map((data) => data.followers_count),
-                        backgroundColor: [
-                            "rgba(0, 0, 0, 0.6)",
-                            "rgba(255, 99, 132, 0.6)",
-                            "rgba(116, 139, 158, 0.6)",
+                <div className='chart-container'>
+                <Bar
+                    data={{
+                        labels: ageReport.map((data) => data.age_bracket),
+                        datasets: [
+                        {
+                            data: ageReport.map((data) => data.followers_count),
+                            backgroundColor: [
+                                "rgba(0, 0, 0, 0.6)",
+                                "rgba(255, 99, 132, 0.6)",
+                                "rgba(116, 139, 158, 0.6)",
+                            ],
+                        },
                         ],
-                    },
-                    ],
-                }}
-        />
+                    }}
+            />
+        </div>
         </div>
         </div>
     );

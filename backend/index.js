@@ -388,7 +388,7 @@ app.get('/view-artist/:artistID/', async (req, res) =>{
     const artistID = req.params.artistID;
     try {
         const query = `
-            SELECT artistName, genre, profilePic, verified
+            SELECT artistName, genre, profilePic, verified, num_followers
             FROM artist
             WHERE artistID = ?
         `;
@@ -1159,6 +1159,24 @@ app.get("/artist-age-report", (req, res) => {
 
         // Send the filtered data as JSON response
         res.json(filteredData);
+    });
+});
+
+app.get("/artist-timestamp", (req, res) => {
+    const query = `
+    SELECT DATE(timestamp) AS date,
+    COUNT(*) AS followers_gained
+    FROM artist_follower
+    WHERE artistID = 56
+    GROUP BY DATE(timestamp)
+    ORDER BY DATE(timestamp) ASC
+    `;
+    db.query(query, (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        // Send the filtered data as JSON response
+        res.json(data);
     });
 });
 
