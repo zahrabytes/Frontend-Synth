@@ -18,6 +18,10 @@ function LeftMenu() {
         navigate(`/Search/${id}`);
     };
 
+    const handleHome = () => {
+        navigate(`/${id}/user-home`);
+    };
+
     return (
         <div className="leftMenu">
             <div className ="logoContainer">

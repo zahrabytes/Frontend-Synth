@@ -11,18 +11,19 @@ import ArtistReport from './Artist/ArtistReport.jsx';
 import SongAdd from './Artist/SongAdd.jsx';
 import SongsView from './Artist/ViewAlbumArtist.jsx';
 import Disclaimer from './Disclaimer.js';
+import Home from './Home.js';
 import Landing from './Landing.js';
+import FlagOptions from './Listener/FlagReasons.js';
 import { ListenerHome } from './Listener/ListenerHome.js';
 import { SearchPage } from './Listener/SearchPage.js';
 import ViewAlbum from "./Listener/ViewAlbum.js";
+import ViewArtist from "./Listener/ViewArtist.js";
 import CreateAccount from './Pages/createAccount.jsx';
 import CreateAccountArtist from './Pages/createAccountArtist.jsx';
 import CreateAccountListener from './Pages/createAccountListener.jsx';
 import LoginAdmin from './Pages/login-admin.jsx';
 import LoginArtist from './Pages/login-artist.jsx';
 import ListenerLogin from './Pages/login-listener.jsx';
-import ViewArtist from "./Listener/ViewArtist.js"
-import Home from './Home.js';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
             <Route path="/login-artist" element={<LoginArtist />} />
             <Route path="/Disclaimer" element={<Disclaimer />} />
             <Route path="/Search/:id" element={<SearchPage />} />
+            <Route path="/submit-report/:id/:songID" element={<FlagOptions />} />
             <Route path="/View-Album/:id/:albumID" element={<ViewAlbum />} />
             <Route path="/View-Artist/:id/:artistID" element={<ViewArtist />} />
             <Route path ="/:artistID/albums/:albumID/songs" element ={<SongsView />} />
