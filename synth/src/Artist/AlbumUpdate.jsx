@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const AlbumUpdate = () => {
+    const {artistID} = useParams();
+    const {albumID} = useParams();
     const [album, setAlbum] = useState({
         artistName: "",
         albumName: "",
@@ -14,10 +16,6 @@ const AlbumUpdate = () => {
     })
 
     const navigate = useNavigate()
-    const location = useLocation()
-
-    const artistID = location.pathname.split("/")[1]
-    const id = location.pathname.split("/")[3]
 
     const handleChange = (e) =>{
         setAlbum(prev=>({...prev, [e.target.name]: e.target.value }))
@@ -30,7 +28,7 @@ const AlbumUpdate = () => {
     const handleClick = async (e) =>{
         e.preventDefault()
         try{
-            await axios.put("http://localhost:8800/"+id+"/albums", album)
+            await axios.put(`http://localhost:8800/${albumID}/albums`, album)
             navigate(`/${artistID}/Artist-Home`);
         } catch(err) {
             console.log(err)

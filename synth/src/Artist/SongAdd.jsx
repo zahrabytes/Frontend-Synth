@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 const SongAdd = () => {
 
   // Get the params from the URL
-  const { artistID, id } = useParams();
+  const { artistID, albumID } = useParams();
   // To grab the data when fetching the album
   const [album, setAlbum] = useState(null);
 
@@ -28,7 +28,7 @@ const SongAdd = () => {
 
     const fetchAlbum = async () => {
       try {
-        const album = await axios.get(`http://localhost:8800/albums/${id}/upload`);
+        const album = await axios.get(`http://localhost:8800/albums/${albumID}/upload`);
         setAlbum(album.data);
       } catch (error) {
         console.log('There was an error fetching the album:', error);
@@ -36,7 +36,7 @@ const SongAdd = () => {
     };
     // Call the fetchAlbum function to fetch the album when the component renders
     fetchAlbum();
-  }, [id]);
+  }, [albumID]);
 
   const handleSongUpload = async (e) => {
     // If the operation is not successfull dont clear the input out of the form
@@ -50,7 +50,7 @@ const SongAdd = () => {
     formData.append('song', songFile);
 
     try {
-      await axios.post(`http://localhost:8800/albums/${id}/upload`, formData, {
+      await axios.post(`http://localhost:8800/albums/${albumID}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

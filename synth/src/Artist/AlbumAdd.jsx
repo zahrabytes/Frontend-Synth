@@ -1,20 +1,16 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 
 const AlbumAdd = () => {
+    const { artistID } = useParams();
     const [album, setAlbum] = useState({
-        artistName: "",
         albumName: "",
-        genre: "",
         releaseDate: "",
         cover: ""
     })
-
-    const location = useLocation();
-    const artistId = location.pathname.split("/")[1]
 
     const navigate = useNavigate();
 
@@ -30,8 +26,8 @@ const AlbumAdd = () => {
     const handleClick = async (e) =>{
         e.preventDefault()
         try{
-            await axios.post("http://localhost:8800/"+artistId+"/albums", album);
-            navigate(`/${artistId}/Artist-Home`);
+            await axios.post(`http://localhost:8800/${artistID}/albums`, album);
+            navigate(`/${artistID}/Artist-Home`);
         } catch(err) {
             console.log(err)
         }
@@ -42,7 +38,7 @@ const AlbumAdd = () => {
     return (
         <div className="form">
             <h1>Add new album</h1>
-            <input type="text" placeholder='Album Name' onChange={handleChange} htmlFor='albumName' />
+            <input type="text" placeholder='Album Name' onChange={handleChange} name='albumName' />
             <div>
             <label htmlFor='releaseDate'>Release Date</label>
                     <DatePicker

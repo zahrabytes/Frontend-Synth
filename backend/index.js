@@ -920,6 +920,39 @@ app.delete('/admin/:songID/reject-report', async (req, res) => {
     }
 });
 
+//flag reasons
+app.post('/report/:songID/:listenerID/:reason', async (req, res) => {
+    try {
+        const { songID, listenerID, reason } = req.params;
+
+        // Check if the provided reason is valid
+        const validReasons = ['Abusive Behavior', 'Quality Control', 'Technical Issues', 'Copyright Infringement', 'Misrepresentation/Impersonation'];
+        if (!validReasons.includes(reason)) {
+            return res.status(400).json({ error: 'Invalid reason provided' });
+        }
+
+        // Check if the songID and listenerID exist in the database
+        const songQuery = 'SELECT * FROM songs WHERE songID = $1';
+        const listenerQuery = 'SELECT * FROM listeners WHERE listenerID = $1';
+        const songResult = await pool.query(songQuery, [songID]);
+        const listenerResult = await pool.query(listenerQuery, [listenerID]);
+
+        if (songResult.rows.length === 0 || listenerResult.rows.length === 0) {
+            return res.status(404).json({ error: 'Song or listener not found' });
+        }
+
+        // Insert the report into the database
+        const reportQuery = 'INSERT INTO reports (songID, listenerID, reason) VALUES ($1, $2, $3)';
+        await pool.query(reportQuery, [songID, listenerID, reason]);
+
+        return res.status(200).json({ message: 'Song reported successfully' });
+    } catch (error) {
+        console.error('Error reporting song:', error);
+        return res.status(500).json({ error: 'An error occurred while reporting the song' });
+    }
+});
+
+
 
 
 // Main page
@@ -930,8 +963,8 @@ app.get("/", (req, res) => {
 ///////// Jonathan backend for listener viewing an artist:
 
 //Fetch Albums from db
-app.get("/:id/albums", (req, res)=> {
-    const artistID = req.params.id;
+app.get("/:artistID/albums", (req, res)=> { 
+    const artistID = req.params.artistID;
     const q = "SELECT * FROM album WHERE artistID = ?";
     db.query(q, [artistID], (err, data)=>{
         if(err) {
@@ -942,10 +975,10 @@ app.get("/:id/albums", (req, res)=> {
 });
 
 //Uploading Albums
-app.post("/:id/albums", (req, res)=>{
-    const artistId = req.params.id;
+app.post("/:artistID/albums", (req, res)=>{
+    const artistID = req.params.artistID;
     const q = "INSERT INTO album (`artistID`, `albumName`, `releaseDate`, `cover`) VALUES (?)";
-    const values = [artistId, req.body.albumName, req.body.releaseDate, req.body.cover];
+    const values = [artistID, req.body.albumName, req.body.releaseDate, req.body.cover];
 
     db.query(q, [values], (err, data)=>{
         if (err) {
@@ -956,12 +989,12 @@ app.post("/:id/albums", (req, res)=>{
 });
 
 //Updating Albums
-app.put("/:id/albums", (req, res)=>{
-    const albumId = req.params.id;
+app.put("/:albumID/albums", (req, res)=>{
+    const albumID = req.params.albumID;
     const q = "UPDATE album SET `albumName` = ?, `releaseDate` = ?, `cover` = ? WHERE albumID = ?";
     const values = [req.body.albumName, req.body.releaseDate, req.body.cover];
 
-    db.query(q, [...values, albumId], (err, data)=>{
+    db.query(q, [...values, albumID], (err, data)=>{
         if(err) {
             return res.json(err);
         }
@@ -970,11 +1003,11 @@ app.put("/:id/albums", (req, res)=>{
 })
 
 //Deleting Albums
-app.delete("/:id/albums", (req, res)=>{
-    const albumId = req.params.id;
+app.delete("/:albumID/albums", (req, res)=>{
+    const albumID = req.params.albumID;
     const q = "DELETE FROM album WHERE albumID = ?";
 
-    db.query(q, [albumId], (err, data)=>{
+    db.query(q, [albumID], (err, data)=>{
         if(err) {
             return res.json(err);
         }
@@ -983,8 +1016,8 @@ app.delete("/:id/albums", (req, res)=>{
 });
 
 //Upload Songs to Album
-app.post("/albums/:id/upload", upload.single('song'), async (req, res) => {
-    const albumID = req.params.id;
+app.post("/albums/:albumID/upload", upload.single('song'), async (req, res) => {
+    const albumID = req.params.albumID;
     const bucketName = process.env.BUCKET_NAME;
     const songFile = req.file
     const { songTitle, songDuration } = req.body;
@@ -1020,8 +1053,8 @@ app.post("/albums/:id/upload", upload.single('song'), async (req, res) => {
 });
 
 //Upload Songs to Album
-app.post("/albums/:id/upload", (req, res)=> {
-    const albumID = req.params.id;
+app.post("/albums/:albumID/upload", (req, res)=> {
+    const albumID = req.params.albumID;
     const { songTitle, filePath, songDuration } = req.body;
 
     const songData = {songTitle, albumID, filePath, songDuration};
