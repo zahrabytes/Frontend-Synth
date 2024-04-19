@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { BiPulse, BiSearch } from "react-icons/bi";
-import { BsFillHouseFill, BsJournalAlbum } from "react-icons/bs";
-import { FaMicrophoneAlt } from "react-icons/fa";
+import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate, useParams } from "react-router-dom"; // Import Link
 import '../index.css';
 import './LeftMenu.css';
+import { MenuList } from "./MenuList";
 
 function LeftMenu() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -34,8 +33,7 @@ function LeftMenu() {
             </i>
             {/*<MenuPlayList />
             <TrackList />*/}
-        </div>
-        <div>
+            <div>
         <ul className="menuContainer">
         {/* Render each menu option as a list item */}
         {MenuList.map((item) => (
@@ -47,32 +45,10 @@ function LeftMenu() {
         ))}
       </ul>
       </div>
+        </div>
     </div>
     );
 }
-
-const MenuList = [
-    {
-      id: 1,
-      icon: <BsFillHouseFill />,
-      name: "Home",
-    },
-    {
-      id: 2,
-      icon: <BiPulse />,
-      name: "Discover",
-    },
-    {
-      id: 3,
-      icon: <FaMicrophoneAlt />,
-      name: "Artist",
-    },
-    {
-      id: 5,
-      icon: <BsJournalAlbum />,
-      name: "Albums",
-    },
-  ];
   
-export { LeftMenu, MenuList };
+export { LeftMenu };
 
