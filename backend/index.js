@@ -388,7 +388,7 @@ app.get('/view-artist/:artistID/', async (req, res) =>{
     const artistID = req.params.artistID;
     try {
         const query = `
-            SELECT artistName, genre, profilePic
+            SELECT artistName, genre, profilePic, verified, num_followers
             FROM artist
             WHERE artistID = ?
         `;
@@ -759,7 +759,7 @@ app.get('/:id/:albumID/songs-liked', async (req, res) => {
     const albumID = req.params.albumID;
     const listenerID = req.params.id;
     const query = `
-    SELECT DISTINCT song_like.songID 
+    SELECT DISTINCT song_like.songID
     FROM song_like, song, album, listener
     WHERE song.songID = song_like.songID AND song.albumID = ? AND song_like.listenerID = ?
     `;
@@ -797,7 +797,7 @@ app.get('/:id/albums-liked', async (req, res) => {
 app.get('/:id/songs-liked', async (req, res) => {
     const listenerID = req.params.id;
     const query = `
-    SELECT DISTINCT SL.songID, S.songTitle, A.albumName, S.filePath
+    SELECT DISTINCT SL.songID, S.songTitle, A.albumName, S.filePath, A.cover
     FROM song_like AS SL, song AS S, album AS A, listener AS L
     WHERE S.songID = SL.songID AND S.albumID = A.albumID AND SL.listenerID = ?
     `;
@@ -963,8 +963,8 @@ app.get("/", (req, res) => {
 ///////// Jonathan backend for listener viewing an artist:
 
 //Fetch Albums from db
-app.get("/:id/albums", (req, res)=> {
-    const artistID = req.params.id;
+app.get("/:artistID/albums", (req, res)=> { 
+    const artistID = req.params.artistID;
     const q = "SELECT * FROM album WHERE artistID = ?";
     db.query(q, [artistID], (err, data)=>{
         if(err) {
@@ -975,10 +975,10 @@ app.get("/:id/albums", (req, res)=> {
 });
 
 //Uploading Albums
-app.post("/:id/albums", (req, res)=>{
-    const artistId = req.params.id;
+app.post("/:artistID/albums", (req, res)=>{
+    const artistID = req.params.artistID;
     const q = "INSERT INTO album (`artistID`, `albumName`, `releaseDate`, `cover`) VALUES (?)";
-    const values = [artistId, req.body.albumName, req.body.releaseDate, req.body.cover];
+    const values = [artistID, req.body.albumName, req.body.releaseDate, req.body.cover];
 
     db.query(q, [values], (err, data)=>{
         if (err) {
@@ -989,12 +989,12 @@ app.post("/:id/albums", (req, res)=>{
 });
 
 //Updating Albums
-app.put("/:id/albums", (req, res)=>{
-    const albumId = req.params.id;
+app.put("/:albumID/albums", (req, res)=>{
+    const albumID = req.params.albumID;
     const q = "UPDATE album SET `albumName` = ?, `releaseDate` = ?, `cover` = ? WHERE albumID = ?";
     const values = [req.body.albumName, req.body.releaseDate, req.body.cover];
 
-    db.query(q, [...values, albumId], (err, data)=>{
+    db.query(q, [...values, albumID], (err, data)=>{
         if(err) {
             return res.json(err);
         }
@@ -1003,11 +1003,11 @@ app.put("/:id/albums", (req, res)=>{
 })
 
 //Deleting Albums
-app.delete("/:id/albums", (req, res)=>{
-    const albumId = req.params.id;
+app.delete("/:albumID/albums", (req, res)=>{
+    const albumID = req.params.albumID;
     const q = "DELETE FROM album WHERE albumID = ?";
 
-    db.query(q, [albumId], (err, data)=>{
+    db.query(q, [albumID], (err, data)=>{
         if(err) {
             return res.json(err);
         }
@@ -1016,8 +1016,8 @@ app.delete("/:id/albums", (req, res)=>{
 });
 
 //Upload Songs to Album
-app.post("/albums/:id/upload", upload.single('song'), async (req, res) => {
-    const albumID = req.params.id;
+app.post("/albums/:albumID/upload", upload.single('song'), async (req, res) => {
+    const albumID = req.params.albumID;
     const bucketName = process.env.BUCKET_NAME;
     const songFile = req.file
     const { songTitle, songDuration } = req.body;
@@ -1053,8 +1053,8 @@ app.post("/albums/:id/upload", upload.single('song'), async (req, res) => {
 });
 
 //Upload Songs to Album
-app.post("/albums/:id/upload", (req, res)=> {
-    const albumID = req.params.id;
+app.post("/albums/:albumID/upload", (req, res)=> {
+    const albumID = req.params.albumID;
     const { songTitle, filePath, songDuration } = req.body;
 
     const songData = {songTitle, albumID, filePath, songDuration};
@@ -1122,6 +1122,96 @@ app.post('/:songID/stream-song', async (req, res) =>{
     }
 });
 
+
+app.get("/artist-gender-report", (req, res) => {
+    //const artistID = req.params.id;
+    const query = `
+    SELECT 
+    gender,
+    gender_count,
+            ROUND((gender_count / total_count) * 100, 2) AS percentage
+        FROM (SELECT 
+                listener.gender,
+                COUNT(*) AS gender_count,
+                (SELECT COUNT(*) FROM artist_follower WHERE artistID = 56) AS total_count
+            FROM 
+                artist_follower
+            JOIN 
+                listener ON listener.listenerID = artist_follower.listenerID
+            WHERE 
+                artistID = 56
+            GROUP BY 
+                listener.gender
+        ) AS gender_counts
+    `;
+    db.query(query, /*[artistID],*/ (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        return res.json(data);
+        res.status(200).send('gender report successful');
+    });
+});
+
+app.get("/artist-age-report", (req, res) => {
+    const query = `
+        SELECT 
+            CASE
+            WHEN age < 18 THEN 'Under 18'
+            WHEN age >= 18 AND age <= 24 THEN '18-24'
+            WHEN age >= 25 AND age <= 29 THEN '25-29'
+            WHEN age >= 30 AND age <= 34 THEN '30-34'
+            WHEN age >= 35 AND age <= 39 THEN '35-39'
+            WHEN age >= 40 AND age <= 44 THEN '40-44'
+            WHEN age >= 45 AND age <= 49 THEN '45-49'
+            WHEN age >= 50 AND age <= 54 THEN '50-54'
+            WHEN age >= 55 AND age <= 59 THEN '55-59'
+            WHEN age >= 60 AND age <= 64 THEN '60-64'
+            WHEN age >= 65 THEN '65+'
+            END AS age_bracket,
+            COUNT(*) AS followers_count
+        FROM 
+            artist_follower
+        JOIN 
+            listener ON listener.listenerID = artist_follower.listenerID
+        WHERE 
+            artistID = 56 
+        GROUP BY 
+            age_bracket
+        ORDER BY 
+            age_bracket
+    `;
+    
+    db.query(query, (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        // Filter out entries where age_bracket is null or empty
+        const filteredData = data.filter(entry => entry.age_bracket);
+
+        // Send the filtered data as JSON response
+        res.json(filteredData);
+    });
+});
+
+app.get("/artist-timestamp", (req, res) => {
+    const query = `
+    SELECT DATE(timestamp) AS date,
+    COUNT(*) AS followers_gained
+    FROM artist_follower
+    WHERE artistID = 56
+    GROUP BY DATE(timestamp)
+    ORDER BY DATE(timestamp) ASC
+    `;
+    db.query(query, (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        // Send the filtered data as JSON response
+        res.json(data);
+    });
+});
 
 
 // Start the server

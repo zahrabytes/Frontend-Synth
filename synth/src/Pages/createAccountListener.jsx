@@ -13,7 +13,7 @@ const CreateAccountListener = () => {
         username: '',
         password: '',
         gender: ' ',
-        DoB: null,
+        DoB: '',
         profilePic: '',
     });
 
@@ -102,7 +102,7 @@ const CreateAccountListener = () => {
                     />
                 </div>
                 <div>
-                <label htmlFor="gender">Gender:</label>
+                <label htmlFor="gender">Gender:</label> 
                     <select id="gender" name="gender" value={formData.gender} onChange={handleChange} required>
                         <option value="">Select Gender</option>
                         <option value="F">Female</option>
@@ -112,12 +112,17 @@ const CreateAccountListener = () => {
                 </div>
                 <div>
                     <label htmlFor="DoB">Date of Birth</label>
-                    <DatePicker
+                        <DatePicker
+                        closeOnScroll={(e) => e.target === document}
                         selected={formData.DoB}
                         onChange={handleDateChange}
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Select Date of Birth"
-                        required
+                        required                    
                     />
                 </div>
                 <div>
@@ -130,7 +135,7 @@ const CreateAccountListener = () => {
                         onChange={handleChange}
                     />
                 </div>
-                <button type="submit" className="custom-button custom-button-primary">Submit</button>
+                <button className="custom-button custom-button-primary">Submit</button>
             </form>
         </div>
     );

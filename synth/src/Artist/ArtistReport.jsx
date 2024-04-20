@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 const ArtistReport = () => {
     const [mostLikedSongs, setMostLikedSongs] = useState([]);
     const location = useLocation();
+    
     const artistId = location.pathname.split("/")[1];
 
     useEffect(() => {

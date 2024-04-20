@@ -1,12 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import '../index.css';
 
 const Albums = () => {
     const [albums, setAlbums] = useState([])
-    const location = useLocation();
-    const { id } = useParams();
+    const { artistID } = useParams();
 
     const navigate = useNavigate();
 
@@ -14,7 +13,7 @@ const Albums = () => {
     useEffect(()=>{
         const fetchAllAlbums = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/${id}/albums`)
+                const res = await axios.get(`http://localhost:8800/${artistID}/albums`)
                 setAlbums(res.data)
             } catch(err) {
                 console.log(err)
@@ -23,9 +22,9 @@ const Albums = () => {
         fetchAllAlbums()
     }, [])
 
-    const handleDelete = async (id)=>{
+    const handleDelete = async (albumID)=>{
         try{
-            await axios.delete(`http://localhost:8800/${id}/albums`)
+            await axios.delete(`http://localhost:8800/${albumID}/albums`) 
             window.location.reload()
         } catch(err) {
             console.log(err)
@@ -33,7 +32,7 @@ const Albums = () => {
     }
 
     const handleAlbumSelect = (albumID) => {
-        navigate(`/${id}/albums/${albumID}/songs`);
+        navigate(`/ViewAlbumArtist/${artistID}/${albumID}`);
       };
 
       return (
@@ -49,15 +48,15 @@ const Albums = () => {
                   <div>
                     <h2 onClick={() => handleAlbumSelect(album.albumID)}>{album.albumName}</h2>
                     <button className='button'>
-                      <Link to={`/${id}/upload/${album.albumID}`} style={{ textDecoration: 'none', color: 'inherit' }}>Upload Songs</Link>
+                      <Link to={`/${artistID}/upload/${album.albumID}`} style={{ textDecoration: 'none', color: 'inherit' }}>Upload Songs</Link>
                     </button>
                     <button className='button'>
-                      <Link to={`/${id}/update/${album.albumID}`} style={{ textDecoration: 'none', color: 'inherit' }}>Update</Link>
+                      <Link to={`/${artistID}/update/${album.albumID}`} style={{ textDecoration: 'none', color: 'inherit' }}>Update</Link>
                     </button>
                     <button className='button' onClick={() => handleDelete(album.albumID)}>Delete</button>
                     <button className='button'>
-                      <Link to={`/${id}/albums/${album.albumID}/songs`} style={{ textDecoration: 'none', color: 'inherit' }}>View Songs</Link>
-                    </button>
+                      <Link to={`/${artistID}/albums/${album.albumID}/songs`} style={{ textDecoration: 'none', color: 'inherit' }}>View Songs</Link>
+                    </button> 
                   </div>
                 </div>
               </div>

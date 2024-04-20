@@ -1,9 +1,12 @@
-import axios from 'axios'
-import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { ArtistLeft } from './LeftMenu'
+import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const AlbumUpdate = () => {
+    const {artistID} = useParams();
+    const {albumID} = useParams();
     const [album, setAlbum] = useState({
         artistName: "",
         albumName: "",
@@ -13,20 +16,20 @@ const AlbumUpdate = () => {
     })
 
     const navigate = useNavigate()
-    const location = useLocation()
-
-    const artistID = location.pathname.split("/")[1]
-    const id = location.pathname.split("/")[3]
 
     const handleChange = (e) =>{
         setAlbum(prev=>({...prev, [e.target.name]: e.target.value }))
     }
 
+    const handleDateChange = (date) => {
+        setAlbum({ ...album, releaseDate: date });
+    };
+
     const handleClick = async (e) =>{
         e.preventDefault()
         try{
-            await axios.put("http://localhost:8800/"+id+"/albums", album)
-            navigate("/"+artistID+"/albums")
+            await axios.put(`http://localhost:8800/${albumID}/albums`, album)
+            navigate(`/${artistID}/Artist-Home`);
         } catch(err) {
             console.log(err)
         }
@@ -40,7 +43,19 @@ const AlbumUpdate = () => {
         <div className="form">
             <h1>Update the Album</h1>
             <input type="text" placeholder='album name' onChange={handleChange} name='albumName' />
-            <input type="text" placeholder='YYYY-MM-DD' onChange={handleChange} name='releaseDate' />
+            <label htmlFor='releaseDate'>Release Date</label>
+                    <DatePicker
+                        closeOnScroll={(e) => e.target === document}
+                        selected={album.releaseDate}
+                        onChange={handleDateChange}
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="yyyy/MM/dd"
+                        placeholderText="Select Release Date"
+                        required                    
+                    />
             <input type="text" placeholder='cover url' onChange={handleChange} name='cover' />
             <button className='formButton' onClick={handleClick}>Update</button>
         </div>
