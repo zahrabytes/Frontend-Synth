@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../index.css";
+import { formatDate } from "../DateFormat.js";
 
 import {
     ArcElement,
@@ -26,7 +27,7 @@ const TestReport = () => {
     const [timestamp, setTimestamp] = useState([]);
     const [followersListeners, setFollowersListeners] = useState([]);
     const [doughnutData, setDoughnutData] = useState('genderReport');
-    const [selected,setSelected]=useState('Gender of Followers')
+    const [selected,setSelected]=useState('Gender of Followers');
 
     const handleChange=(e)=>{
         console.log(e.target.value)

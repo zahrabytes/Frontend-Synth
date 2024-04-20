@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AdminContext } from '../context/AdminContext';
 import './LeftMenu.css';
 import './MainContainer.css';
@@ -8,6 +8,7 @@ import './MainContainer.css';
 function MainContainer() {
     const { notifications, dispatch } = useContext(AdminContext);
 
+    const navigate = useNavigate();
     useEffect(() => {
         // Function to fetch notifications from backend
         const fetchNotifications = async () => {
@@ -77,7 +78,9 @@ const handleRejectReport = async (songID) => {
                                 <div className="section">
                                     {/* Wrap song title in Link component */}
                                     <p>
-                                        <Link to={`/1/${notification.albumID}`}className="song-link">{notification.songTitle}</Link>
+                                    <div onClick={() => navigate(`/1/Get-Flag-Details/${notification.songID}`)} className="song-link">
+                                        {notification.songTitle}
+                                    </div>
                                         <span className="spanArtist"> {notification.artistName}</span>
                                     </p>
                                     <div className="removereject">

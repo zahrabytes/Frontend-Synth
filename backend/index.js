@@ -948,6 +948,46 @@ app.post('/report/:songID/:listenerID/', async (req, res) => {
     }
 });
 
+// get flag details
+app.get('/get-flag-details/:songID', async (req, res) => {
+    const songID = req.params.songID;
+    try {
+      const query = `
+        SELECT f.reason, l.fname, l.lname, l.username, f.timestamp
+        FROM flag f
+        JOIN listener l ON f.listenerID = l.listenerID
+        WHERE f.songID = ?
+        ORDER BY f.timestamp DESC
+      `;
+      const [reports] = await db.promise().query(query, [songID]);
+      res.status(200).json(reports);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).send('Internal server error');
+    }
+  });
+
+  // Reason why it was flagged the most
+  app.get('/get-flag-details/:songID/most-flagged-reason', async (req, res) => {
+    const songID = req.params.songID;
+  
+    try {
+      const query = `
+        SELECT f.reason, COUNT(*) AS count
+        FROM flag f
+        WHERE f.songID = ?
+        GROUP BY f.reason
+        ORDER BY count DESC
+        LIMIT 1
+      `;
+      const [mostCommonReason] = await db.promise().query(query, [songID]);
+      res.status(200).json(mostCommonReason[0]);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).send('Internal server error');
+    }
+  });
+
 // Main page
 app.get("/", (req, res) => {
     res.json("This is the main page");
