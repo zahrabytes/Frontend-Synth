@@ -71,7 +71,7 @@ const SongAdd = () => {
   return (
     <div className="adminContainer">
             <ArtistLeft />
-    <div className="container-album">
+    <div className="content-container">
     <div>
       {album && (
         <div>

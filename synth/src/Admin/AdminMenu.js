@@ -1,5 +1,5 @@
 
-import { BiSolidBell, BiSolidCog, BiSolidComment } from "react-icons/bi";
+import { BiPulse, BiSolidComment } from "react-icons/bi";
 import { BsFillHouseFill } from "react-icons/bs";
 
 const AMenuList = [
@@ -7,21 +7,17 @@ const AMenuList = [
       id: 1,
       icon: <BsFillHouseFill />,
       name: "Home",
+      path: "/admin-home",
     },
     {
       id: 2,
-      icon: <BiSolidBell />,
-      name: "Notifications",
+      icon: <BiSolidComment />,
+      name: "Flag Reports",
     },
     {
       id: 3,
-      icon: <BiSolidComment />,
-      name: "Reports",
-    },
-    {
-      id: 5,
-      icon: <BiSolidCog />,
-      name: "Settings",
+      icon: <BiPulse/>,
+      name: "Logout",
     },
   ];
   

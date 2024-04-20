@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AdminContext } from '../context/AdminContext';
+import './LeftMenu.css';
 import './MainContainer.css';
 
 function MainContainer() {
@@ -52,17 +53,12 @@ const handleRejectReport = async (songID) => {
 
 
     return (
+        <div className="content-container">
         <div className='mainContainer'>
             <div className="menuList">
                 <ul>
                     <li>
-                        <a href="#">Active</a>
-                    </li>
-                    <li>
-                        <a href="#">Resolved</a>
-                    </li>
-                    <li>
-                        <Link to="/" className="roundedButton">Logout</Link>
+                        <a href="#">Admin Report Notifications</a>
                     </li>
                 </ul>
             </div>
@@ -81,7 +77,7 @@ const handleRejectReport = async (songID) => {
                                 <div className="section">
                                     {/* Wrap song title in Link component */}
                                     <p>
-                                        <Link to={`/1/${notification.albumID}`}>{notification.songTitle}</Link>
+                                        <Link to={`/1/${notification.albumID}`}className="song-link">{notification.songTitle}</Link>
                                         <span className="spanArtist"> {notification.artistName}</span>
                                     </p>
                                     <div className="removereject">
@@ -100,6 +96,10 @@ const handleRejectReport = async (songID) => {
                     </div>
                 ))}
             </div>
+        </div>
+        <Link to="/" className="logout-button3">
+        Logout
+      </Link>
         </div>
     );
 }

@@ -10,12 +10,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 30px;
+    padding: 15px 40px;
     background: rgba(0, 0, 0, 0.5);
   }
   
   .menuList ul {
     display: flex;
+    padding-top: 10px;
+    padding-bottom: 10px;
     align-items: center;
   }
   
@@ -206,4 +208,13 @@
 .removereject .RejectReport {
   color: #ffffff;
   font-size: 18px; /* Adjust the font size as needed */
+}
+
+.song-link {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Inherit color */
+}
+
+.song-link:hover {
+  color: inherit; /* Maintain color on hover */
 }

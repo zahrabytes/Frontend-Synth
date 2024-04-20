@@ -1,16 +1,9 @@
 import React from "react";
-import { BiSearch } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
-import { Menu } from "../Listener/Menu";
+import { Link, useParams } from "react-router-dom";
 import { AMenuList } from "./AdminMenu";
 
 function AdminPage() {
-  const navigate = useNavigate(); // Initialize useNavigate
-
-    const handleSearchClick = () => {
-        // Navigate to the search page when the search box is clicked
-        navigate("/search");
-    };
+  const { id } = useParams();
 
     return (
         <div>
@@ -22,15 +15,17 @@ function AdminPage() {
                 </i>
               </div>
             </div>
-            <div className="searchBox" onClick={handleSearchClick}>
-              <input type="text" placeholder="Search..." />
-              <i>
-                <BiSearch />
-              </i>
-            </div>
-            <Menu title={"Menu"} menuObject={AMenuList} />
-          </div>
-          
+            <ul className="menuContainer">
+          {/* Render each menu option as a list item */}
+          {AMenuList.map((item) => (
+            <li key={item.id}>
+              <Link to={`/${id}${item.path}`}>
+                {item.icon} {item.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+          </div> 
       </div>
           
       );

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const LoginOptions = () => {
     return (
-        <div>
+        <div className='content-container'>
             <h1 className="textwhite">Try it now</h1>
             <div className="options-banner">
                 <Link to="/registration" className="option">Register</Link>

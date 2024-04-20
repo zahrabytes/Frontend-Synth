@@ -5,8 +5,8 @@ import LoginOptions from './LoginOptions';
 const Home = () => {
     return (
         <div className='flex-container'>
-            <div className='right-align-container'><Disclaimer /></div>
-            <div className='left-align-container'><LoginOptions /></div>
+            <div className='content-container'><Disclaimer /></div>
+            <div className='content-container'><LoginOptions /></div>
         </div>
     );
 }

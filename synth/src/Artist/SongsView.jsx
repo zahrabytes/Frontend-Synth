@@ -23,7 +23,7 @@ const AlbumSongs = () => {
     return (
         <div className="adminContainer">
             <ArtistLeft />
-        <div>
+        <div className="content-container">
             <h1>Songs</h1>
             <div className="songs">
                 {songs.map((song) => (

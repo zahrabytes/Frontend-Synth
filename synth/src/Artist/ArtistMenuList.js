@@ -1,4 +1,4 @@
-import { BiSolidBell, BiSolidComment } from "react-icons/bi";
+import { BiPulse, BiSolidBell, BiSolidComment } from "react-icons/bi";
 import { BsFillHouseFill } from "react-icons/bs";
 
 const ArtistMenuList = [
@@ -20,6 +20,12 @@ const ArtistMenuList = [
     name: "Run Report",
     path: "/reports", // Define path for Run Report
   },
+  {
+    id: 3,
+    icon: <BiPulse/>,
+    name: "Logout",
+  },
+  
 ];
 
 export { ArtistMenuList };

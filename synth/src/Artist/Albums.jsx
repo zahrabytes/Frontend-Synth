@@ -55,16 +55,16 @@ const Albums = () => {
                     </button>
                     <button className='button' onClick={() => handleDelete(album.albumID)}>Delete</button>
                     <button className='button'>
-                      <Link to={`/${artistID}/albums/${album.albumID}/songs`} style={{ textDecoration: 'none', color: 'inherit' }}>View Songs</Link>
+                      <Link to={`/ViewAlbumArtist/${artistID}/${album.albumID}/`} style={{ textDecoration: 'none', color: 'inherit' }}>View Songs</Link>
                     </button> 
                   </div>
                 </div>
               </div>
             ))}
             </div>
-            <button className="logout-button">
-                <Link to="/"style={{ textDecoration: 'none', color: 'inherit' }}>Logout</Link>
-            </button>
+            <Link to="/" className="logout-button">
+          Logout
+        </Link>
         </div>
     );
 };
