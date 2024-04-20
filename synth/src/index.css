@@ -178,6 +178,20 @@ subheader {
   font-weight: 700;
 }
 
+.followers-text{
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 700;
+  margin-left: 20px;
+}
+
+.followers-text2{
+  color: #222222;
+  font-size: 28px;
+  font-weight: 700;
+  margin-left: 20px;
+}
+
 .textwhite{
   color: #ffffff;
   font-size: 40px;
@@ -508,7 +522,17 @@ artistName {
   opacity: 0.82;
   flex-grow: 1;
   display: flex;
-  margin-bottom: 15px;
+}
+
+.rectangle-backdrop2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 240px;
+  background-color: whitesmoke;
+  opacity: 0.5;
+  z-index: -1;
 }
 
   .audio-player-bar {

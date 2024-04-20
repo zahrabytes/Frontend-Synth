@@ -110,7 +110,7 @@ function ViewArtist() {
                                 <div className="heart-container" onClick={() => isFollower ? handleUnfollowArtist() : handleFollowArtist()}>
                                     {isFollower ? <PiHeartFill /> : <PiHeartLight />}
                                 </div>
-                                <div className='text'>{item.num_followers} Followers</div>
+                                <div className='followers-text2'>{item.num_followers} Followers</div>
                             </artistName>
                         </div>
                     ))}

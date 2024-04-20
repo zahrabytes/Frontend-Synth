@@ -117,11 +117,12 @@ function ArtistHome() {
                 <artistName>
                 <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
                 {item.artistName}
+                <div className='followers-text'>{item.num_followers} Followers</div>
                 </artistName>
                 <div className="flex row">{item.verified ? <TbDiscountCheckFilled /> : null}</div>
               </div> 
             ))}
-            <div class="rectangle-backdrop"></div>
+            <div class="rectangle-backdrop2"></div>
         </div>
         <div className="adminContainer">
             <ArtistLeft />
