@@ -13,7 +13,7 @@ const Albums = () => {
     useEffect(()=>{
         const fetchAllAlbums = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/${artistID}/albums`)
+                const res = await axios.get(`http://localhost:8000/${artistID}/albums`)
                 setAlbums(res.data)
             } catch(err) {
                 console.log(err)
@@ -24,7 +24,7 @@ const Albums = () => {
 
     const handleDelete = async (albumID)=>{
         try{
-            await axios.delete(`http://localhost:8800/${albumID}/albums`) 
+            await axios.delete(`http://localhost:8000/${albumID}/albums`) 
             window.location.reload()
         } catch(err) {
             console.log(err)

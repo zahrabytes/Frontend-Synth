@@ -20,7 +20,7 @@ function ViewAlbum() {
 
             try {
                 // Fetch album details
-                const album = await axios.get(`http://localhost:8800/view-album/${albumID}`);
+                const album = await axios.get(`http://localhost:8000/view-album/${albumID}`);
                 setAlbumResults(album.data);
             } catch (error) {
                 // Handle album fetch error
@@ -29,7 +29,7 @@ function ViewAlbum() {
 
             try {
                 // Fetch songs details
-                const songs = await axios.get(`http://localhost:8800/view-album/${albumID}/song/`);
+                const songs = await axios.get(`http://localhost:8000/view-album/${albumID}/song/`);
                 setSongResults(songs.data);
             } catch (error) {
                 console.error('Error fetching songs:', error);
@@ -48,7 +48,7 @@ function ViewAlbum() {
 
     const findLikedSongs = async () => {
         try {
-            const songsP = await axios.get(`http://localhost:8800/${id}/${albumID}/songs-liked`);
+            const songsP = await axios.get(`http://localhost:8000/${id}/${albumID}/songs-liked`);
             const songsLikedData = songsP.data;
             const likedSongIDs = songsLikedData.map(song => song.songID);
             setLikedSongs(new Set(likedSongIDs));
@@ -60,7 +60,7 @@ function ViewAlbum() {
 
     const findLikedAlbum = async () => {
         try {
-            const likedAlbum = await axios.get(`http://localhost:8800/${id}/albums-liked`);
+            const likedAlbum = await axios.get(`http://localhost:8000/${id}/albums-liked`);
             // If the liked album in the album_like table matches the albumID in the params, set the albumLike hook to true
             setAlbumLike(likedAlbum.data.some(album => album.albumID === parseInt(albumID)));
         } catch (error) {
@@ -70,7 +70,7 @@ function ViewAlbum() {
 
     const handleFlag = async (songID, song) => {
         try {
-            await axios.post(`http://localhost:8800/flag-song/${songID}`);
+            await axios.post(`http://localhost:8000/flag-song/${songID}`);
             // setFlaggedSongs(prevFlaggedSongs => new Set([...prevFlaggedSongs, songID]));
             console.log('Song Flagged');
             navigate(`/submit-report/${id}/${songID}`, { state: { song } }); 
@@ -82,7 +82,7 @@ function ViewAlbum() {
     // Like album
     const handleLikeAlbum = async () => {
         try {
-            await axios.post(`http://localhost:8800/${id}/${albumID}/like-album`);
+            await axios.post(`http://localhost:8000/${id}/${albumID}/like-album`);
             setAlbumLike(true);
             console.log('Album liked:', albumID);
         } catch (error) {
@@ -93,7 +93,7 @@ function ViewAlbum() {
     // Unlike album
     const handleUnlikeAlbum = async () => {
         try {
-            await axios.delete(`http://localhost:8800/${id}/${albumID}/unlike-album`);
+            await axios.delete(`http://localhost:8000/${id}/${albumID}/unlike-album`);
             setAlbumLike(false);
             console.log('Album unliked:', albumID);
         } catch (error) {
@@ -104,7 +104,7 @@ function ViewAlbum() {
     // Like song
     const handleLikeSong = async (songID) => {
         try {
-            await axios.post(`http://localhost:8800/${id}/${songID}/like-song`);
+            await axios.post(`http://localhost:8000/${id}/${songID}/like-song`);
             setLikedSongs(prevLikedSongs => new Set([...prevLikedSongs, songID]));
         } catch (error) {
             console.error('Error liking song:', error);
@@ -114,7 +114,7 @@ function ViewAlbum() {
     // Unlike song
     const handleUnlikeSong = async (songID) => {
         try {
-            await axios.delete(`http://localhost:8800/${id}/${songID}/unlike-song`);
+            await axios.delete(`http://localhost:8000/${id}/${songID}/unlike-song`);
             const updatedLikedSongs = new Set(likedSongs);
             updatedLikedSongs.delete(songID);
             setLikedSongs(updatedLikedSongs);

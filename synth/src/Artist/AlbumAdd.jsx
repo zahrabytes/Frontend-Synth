@@ -28,7 +28,7 @@ const AlbumAdd = () => {
     const handleClick = async (e) =>{
         e.preventDefault()
         try{
-            await axios.post(`http://localhost:8800/${artistID}/albums`, album);
+            await axios.post(`http://localhost:8000/${artistID}/albums`, album);
             navigate(`/${artistID}/Artist-Home`);
         } catch(err) {
             console.log(err)

@@ -11,7 +11,7 @@ const ArtistReport = () => {
     useEffect(() => {
         const fetchMostLikedSongs = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/${artistId}/reports`);
+                const res = await axios.get(`http://localhost:8000/${artistId}/reports`);
                 setMostLikedSongs(res.data);
             } catch (err) {
                 console.log(err);

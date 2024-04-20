@@ -1,18 +1,20 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../index.css";
 
-import { Chart as ChartJS, 
-    ArcElement,   
-    CategoryScale,
-    LinearScale,
+import {
+    ArcElement,
     BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
     Title,
-    Tooltip, 
-    Legend } from "chart.js/auto";
-import { Bar, Doughnut } from 'react-chartjs-2';
+    Tooltip
+} from "chart.js/auto";
 import 'chartjs-plugin-datalabels';
+import { Bar, Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -25,13 +27,13 @@ const TestReport = () => {
     useEffect(() => {
         const fetchReport = async () => {
             try {
-                const gender = await axios.get(`http://localhost:8800/artist-gender-report`);
+                const gender = await axios.get(`http://localhost:8000/artist-gender-report`);
                 setGenderReport(gender.data);
 
-                const age = await axios.get(`http://localhost:8800/artist-age-report`);
+                const age = await axios.get(`http://localhost:8000/artist-age-report`);
                 setAgeReport(age.data);
 
-                const timestamp = await axios.get(`http://localhost:8800/artist-age-timestamp`);
+                const timestamp = await axios.get(`http://localhost:8000/artist-age-timestamp`);
                 setTimestamp(timestamp.data);
                 
             } catch (err) {

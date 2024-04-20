@@ -1215,6 +1215,6 @@ app.get("/artist-timestamp", (req, res) => {
 
 
 // Start the server
-app.listen(8800, () => {
+app.listen(8000, () => {
     console.log("Connected to backend!");
 });

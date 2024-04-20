@@ -18,11 +18,11 @@ function ViewAlbumArtist() {
         const fetchAlbum = async () => {
             try {
                 // Fetch album details
-                const album = await axios.get(`http://localhost:8800/view-album/${albumID}`);
+                const album = await axios.get(`http://localhost:8000/view-album/${albumID}`);
                 setAlbumResults(album.data);
 
                 // Fetch song details
-                const songs = await axios.get(`http://localhost:8800/view-album/${albumID}/song/`);
+                const songs = await axios.get(`http://localhost:8000/view-album/${albumID}/song/`);
                 dispatch({ type: 'SET_SONGS', payload: songs.data });
             } catch (error) {
                 console.error('Error fetching album:', error);
@@ -35,7 +35,7 @@ function ViewAlbumArtist() {
     // Delete song
     const handleDeleteSong = async (songID) => {
         try {
-            await axios.delete(`http://localhost:8800/admin/${songID}/delete-song`)
+            await axios.delete(`http://localhost:8000/admin/${songID}/delete-song`)
             dispatch({ type: 'DELETE_SONG', payload: { _id: songID } });
         } catch (error) {
             console.error('Error deleting song:', error);

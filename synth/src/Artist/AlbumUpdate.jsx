@@ -29,7 +29,7 @@ const AlbumUpdate = () => {
     const handleClick = async (e) =>{
         e.preventDefault()
         try{
-            await axios.put(`http://localhost:8800/${albumID}/albums`, album)
+            await axios.put(`http://localhost:8000/${albumID}/albums`, album)
             navigate(`/${artistID}/Artist-Home`);
         } catch(err) {
             console.log(err)

@@ -12,7 +12,7 @@ function MainContainer() {
         // Function to fetch notifications from backend
         const fetchNotifications = async () => {
             try {
-                const notifications = await axios.get(`http://localhost:8800/fetch-notifications/1/`);
+                const notifications = await axios.get(`http://localhost:8000/fetch-notifications/1/`);
                 dispatch({ type: 'SET_ADMIN', payload: notifications.data });
             } catch (error) {
                 console.error('Error fetching notifications:', error);
@@ -26,7 +26,7 @@ function MainContainer() {
 const handleDeleteSong = async (songID) => {
     try {
         // Send HTTP POST request to delete the song
-        await axios.delete(`http://localhost:8800/admin/${songID}/delete-song`);
+        await axios.delete(`http://localhost:8000/admin/${songID}/delete-song`);
         dispatch({ type: 'DELETE_ADMIN', payload: { _id: songID } });
         // Handle success
         console.log('Song deleted successfully');
@@ -40,7 +40,7 @@ const handleDeleteSong = async (songID) => {
 const handleRejectReport = async (songID) => {
     try {
         // Send HTTP DELETE request to reject the report
-        await axios.delete(`http://localhost:8800/admin/${songID}/reject-report`);
+        await axios.delete(`http://localhost:8000/admin/${songID}/reject-report`);
         dispatch({ type: 'DELETE_ADMIN', payload: { _id: songID } });
         // Handle success
         console.log('Report rejected successfully');

@@ -15,13 +15,13 @@ function ListenerLikes() {
   useEffect(() => {
     const loadPage = async () => {
         try {
-          const artist = await axios.get(`http://localhost:8800/${id}/followed-artists`); 
+          const artist = await axios.get(`http://localhost:8000/${id}/followed-artists`); 
           setArtistResults(artist.data);
     
-          const album = await axios.get(`http://localhost:8800/${id}/albums-liked`);
+          const album = await axios.get(`http://localhost:8000/${id}/albums-liked`);
           setAlbumResults(album.data);
     
-          const song = await axios.get(`http://localhost:8800/${id}/songs-liked`);
+          const song = await axios.get(`http://localhost:8000/${id}/songs-liked`);
           setSongResults(song.data);
         } catch (error) {
           console.error('Error searching:', error);
@@ -41,7 +41,7 @@ function ListenerLikes() {
   const handleSongPlay = async (songID) => {
     setShowPlayer(!showPlayer)
     try {
-      await axios.post(`http://localhost:8800/${songID}/stream-song`, { songID });
+      await axios.post(`http://localhost:8000/${songID}/stream-song`, { songID });
       console.log('Song play request successful');
     } catch (error) {
       console.error('Error playing song:', error);
