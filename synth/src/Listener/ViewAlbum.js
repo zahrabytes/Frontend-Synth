@@ -73,7 +73,7 @@ function ViewAlbum() {
             await axios.post(`http://localhost:8000/flag-song/${songID}`);
             // setFlaggedSongs(prevFlaggedSongs => new Set([...prevFlaggedSongs, songID]));
             console.log('Song Flagged');
-            navigate(`/submit-report/${id}/${songID}`, { state: { song } }); 
+            navigate(`/submit-report/${id}/${songID}`); 
         } catch (error) {
             console.error('Error Flagging Song', error);
         }
@@ -150,7 +150,7 @@ function ViewAlbum() {
                             <div onClick={() => likedSongs.has(song.songID) ? handleUnlikeSong(song.songID) : handleLikeSong(song.songID)}>
                                 {likedSongs.has(song.songID) ? <PiHeartFill /> : <PiHeartLight />}
                             </div>
-                            <PiFlagFill onClick={() => handleFlag(song.songID, song)} />
+                            <PiFlagFill onClick={() => handleFlag(song.songID)} />
                             {/* <div onClick={() => {
                                  if (!flaggedSongs.has(song.songID)) {
                                    handleFlag(song.songID);

@@ -174,11 +174,9 @@
 }
 
 .content-container {
-  display: fixed; /* Let the content container grow to fill available space */
+  flex: 1; /* Let the content container grow to fill available space */
   /*padding: 20px;  Add padding for spacing */
 }
-
-
 .roundedButton {
   display: inline-block;
   padding: 10px 20px;
