@@ -503,6 +503,7 @@ header-menu {
     border-bottom-left-radius: 10px; 
     border-bottom-right-radius: 10px;
     bottom: 0;
+    max-width: 1350px;
     }
 
     .song-scrollbar {
@@ -870,4 +871,24 @@ artistName {
 
 .dropdown-button.selected{
   background-color: #113687;
+}
+
+.listener-info{
+  margin-top: 25px;
+  margin-bottom: 30px;
+  display: flex;
+}
+
+.listener-info-inner {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  margin-left: 20px;
+}
+
+.listener-info-inner img {
+  margin-right: 10px; /* Add spacing between the image and text */
+}
+
+.listener-info-inner h1 {
+  margin-left: 20px; /* Add margin to the left of the fname */
 }
