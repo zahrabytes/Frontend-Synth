@@ -3,14 +3,24 @@ import cors from "cors";
 import fs from 'fs';
 import multer from 'multer';
 import mysql from "mysql2";
+import dotenv from 'dotenv';
+dotenv.config();
+
+
+// Create the temp_uploads folder if it doesn't exist
+const uploadFolder = './temp_uploads';
+
+if (!fs.existsSync(uploadFolder)) {
+  fs.mkdirSync(uploadFolder);
+}
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './temp_uploads');
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
+  destination: function (req, file, cb) {
+    cb(null, uploadFolder);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
 });
 
 const upload = multer({ storage: storage });
@@ -924,7 +934,7 @@ app.delete('/admin/:songID/reject-report', async (req, res) => {
 app.post('/report/:songID/:listenerID/', async (req, res) => {
     const songID = req.params.songID;
     const listenerID = req.params.listenerID;
-    const {reason} = req.body.reason;
+    const { reason } = req.body;
     try {
         const query =`
         INSERT INTO flag (songID, listenerID, reason) 

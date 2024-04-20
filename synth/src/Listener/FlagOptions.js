@@ -39,7 +39,7 @@ const FlagOptions = () => {
 
     try {
       // Make a POST request to backend endpoint
-      const response = await axios.post(`http://localhost:8000/submit-report/${id}/${songID}`, formData.reason );
+      const response = await axios.post(`http://localhost:8000/report/${id}/${songID}`,  { reason: formData.reason });
       console.log(response.data);
       navigate(`/View-Album/${id}/${albumID}`);
       // Optionally, you can display a success message or redirect the user
