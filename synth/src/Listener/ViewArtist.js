@@ -121,7 +121,7 @@ function ViewArtist() {
                         <div onClick={() => handleAlbumSelect(album.albumID)}>
                             <img className='img-display-after' src={album.cover} alt={album.cover} />
                         </div>
-                        <div>
+                        <div className='album-info'> 
                             <h1 onClick={() => handleAlbumSelect(album.albumID)}>{album.albumName}</h1>
                             <p>{formatDate(album.releaseDate)}</p>
                             <p>{album.genre}</p>

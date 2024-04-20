@@ -561,7 +561,7 @@ artistName {
    /* Album and songs at /View-Album/:id/:albumID */
 
 .container-album {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 50px auto 0;
   background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
   backdrop-filter: blur(20px); /* Increase blur for a softer effect */
@@ -570,6 +570,7 @@ artistName {
   border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   padding: 15px;
+  flex-grow: 1;
 }
 
 .album-info {
@@ -587,12 +588,12 @@ artistName {
 }
 
 .album-details h1 {
-  font-size: 24px;
-  margin: 0;
+  font-size: 40px;
+  margin: 10px;
 }
 
 .album-details p {
-  margin: 5px 0;
+  margin: 10px;
 }
 
 .like-button {
@@ -763,4 +764,11 @@ artistName {
   position: absolute;
   top: 0px;
   right: 700px;
+}
+
+.album-info {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
