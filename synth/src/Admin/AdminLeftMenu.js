@@ -19,7 +19,7 @@ function AdminPage() {
           {/* Render each menu option as a list item */}
           {AMenuList.map((item) => (
             <li key={item.id}>
-              <Link to={`/${id}${item.path}`}>
+              <Link to={item.name === "Logout" ? "/" : `/${id}${item.path}`}>
                 {item.icon} {item.name}
               </Link>
             </li>

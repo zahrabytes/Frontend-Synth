@@ -97,9 +97,6 @@ const handleRejectReport = async (songID) => {
                 ))}
             </div>
         </div>
-        <Link to="/" className="logout-button3">
-        Logout
-      </Link>
         </div>
     );
 }

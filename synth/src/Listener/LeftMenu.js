@@ -38,8 +38,8 @@ function LeftMenu() {
         {/* Render each menu option as a list item */}
         {MenuList.map((item) => (
           <li key={item.id}>
-            <Link to={`/${id}${item.path}`}>
-              {item.icon} {item.name}
+            <Link to={item.name === "Logout" ? "/" : `/${id}${item.path}`}>
+                {item.icon} {item.name}
             </Link>
           </li>
         ))}

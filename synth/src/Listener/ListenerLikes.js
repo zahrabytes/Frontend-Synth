@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../index.css';
 
 
@@ -90,9 +90,6 @@ function ListenerLikes() {
             </div>
           ))}</div>
         </div>
-        <Link to="/" className="logout-button2">
-          Logout
-        </Link>
     </div>
   );
 };

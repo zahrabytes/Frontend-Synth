@@ -62,9 +62,6 @@ const Albums = () => {
               </div>
             ))}
             </div>
-            <Link to="/" className="logout-button">
-          Logout
-        </Link>
         </div>
     );
 };

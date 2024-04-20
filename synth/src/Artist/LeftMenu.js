@@ -21,9 +21,9 @@ function ArtistLeft() {
           {/* Render each menu option as a list item */}
           {ArtistMenuList.map((item) => (
             <li key={item.artistID}>
-              <Link to={`/${artistID}${item.path}`}>
+              <Link to={item.name === "Logout" ? "/" : `/${artistID}${item.path}`}>
                 {item.icon} {item.name}
-              </Link>
+            </Link>
             </li>
           ))}
         </ul>
