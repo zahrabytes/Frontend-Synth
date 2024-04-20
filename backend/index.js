@@ -1250,6 +1250,25 @@ app.get("/artist-timestamp", (req, res) => {
     });
 });
 
+app.get('/:id/listener-info', async (req, res) => {
+    const listenerID = req.params.id;
+    const query = `
+    SELECT username, profilePic, fname
+    FROM listener
+    WHERE listenerID = ?
+    `;
+
+    db.query(query, [listenerID], (err, results) => {
+        if (err) {
+            console.error('Error retrieving listener data:', err);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+
 const PORT = process.env.PORT || 8000;
 // Start the server
 app.listen(PORT, () => {
