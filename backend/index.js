@@ -1124,7 +1124,7 @@ app.post('/:songID/stream-song', async (req, res) =>{
 
 
 app.get("/artist-gender-report", (req, res) => {
-    //const artistID = req.params.id;
+    //const artistID = req.params.artistID;
     const query = `
     SELECT 
     gender,
@@ -1152,6 +1152,53 @@ app.get("/artist-gender-report", (req, res) => {
         res.status(200).send('gender report successful');
     });
 });
+
+app.get("/artist-gender-list", (req, res) => {
+    //const artistID = req.params.artistID;
+    const query = `
+    SELECT L.fname, L.lname, L.username, L.gender
+    FROM artist_follower, listener AS L
+    WHERE artist_follower.artistID = 56 AND artist_follower.listenerID = L.listenerID
+    ORDER BY L.gender
+    `;
+    db.query(query, /*[artistID],*/ (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        return res.json(data);
+        res.status(200).send('gender report successful');
+    });
+});
+
+app.get("/artist-songlike-gender-report", (req, res) => {
+    // const artistID = req.params.artistID;
+    const query = `
+        SELECT 
+            listener.gender,
+            COUNT(*) AS gender_count,
+            (SELECT COUNT(*) FROM song_like WHERE artistID = 51) AS total_count
+        FROM 
+            song_like
+        JOIN 
+            listener ON listener.listenerID = song_like.listenerID
+        WHERE 
+            song_like.artistID = 51
+        GROUP BY 
+            listener.gender
+    `;
+    db.query(query, [artistID, artistID], (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        const genderReport = data.map(item => ({
+            gender: item.gender,
+            count: item.gender_count,
+            percentage: ((item.gender_count / data.total_count) * 100).toFixed(2)
+        }));
+        return res.json(genderReport);
+    });
+});
+
 
 app.get("/artist-age-report", (req, res) => {
     const query = `
@@ -1192,6 +1239,23 @@ app.get("/artist-age-report", (req, res) => {
 
         // Send the filtered data as JSON response
         res.json(filteredData);
+    });
+});
+
+app.get("/artist-age-list", (req, res) => {
+    //const artistID = req.params.artistID;
+    const query = `
+    SELECT L.fname, L.lname, L.username, L.age
+    FROM artist_follower, listener AS L
+    WHERE artist_follower.artistID = 56 AND artist_follower.listenerID = L.listenerID
+    ORDER BY L.age
+    `;
+    db.query(query, /*[artistID],*/ (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        return res.json(data);
+        res.status(200).send('gender report successful');
     });
 });
 
@@ -1249,6 +1313,25 @@ app.get("/artist-timestamp", (req, res) => {
         res.json(data);
     });
 });
+
+app.get('/:id/listener-info', async (req, res) => {
+    const listenerID = req.params.id;
+    const query = `
+    SELECT username, profilePic, fname
+    FROM listener
+    WHERE listenerID = ?
+    `;
+
+    db.query(query, [listenerID], (err, results) => {
+        if (err) {
+            console.error('Error retrieving listener data:', err);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 
 const PORT = process.env.PORT || 8000;
 // Start the server

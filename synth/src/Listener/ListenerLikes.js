@@ -6,6 +6,7 @@ import '../index.css';
 
 function ListenerLikes() {
   const { id } = useParams();
+  const [listenerInfo, setListenerInfo] = useState({});
   const [artistResults, setArtistResults] = useState([]);
   const [albumResults, setAlbumResults] = useState([]);
   const [songResults, setSongResults] = useState([]);
@@ -15,6 +16,9 @@ function ListenerLikes() {
   useEffect(() => {
     const loadPage = async () => {
         try {
+          const listener = await axios.get(`http://localhost:8000/${id}/listener-info`);
+          setListenerInfo(listener.data);
+
           const artist = await axios.get(`http://localhost:8000/${id}/followed-artists`); 
           setArtistResults(artist.data);
     
@@ -50,7 +54,17 @@ function ListenerLikes() {
   
   return (
     <div>
-        <div className='flex-container'>
+      <div>
+        <div className="listener-info">
+          {listenerInfo && Object.keys(listenerInfo).length > 0 && (
+            <div className="listener-info-inner">
+              <img className='img-pfp-display-after' src={listenerInfo.profilePic} alt={listenerInfo.profilePic} />
+              <h1>{listenerInfo.fname}</h1>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className='flex-container'>
         <div className='left-align-container'>
           <subheader>Liked Artists</subheader>
           <div className='scrollbar'>
@@ -77,21 +91,23 @@ function ListenerLikes() {
         </div>
       </div>
       <div className='bottom-align-container'>
-      <subheader>Liked Albums</subheader>
+        <subheader>Liked Albums</subheader>
         <div className="scrollbar-album">
           {albumResults.map((item, index) => (
             <div key={index}>
-            <div onClick={() => handleAlbumSelect(item.albumID)}>
+              <div onClick={() => handleAlbumSelect(item.albumID)}>
                 <img className='img-display-after' src={item.cover} alt={item.cover} />
-            </div>
-            <div onClick={() => handleAlbumSelect(item.albumID)}>
+              </div>
+              <div onClick={() => handleAlbumSelect(item.albumID)}>
                 {item.albumName}
+              </div>
             </div>
-            </div>
-          ))}</div>
+          ))}
         </div>
+      </div>
     </div>
   );
+  
 };
 
 export { ListenerLikes };
