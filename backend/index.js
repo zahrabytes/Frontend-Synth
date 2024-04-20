@@ -1195,6 +1195,43 @@ app.get("/artist-age-report", (req, res) => {
     });
 });
 
+//follower count versus listener count
+app.get("/artist-follower-listener", (req, res) => {
+    const query = `
+    SELECT 
+        (COUNT(CASE WHEN artistID = 56 THEN 1 END) / NULLIF((SELECT COUNT(*) FROM listener), 0)) * 100 AS percent_artist_followers,
+        (COUNT(CASE WHEN artistID <> 56 THEN 1 END) / NULLIF((SELECT COUNT(*) FROM listener), 0)) * 100 AS percent_non_artist_followers
+    FROM 
+        artist_follower
+    `;
+    db.query(query, (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        
+        // Create an array to store the formatted data
+        const formattedData = [];
+
+        // Check if the percentage values are not null and push them to the formatted array
+        if (data && data.length > 0) {
+            // Push the first element with label "% of All Synth Listeners Who Follow You"
+            if (data[0].percent_artist_followers !== null) {
+                formattedData.push({ label: "% of All Synth Listeners Who Follow You", percent: parseFloat(data[0].percent_artist_followers).toFixed(2) });
+            }
+            // Push the second element with label "% of All Synth Listeners Who Do Not Follow You"
+            if (data[0].percent_non_artist_followers !== null) {
+                formattedData.push({ label: "% of All Synth Listeners Who Do Not Follow You", percent: parseFloat(data[0].percent_non_artist_followers).toFixed(2) });
+            }
+        }
+
+        // Send the formatted data as JSON response
+        res.json(formattedData);
+    });
+});
+
+
+
+
 app.get("/artist-timestamp", (req, res) => {
     const query = `
     SELECT DATE(timestamp) AS date,
@@ -1213,8 +1250,8 @@ app.get("/artist-timestamp", (req, res) => {
     });
 });
 
-
+const PORT = process.env.PORT || 8000;
 // Start the server
-app.listen(8000, () => {
+app.listen(PORT, () => {
     console.log("Connected to backend!");
 });
