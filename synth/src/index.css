@@ -947,3 +947,19 @@ artistName {
 .content-container2 h2{
   font-size: 25px;
 }
+
+.report-container {
+  display: flex;
+  margin-left: 50px;
+  flex-direction: column;
+  font-weight: bold;
+  color: #222222;
+  align-content: center;
+}
+
+.report-container h1,
+.report-container p {
+  text-align: left;
+  width: 50%;
+  align-items: center;
+}
