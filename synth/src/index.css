@@ -314,7 +314,7 @@ li {
 
 .options-banner {
   position: absolute;
-  top: 50px;
+  top: 60px;
   right: 50px;
 }
 
@@ -732,4 +732,11 @@ artistName {
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none; /* Remove underline */
+}
+
+.TryNow{
+  color: #ffffff;
+  position: absolute;
+  top: 0px;
+  right: 700px;
 }
