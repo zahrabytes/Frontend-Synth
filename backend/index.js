@@ -1213,8 +1213,8 @@ app.get("/artist-timestamp", (req, res) => {
     });
 });
 
-
+const PORT = process.env.PORT || 8000;
 // Start the server
-app.listen(8800, () => {
+app.listen(PORT, () => {
     console.log("Connected to backend!");
 });

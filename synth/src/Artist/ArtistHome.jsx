@@ -14,10 +14,10 @@
 //     useEffect(() => {
 //         const fetchArtistAlbums = async () => {
 //             try {
-//               const artist = await axios.get(`http://localhost:8800/view-artist/${artistID}/`);
+//               const artist = await axios.get(`http://localhost:8000/view-artist/${artistID}/`);
 //               setArtistResult(artist.data);
         
-//               const album = await axios.get(`http://localhost:8800/view-albums/${artistID}/`);
+//               const album = await axios.get(`http://localhost:8000/view-albums/${artistID}/`);
 
 //               setAlbumResults(album.data); 
 //             } catch (error) {
@@ -29,7 +29,7 @@
     
 //     const handleDelete = async (id)=>{
 //         try{
-//             await axios.delete(`http://localhost:8800/${id}/albums`)
+//             await axios.delete(`http://localhost:8000/${id}/albums`)
 //             window.location.reload()
 //         } catch(err) {
 //             console.log(err)
@@ -100,7 +100,7 @@ function ArtistHome() {
   useEffect(() => {
     const fetchArtistAlbums = async () => {
         try {
-          const artist = await axios.get(`http://localhost:8800/view-artist/${artistID}/`);
+          const artist = await axios.get(`http://localhost:8000/view-artist/${artistID}/`);
           setArtistResult(artist.data);
         } catch (error) {
           console.error('Error searching:', error);

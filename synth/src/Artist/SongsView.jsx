@@ -10,7 +10,7 @@ const AlbumSongs = () => {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/albums/${albumID}/songs`);
+                const res = await axios.get(`http://localhost:8000/albums/${albumID}/songs`);
                 setSongs(res.data);
                 console.log(res.data)
             } catch (err) {

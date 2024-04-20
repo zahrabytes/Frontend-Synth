@@ -32,7 +32,7 @@ const CreateAccountArtist = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8800/createAccount/artist', formData);
+            const response = await axios.post('http://localhost:8000/createAccount/artist', formData);
             console.log(response.data);
             navigate('/login-artist'); // Navigate to /login-artist after successful form submission
         } catch (error) {

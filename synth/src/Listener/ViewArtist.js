@@ -23,10 +23,10 @@ function ViewArtist() {
     useEffect(() => {
         const fetchArtistAlbums = async () => {
             try {
-              const artist = await axios.get(`http://localhost:8800/view-artist/${artistID}/`);
+              const artist = await axios.get(`http://localhost:8000/view-artist/${artistID}/`);
               setArtistResult(artist.data);
         
-              const album = await axios.get(`http://localhost:8800/view-albums/${artistID}/`);
+              const album = await axios.get(`http://localhost:8000/view-albums/${artistID}/`);
 
               setAlbumResults(album.data); 
             } catch (error) {
@@ -41,7 +41,7 @@ function ViewArtist() {
     /* /:artistID/:id/is-follower
     const findArtistFollowers = async () => { 
         try {
-            const followers = await axios.get(`http://localhost:8800/${artistID}/artist-follower`);
+            const followers = await axios.get(`http://localhost:8000/${artistID}/artist-follower`);
             const followersData = followers.data;
             const followersDatamap = followersData.map(follower => follower.listenerID);
             setArtistFollowers(new Set(followersDatamap));
@@ -58,7 +58,7 @@ function ViewArtist() {
     
     const findIsFollower = async () => { 
         try {
-            const followerTuple = await axios.get(`http://localhost:8800/${artistID}/${id}/is-follower`);
+            const followerTuple = await axios.get(`http://localhost:8000/${artistID}/${id}/is-follower`);
             
             // Check if the response data contains any elements
             const Follower = Object.keys(followerTuple.data).length > 0;
@@ -79,7 +79,7 @@ function ViewArtist() {
     // Follow Artist artistID
     const handleFollowArtist = async () => {
         try {
-            await axios.post(`http://localhost:8800/${id}/${artistID}/follow-artist`);
+            await axios.post(`http://localhost:8000/${id}/${artistID}/follow-artist`);
             setIsFollower(true);
         } catch (error) {
             console.error('Error Following Artist:', error);
@@ -89,7 +89,7 @@ function ViewArtist() {
     // Unfollow Artist artistID
     const handleUnfollowArtist = async () => {
         try {
-            await axios.delete(`http://localhost:8800/${id}/${artistID}/unfollow-artist`);
+            await axios.delete(`http://localhost:8000/${id}/${artistID}/unfollow-artist`);
             setIsFollower(false);
         } catch (error) {
             console.error('Error Unfollowing Artist', error);
