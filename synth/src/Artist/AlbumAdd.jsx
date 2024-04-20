@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
+import { ArtistLeft } from "./LeftMenu.js"
 
 const AlbumAdd = () => {
     const { artistID } = useParams();
