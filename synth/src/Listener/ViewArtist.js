@@ -99,24 +99,24 @@ function ViewArtist() {
     return (
         <div className="listener-container">
             <LeftMenu />
-        <div>
-            {artistResult.map((item, index) => (
-              <div key={index}>
-                <artistName>
-                <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
-                {item.artistName}
-                <div className="flex row">{item.verified ? <TbDiscountCheckFilled /> : null}</div>
-                </artistName>
-                
-                <div onClick={() => isFollower ? handleUnfollowArtist() : handleFollowArtist()}>
-                            {isFollower ? <PiHeartFill /> : <PiHeartLight />}
+            <div>
+                <div class="rectangle-backdrop">
+                    {artistResult.map((item, index) => (
+                        <div key={index}>
+                            <artistName>
+                                <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
+                                {item.artistName}
+                                <div className="flex row">{item.verified ? <TbDiscountCheckFilled /> : null}</div>
+                                <div className="heart-container" onClick={() => isFollower ? handleUnfollowArtist() : handleFollowArtist()}>
+                                    {isFollower ? <PiHeartFill /> : <PiHeartLight />}
+                                </div>
+                                <div className='text'>{item.num_followers} Followers</div>
+                            </artistName>
+                        </div>
+                    ))}
                 </div>
-                
-              </div> 
-            ))}
-            <div class="rectangle-backdrop"></div>
-
-            {albumResults.map((album, index) => (
+    
+                {albumResults.map((album, index) => (
                     <li key={index}>
                         <div onClick={() => handleAlbumSelect(album.albumID)}>
                             <img className='img-display-after' src={album.cover} alt={album.cover} />
@@ -128,10 +128,12 @@ function ViewArtist() {
                         </div>
                     </li>
                 ))}
-        </div>
+            </div>
         </div>
     );
-  }
+    
+}
+
   
   export default ViewArtist;
   
