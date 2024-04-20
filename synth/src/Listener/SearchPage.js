@@ -38,7 +38,7 @@ function SearchPage({ onSongSelect }) {
   return (
     <div className="listener-container">
       <LeftMenu />
-    <div>
+      <div className="content-container">
       <input 
         type="text" 
         value={searchTerm} 
@@ -72,22 +72,23 @@ function SearchPage({ onSongSelect }) {
         </div>
       </div>
       <div className='bottom-align-container'>
-      <subheader>Album</subheader>
+        <subheader>Album</subheader>
         <div className="scrollbar-album">
           {albumResults.map((item, index) => (
             <div key={index}>
-            <div onClick={() => handleAlbumSelect(item.albumID)}>
-                <img className='img-display-after' src={item.cover} alt={item.cover} />
+              <div onClick={() => handleAlbumSelect(item.albumID)}>
+                  <img className='img-display-after' src={item.cover} alt={item.cover} />
+              </div>
+              <div onClick={() => handleAlbumSelect(item.albumID)}>
+                  {item.albumName}
+              </div>
             </div>
-            <div onClick={() => handleAlbumSelect(item.albumID)}>
-                {item.albumName}
-            </div>
-            </div>
-          ))}</div>
-        </div>      
+          ))}
+        </div>
+      </div>      
     </div>
-    </div>
-  );
+  </div>
+);
 };
 
 export { SearchPage };

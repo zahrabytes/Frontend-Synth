@@ -138,6 +138,7 @@ header:hover {
 }
 
 .flex-container {
+  margin-top: 40px;
   display: flex;
   justify-content: space-between; /* Space items evenly along the main axis */
   align-items: flex-start; /* Align items to the start (top) of the cross axis */
@@ -694,4 +695,31 @@ artistName {
 .album-details {
   display: flex;
   flex-direction: row;
+}
+
+.logout-button2 {
+  position: absolute;
+  top: 160px;
+  left: 0px;
+  background: transparent;
+  color: transparent;
+  border: none;
+  padding: 10px 125px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none; /* Remove underline */
+}
+
+.logout-button2 button {
+  background: #1a4ab3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none; 
+}
+
+.content-container {
+  flex-grow: 1;
 }
