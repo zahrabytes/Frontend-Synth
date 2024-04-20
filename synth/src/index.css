@@ -611,6 +611,7 @@ artistName {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  color: #222222;
 }
 
 .album-cover {
@@ -708,7 +709,7 @@ artistName {
 
 .button {
   background-color: transparent;
-  color: white;
+  color: #000000;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
@@ -717,7 +718,7 @@ artistName {
 }
 
 .button:hover {
-  background-color: #0e2f6e; /* Darker shade on hover */
+  background-color: #335594; /* Darker shade on hover */
 }
 
 .albums {
