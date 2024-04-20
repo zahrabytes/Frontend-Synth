@@ -6,7 +6,7 @@ import '../index.css';
 
 function ListenerLikes() {
   const { id } = useParams();
-  const [listenerInfo, setListenerInfo] = useState({});
+  const [listenerInfo, setListenerInfo] = useState([]);
   const [artistResults, setArtistResults] = useState([]);
   const [albumResults, setAlbumResults] = useState([]);
   const [songResults, setSongResults] = useState([]);
@@ -56,12 +56,12 @@ function ListenerLikes() {
     <div>
       <div>
         <div className="listener-info">
-          {listenerInfo && Object.keys(listenerInfo).length > 0 && (
-            <div className="listener-info-inner">
-              <img className='img-pfp-display-after' src={listenerInfo.profilePic} alt={listenerInfo.profilePic} />
-              <h1>{listenerInfo.fname}</h1>
+          {listenerInfo.map((item, index) => (
+            <div key={index} className="listener-info-inner">
+              <img className='img-pfp-display-after' src={item.profilePic} alt={item.profilePic} />
+              <h1>{item.fname}</h1>
             </div>
-          )}
+          ))}
         </div>
       </div>
       <div className='flex-container'>
