@@ -1,85 +1,3 @@
-// import axios from 'axios';
-// import React, { useEffect, useState } from 'react';
-// import { useNavigate, useParams } from 'react-router-dom';
-// import '../index.css';
-// import { formatDate } from '../DateFormat.js';
-// import { TbDiscountCheckFilled } from "react-icons/tb";
-
-// function ArtistHome() {
-//     const { artistID } = useParams();
-//     const [artistResult, setArtistResult] = useState([]);
-//     const [albumResults, setAlbumResults] = useState([]);
-//     const navigate = useNavigate();
-
-//     useEffect(() => {
-//         const fetchArtistAlbums = async () => {
-//             try {
-//               const artist = await axios.get(`http://localhost:8000/view-artist/${artistID}/`);
-//               setArtistResult(artist.data);
-        
-//               const album = await axios.get(`http://localhost:8000/view-albums/${artistID}/`);
-
-//               setAlbumResults(album.data); 
-//             } catch (error) {
-//               console.error('Error searching:', error);
-//             }
-//           }; 
-//         fetchArtistAlbums(); 
-//     }, [artistID]);
-    
-//     const handleDelete = async (id)=>{
-//         try{
-//             await axios.delete(`http://localhost:8000/${id}/albums`)
-//             window.location.reload()
-//         } catch(err) {
-//             console.log(err)
-//         }
-//     }
-
-//     const handleAlbumSelect = (albumID) => {
-//         navigate(`/ViewAlbumArtist/${artistID}/${albumID}`); 
-//       };
-
-//     return (
-//         <div>
-//             {artistResult.map((item, index) => (
-//               <div key={index}>
-//                 <artistName>
-//                 <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
-//                 {item.artistName}
-//                 </artistName>
-//                 <div className="flex row">{item.verified ? <TbDiscountCheckFilled /> : null}</div>
-//               </div> 
-//             ))}
-//             <div class="rectangle-backdrop"></div>
-//             <button onClick={ () => navigate(`/${artistID}/albums/add`)}>
-//                 Add new album
-//             </button>
-//             {albumResults.map((album) => (
-//                     <div  key={album.albumID}>
-//                         <div onClick={() => handleAlbumSelect(album.albumID)}>
-//                         <img className='album-cover' src={album.cover} alt="" />
-//                         </div>
-//                         <h2 onClick={() => handleAlbumSelect(album.albumID)}>{album.albumName}</h2>
-//                         <button onClick={ () => navigate(`/${artistID}/upload/${album.albumID}`)}>
-//                             Upload Songs
-//                         </button>
-//                         <button onClick={ () => navigate(`/${artistID}/update/${album.albumID}`)}>
-//                             Update
-//                         </button>
-//                         <button onClick={() => handleDelete(album.albumID)}>Delete</button>
-//                         <button onClick={ () => navigate(`/ViewAlbumArtist/${artistID}/${album.albumID}`)}>
-//                             View Songs
-//                         </button>
-//                     </div>
-//                 ))}
-//         </div>
-//     );
-//   }
-  
-//   export default ArtistHome;
-  
-
 import { useParams } from "react-router-dom";
 import "../Admin/LeftMenu.css";
 import "../Admin/MainContainer.css";
@@ -99,7 +17,7 @@ function ArtistHome() {
   useEffect(() => {
     const fetchArtistAlbums = async () => {
         try {
-          const artist = await axios.get(`http://localhost:8000/view-artist/${artistID}/`);
+          const artist = await axios.get(`https://frontend-synth-3tzp.onrender.com/view-artist/${artistID}/`);
           setArtistResult(artist.data);
         } catch (error) {
           console.error('Error searching:', error);
@@ -112,17 +30,20 @@ function ArtistHome() {
   return (
     <div>
         <div>
-        {artistResult.map((item, index) => (
-              <div key={index}>
-                <artistName>
-                <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
-                {item.artistName}
-                <div className='followers-text'>{item.num_followers} Followers</div>
+          {artistResult.map((item, index) => (
+            <div key={index} className="artist-container">
+              <div className="artist-info">
+                <img className="img-pfp-display-after" src={item.profilePic} alt={item.artistPic} />
+                <artistName className="name-and-verified">
+                  <span className="artist-name">{item.artistName}</span>
+                  <div className="verified-indicator">
+                  <span className="verified-text">You Are Verified!</span>{item.verified && <TbDiscountCheckFilled size={32} color="green" />}</div>
                 </artistName>
-                <div className="flex row">{item.verified ? <TbDiscountCheckFilled /> : null}</div>
-              </div> 
-            ))}
-            <div class="rectangle-backdrop2"></div>
+              </div>
+              <div className="followers-text">{item.num_followers} Followers</div>
+            </div>
+          ))}
+          <div className="rectangle-backdrop2"></div>
         </div>
         <div className="adminContainer">
             <ArtistLeft />
