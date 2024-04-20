@@ -921,39 +921,22 @@ app.delete('/admin/:songID/reject-report', async (req, res) => {
 });
 
 //flag reasons
-app.post('/report/:songID/:listenerID/:reason', async (req, res) => {
+app.post('/report/:songID/:listenerID/', async (req, res) => {
+    const songID = req.params.songID;
+    const listenerID = req.params.listenerID;
+    const {reason} = req.body.reason;
     try {
-        const { songID, listenerID, reason } = req.params;
-
-        // Check if the provided reason is valid
-        const validReasons = ['Abusive Behavior', 'Quality Control', 'Technical Issues', 'Copyright Infringement', 'Misrepresentation/Impersonation'];
-        if (!validReasons.includes(reason)) {
-            return res.status(400).json({ error: 'Invalid reason provided' });
-        }
-
-        // Check if the songID and listenerID exist in the database
-        const songQuery = 'SELECT * FROM songs WHERE songID = $1';
-        const listenerQuery = 'SELECT * FROM listeners WHERE listenerID = $1';
-        const songResult = await pool.query(songQuery, [songID]);
-        const listenerResult = await pool.query(listenerQuery, [listenerID]);
-
-        if (songResult.rows.length === 0 || listenerResult.rows.length === 0) {
-            return res.status(404).json({ error: 'Song or listener not found' });
-        }
-
-        // Insert the report into the database
-        const reportQuery = 'INSERT INTO reports (songID, listenerID, reason) VALUES ($1, $2, $3)';
-        await pool.query(reportQuery, [songID, listenerID, reason]);
-
-        return res.status(200).json({ message: 'Song reported successfully' });
+        const query =`
+        INSERT INTO flag (songID, listenerID, reason) 
+        VALUES (?, ?, ?)
+        `;
+        await db.promise().query(query, [songID, listenerID, reason]);
+        res.status(200).send('Song reported successfully');
     } catch (error) {
-        console.error('Error reporting song:', error);
-        return res.status(500).json({ error: 'An error occurred while reporting the song' });
+        console.error('Error:', error);
+        res.status(500).send('Internal server error');
     }
 });
-
-
-
 
 // Main page
 app.get("/", (req, res) => {
@@ -1331,6 +1314,38 @@ app.get('/:id/listener-info', async (req, res) => {
         res.json(results);
     });
 });
+
+app.get('/:songID/song-info', async (req, res) =>{
+    const songID = req.params.songID;
+    const query = `
+    SELECT 
+        song.filePath, 
+        song.songTitle,
+        album.albumName, 
+        album.albumID, 
+        album.Cover, 
+        artist.artistID, 
+        artist.artistName, 
+        artist.profilePic
+    FROM 
+        song
+    JOIN 
+        album ON song.albumID = album.albumID
+    JOIN 
+        artist ON album.artistID = artist.artistID
+    WHERE song.songID = ?
+    `;
+
+    db.query(query, [songID], (err, results) => {
+        if (err) {
+            console.error('Error retrieving song data:', err);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 
 
 const PORT = process.env.PORT || 8000;
