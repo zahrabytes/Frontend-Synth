@@ -570,7 +570,7 @@ artistName {
   border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   padding: 15px;
-  flex-grow: 1;
+  flex: 1;
 }
 
 .album-info {
