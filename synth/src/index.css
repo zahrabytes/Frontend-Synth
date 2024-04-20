@@ -15,6 +15,13 @@ body {
   align-items: center;
 }
 
+.chart-flex{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+}
+.scrollbar-table
 headerSynth {
   display: flex;
   font-family: 'Audiowide', cursive;
@@ -22,7 +29,6 @@ headerSynth {
   font-size: 200px;
   padding: 20px;
   font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   justify-content: space-around;
   align-items: center;
 }
@@ -112,13 +118,35 @@ subheader {
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  margin: 20px;
   width: auto;
   height: 300px;
   display:flex;
   flex-direction: column;
   align-items: center;
 }
+
+.bar-chart-container {
+  flex: 1; /* Each container takes up equal space */
+  background: rgba(255, 255, 255, 0.8); /* Adjust the opacity to make it more milky white */
+  backdrop-filter: blur(20px); /* Increase blur for a softer effect */
+  -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  width: auto;
+  height: 300px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.option-doughnut-container {
+  
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 
 .bottom-align-container {
   flex: 1; /* Each container takes up equal space */
@@ -133,7 +161,6 @@ subheader {
 }
 
 .flex-container {
-  margin-top: 40px;
   display: flex;
   justify-content: space-between; /* Space items evenly along the main axis */
   align-items: flex-start; /* Align items to the start (top) of the cross axis */
@@ -441,17 +468,26 @@ header-menu {
     border-bottom-right-radius: 10px;
   }
 
+  .scrollbar-table {
+    height: 200px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: left;  
+    border-bottom-left-radius: 10px; 
+    border-bottom-right-radius: 10px;
+  }
+
   .scrollbar-album {
     min-height: 240px;
     overflow-y: auto;
     display: flex;
-    background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
+    background: rgba(228, 228, 228, 0.4); /* Adjust the opacity to make it more milky white */
     backdrop-filter: blur(20px); /* Increase blur for a softer effect */
     -webkit-backdrop-filter: blur(20px); /* For compatibility with Safari */
     border: 1px solid rgba(255, 255, 255, 0.3); /* Adjust border opacity to match background */
     border-bottom-left-radius: 10px; 
     border-bottom-right-radius: 10px;
-    justify-content: space-between;
     bottom: 0;
     }
 
@@ -697,31 +733,4 @@ artistName {
 .album-details {
   display: flex;
   flex-direction: row;
-}
-
-.logout-button2 {
-  position: absolute;
-  top: 160px;
-  left: 0px;
-  background: transparent;
-  color: transparent;
-  border: none;
-  padding: 10px 125px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none; /* Remove underline */
-}
-
-.logout-button2 button {
-  background: #1a4ab3;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none; 
-}
-
-.content-container {
-  flex-grow: 1;
 }

@@ -18,10 +18,19 @@ ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tool
 
 const TestReport = () => {
     const [genderReport, setGenderReport] = useState([]);
+    const [genderList, setGenderList] = useState([]);
     const [ageReport, setAgeReport] = useState([]);
+    const [ageList, setAgeList] = useState([]);
     const [timestamp, setTimestamp] = useState([]);
     const [followersListeners, setFollowersListeners] = useState([]);
     const [doughnutData, setDoughnutData] = useState('genderReport');
+    const [selected,setSelected]=useState('Gender of Followers')
+
+    const handleChange=(e)=>{
+        console.log(e.target.value)
+        setSelected(e.target.value)
+    }
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,10 +39,16 @@ const TestReport = () => {
                 const gender = await axios.get(`http://localhost:8000/artist-gender-report`);
                 setGenderReport(gender.data);
 
+                const gList = await axios.get(`http://localhost:8000/artist-gender-list`);
+                setGenderList(gList.data);
+
                 const age = await axios.get(`http://localhost:8000/artist-age-report`);
                 setAgeReport(age.data);
 
-                const timestamp = await axios.get(`http://localhost:8000/artist-age-timestamp`);
+                const aList = await axios.get(`http://localhost:8000/artist-age-list`)
+                setAgeList(aList.data);
+
+                const timestamp = await axios.get(`http://localhost:8000/artist-timestamp`);
                 setTimestamp(timestamp.data);
 
                 const follow = await axios.get(`http://localhost:8000/artist-follower-listener`);
@@ -46,7 +61,7 @@ const TestReport = () => {
         fetchReport();
     }, []);
 
-    const dataGender = {
+    const dataGenderFollower = {
         datasets: [
             {
                 data: genderReport.map((data) => data.percentage),
@@ -85,8 +100,8 @@ const TestReport = () => {
       };
 
       const optionsBar = {
-        plugins: {
-            legend: {
+        Plugins: {
+            Legend: {
                 display: false, 
             },
         },
@@ -98,8 +113,8 @@ const TestReport = () => {
             {
                 data: followersListeners.map((data) => data.percent),
                 backgroundColor: [
-                    "rgba(0, 0, 0, 0.6)",
                     "rgba(255, 99, 132, 0.6)",
+                    "rgba(0, 0, 0, 0.6)",
                 ],
                 borderColor: [
                     'rgb(227,232,236)',
@@ -108,9 +123,9 @@ const TestReport = () => {
             
         ], labels: followersListeners.map((data) => {
             if (data.label === "% of All Synth Listeners Who Follow You") {
-                return data.percent + "% of All Synth Listeners Follow You";
+                return data.percent + "% of Synth Listeners Follow You";
             } else {
-                return data.percent + "% of All Synth Listeners Do Not Follow You";
+                return data.percent + "% of Synth Listeners Do Not Follow You";
             }
         }),
       };
@@ -133,17 +148,56 @@ const TestReport = () => {
     //   dataTimestamp
     return (
         <div>
+            <artistName>Artist Dashboard</artistName>
             <h1>Listener Demographics</h1>
+            <h2>Get to know your listeners through statistical reports.</h2>
             <div className='flex-container'>
-            <div className='chart-container'>
-            <Doughnut options={optionsGender} data={dataGender} />
-            </div>
-            <div className='chart-container'>
-                <Bar options={optionsBar} data={dataAgeReport}/>
-            </div>
-            <div className='chart-container'>
-            <Doughnut options={optionsGender} data={dataFollowerListener} />
-            </div>
+            <div className='option-doughnut-container'>
+                <select value={selected} onChange={(e)=>handleChange(e)}>
+                    <option>Gender of Your Followers as Percentages</option>
+                    <option>Percent of Synth Listeners Who Follow You</option>
+                </select>
+                <div className='chart-container'>
+                    {selected === "Gender of Your Followers as Percentages"?<div>
+                        <Doughnut options={optionsGender} data={dataGenderFollower} />
+                                <table className='scrollbar-table'>
+                                <h2>Your Followers And Their Gender:</h2>
+                                    <thead>
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                        <th>Gender</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {genderList.map((follower, index) => (
+                                        <tr key={index}>
+                                        <td>{follower.fname}</td>
+                                        <td>{follower.lname}</td>
+                                        <td>{follower.username}</td>
+                                        <td>{follower.gender}</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table></div>:""}
+                    {selected === "Percent of Synth Listeners Who Follow You"?<div><Doughnut options={optionsGender} data={dataFollowerListener} />
+                    <table>
+                                <h2>Your Followers Compared to All Listeners:</h2>
+                                    <tbody className='scrollbar-table'>
+                                    {followersListeners.map((follower, index) => (
+                                        <tr key={index}>
+                                        <td>{follower.label}</td>
+                                        <td>{follower.percent}</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table></div>:"" }
+                </div>
+            </div> 
+                <div className='bar-chart-container'>
+                    <Bar options={optionsBar} data={dataAgeReport}/>
+                </div>
         </div>
         </div>
     );
