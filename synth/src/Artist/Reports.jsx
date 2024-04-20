@@ -84,6 +84,14 @@ const TestReport = () => {
         },
       };
 
+      const optionsBar = {
+        plugins: {
+            legend: {
+                display: false, 
+            },
+        },
+      };
+
       
       const dataFollowerListener = {
         datasets: [
@@ -107,6 +115,19 @@ const TestReport = () => {
         }),
       };
 
+      const dataAgeReport = {
+        datasets: [
+            {
+                data: ageReport.map((data) => data.followers_count),
+                backgroundColor: [
+                    "rgba(0, 0, 0, 0.6)",
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(116, 139, 158, 0.6)",
+                ],
+            },
+            ],labels: ageReport.map((data) => data.age_bracket),
+      };
+
   
 
     //   dataTimestamp
@@ -117,23 +138,12 @@ const TestReport = () => {
             <div className='chart-container'>
             <Doughnut options={optionsGender} data={dataGender} />
             </div>
-                <div className='chart-container'>
-                <Bar
-                    data={{
-                        labels: ageReport.map((data) => data.age_bracket),
-                        datasets: [
-                        {
-                            data: ageReport.map((data) => data.followers_count),
-                            backgroundColor: [
-                                "rgba(0, 0, 0, 0.6)",
-                                "rgba(255, 99, 132, 0.6)",
-                                "rgba(116, 139, 158, 0.6)",
-                            ],
-                        },
-                        ],
-                    }}
-            />
-        </div>
+            <div className='chart-container'>
+                <Bar options={optionsBar} data={dataAgeReport}/>
+            </div>
+            <div className='chart-container'>
+            <Doughnut options={optionsGender} data={dataFollowerListener} />
+            </div>
         </div>
         </div>
     );
