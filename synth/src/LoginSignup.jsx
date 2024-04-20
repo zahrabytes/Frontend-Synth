@@ -34,7 +34,6 @@ const LoginSignup = () => {
         history.push('/user-home');
     };
 
-
     return (
         <div className='glass'>
             <div className="home-button">

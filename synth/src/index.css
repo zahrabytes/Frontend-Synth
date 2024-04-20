@@ -536,8 +536,6 @@ header-menu {
     margin-bottom: 10px;
   }
 
-
-
 artistName {
   display: flex;
   color: black;
@@ -549,7 +547,6 @@ artistName {
   align-items: center;
   position: relative;
 }
-
 
 .rectangle-backdrop {
   position: relative;
