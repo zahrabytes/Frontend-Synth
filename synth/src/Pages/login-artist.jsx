@@ -27,10 +27,10 @@ const LoginArtist = () => {
             setError('Invalid email or password');
             setIsLoading(false);
         }finally {
-            setIsLoading(false); // Set loading state to false after API call
+            setIsLoading(false);
         }
     }
-
+ 
     return (
         <div className='form'>
             <h1>Artist Login</h1>
