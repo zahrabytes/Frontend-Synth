@@ -329,7 +329,7 @@ const TestReport = () => {
                 </div>
         </div> 
         <div className='bar-chart-container'>
-        <Line options={optionsLine} data={optionsLineTimestamp} /></div>
+        <Line options={optionsLineTimestamp} data={dataFollowerTimestamp} /></div>
     </div>
     );
 };

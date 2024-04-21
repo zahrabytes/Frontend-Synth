@@ -39,7 +39,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path='/Home' element={<Home/>} />
-            <Route path="/TestReport" element={<TestReport />} />
+            <Route path="/:artistID/TestReport" element={<TestReport />} />
             <Route path="/:id/user-home" element={<ListenerHome />} />
             <Route path="/:id/Admin-Home" element={<AdminHome />} />
             <Route path="/:id/Get-Flag-Details/:songID" element={<ReportsList />} />
