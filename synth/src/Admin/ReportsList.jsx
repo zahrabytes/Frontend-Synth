@@ -17,7 +17,7 @@ const ReportsList = () => {
         const response = await axios.get(`http://localhost:8000/get-flag-details/${songID}`);
         setReports(response.data);
 
-        const mostFlag = await axios.get(`https://frontend-synth-3tzp.onrender.com/${songID}/most-flagged-reason`);
+        const mostFlag = await axios.get(`https://frontend-synth-3tzp.onrender.com/get-flag-details/${songID}/most-flagged-reason`);
         setMostFlaggedReason(mostFlag.data);
 
       } catch (error) {

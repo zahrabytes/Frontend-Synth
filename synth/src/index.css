@@ -607,7 +607,6 @@ artistName {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   padding: 15px;
   flex: 1;
-  position: relative;
 }
 
 .album-info {
