@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import "../index.css";
 import { formatDate } from "../DateFormat.js";
 
@@ -176,7 +176,7 @@ const TestReport = () => {
         labels: followerTimestamp.map(data => data.date),
       };
 
-      const optionsLine = {
+      const optionsLineTimestamp = {
         responsive: true,
         plugins: {
           legend: {
@@ -329,7 +329,7 @@ const TestReport = () => {
                 </div>
         </div> 
         <div className='bar-chart-container'>
-        <Line options={optionsLine} data={dataFollowerTimestamp} /></div>
+        <Line options={optionsLine} data={optionsLineTimestamp} /></div>
     </div>
     );
 };

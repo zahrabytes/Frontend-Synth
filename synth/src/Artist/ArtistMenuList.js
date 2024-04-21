@@ -18,7 +18,7 @@ const ArtistMenuList = [
     id: 3,
     icon: <BiSolidComment />,
     name: "Run Report",
-    path: "/reports", // Define path for Run Report
+    path: "/TestReport", // Define path for Run Report
   },
   {
     id: 3,
