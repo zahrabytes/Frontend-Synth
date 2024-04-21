@@ -28,7 +28,7 @@ const SongAdd = () => {
 
     const fetchAlbum = async () => {
       try {
-        const album = await axios.get(`http://localhost:8000/albums/${albumID}/upload`);
+        const album = await axios.get(`https://frontend-synth-3tzp.onrender.com/albums/${albumID}/upload`);
         setAlbum(album.data);
       } catch (error) {
         console.log('There was an error fetching the album:', error);
@@ -50,7 +50,7 @@ const SongAdd = () => {
     formData.append('song', songFile);
 
     try {
-      await axios.post(`http://localhost:8000/albums/${albumID}/upload`, formData, {
+      await axios.post(`https://frontend-synth-3tzp.onrender.com/albums/${albumID}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

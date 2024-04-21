@@ -10,7 +10,7 @@ const LoginArtist = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/artist-login', { email, password });
+            const response = await axios.post('https://frontend-synth-3tzp.onrender.com/artist-login', { email, password });
             console.log(response.data); // Handle response from the server
             const artistID = response.data.user.artistID;
             navigate(`/${artistID}/Artist-Home`);

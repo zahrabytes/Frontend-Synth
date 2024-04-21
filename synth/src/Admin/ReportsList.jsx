@@ -14,10 +14,10 @@ const ReportsList = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/get-flag-details/${songID}`);
+        const response = await axios.get(`https://frontend-synth-3tzp.onrender.com/get-flag-details/${songID}`);
         setReports(response.data);
 
-        const mostFlag = await axios.get(`http://localhost:8000/get-flag-details/${songID}/most-flagged-reason`);
+        const mostFlag = await axios.get(`https://frontend-synth-3tzp.onrender.com/get-flag-details/${songID}/most-flagged-reason`);
         setMostFlaggedReason(mostFlag.data);
 
       } catch (error) {
@@ -26,7 +26,7 @@ const ReportsList = () => {
     };
     const fetchSong = async () => {
         try {
-          const song = await axios.get(`http://localhost:8000/${songID}/song-info`);
+          const song = await axios.get(`https://frontend-synth-3tzp.onrender.com/${songID}/song-info`);
           setSongInfo(song.data);
 
           if (song.data.length > 0) {
@@ -96,4 +96,3 @@ const ReportsList = () => {
 };
 
 export default ReportsList;
-

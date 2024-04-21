@@ -10,7 +10,7 @@ const LoginAdmin = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/admin-login', { email, password });
+            const response = await axios.post('https://frontend-synth-3tzp.onrender.com/admin-login', { email, password });
             console.log(response.data); // Handle response from the server
             //const id = response.data.user.adminID;
             navigate('/1/Admin-Home');
