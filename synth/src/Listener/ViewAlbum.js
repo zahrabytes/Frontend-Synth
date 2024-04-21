@@ -126,9 +126,9 @@ function ViewAlbum() {
     return (
         <div className="listener-container">
             <LeftMenu />
-        <div className="container-album">
+        <div className="container-album-new">
             {albumResults.map((album, index) => (
-                <li key={index} className="album-info">
+                <li key={index}>
                     <div>
                     <img className="album-cover" src={album.cover} alt={album.cover} />
                     <div className="like-button" onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
@@ -141,7 +141,7 @@ function ViewAlbum() {
                 </li>
             ))}
 
-            <ul className="song-list">
+            <ul className="plain-scrollbar-new">
                 {songResults.map((song, index) => (
                     <li key={index} className="song-item">
                         <audio controls src={song.filePath}></audio>

@@ -7,9 +7,9 @@ import { ListenerLikes } from "./ListenerLikes.js";
 
 function ListenerHome() {
   return (
-    <div className="listener-container">
+    <div className="listener-container-new">
       <LeftMenu />
-      <div className="content-container">
+      <div className="content-container-new">
         <ListenerLikes />
       </div>
     </div>

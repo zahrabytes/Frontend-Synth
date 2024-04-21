@@ -892,7 +892,7 @@ artistName {
 }
 
 .listener-info-inner h1 {
-  margin-left: 20px; /* Add margin to the left of the fname */
+  margin-left: 10px; /* Add margin to the left of the fname */
 }
 
 .plain-scrollbar {

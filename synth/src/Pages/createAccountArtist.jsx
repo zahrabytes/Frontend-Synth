@@ -17,19 +17,23 @@ const CreateAccountArtist = () => {
         profilePic: '',
     });
 
-    const [error,setError] = useState('');
+    const [error, setError] = useState('');
 
     const handleChange = (event) => {
-        const {name,value} = event.target;
-        setFormData({...formData, [name]: value});
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleDateChange = (date) => {
-        setFormData({...formData, DoB: date})
+        setFormData({ ...formData, DoB: date })
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.fname || !formData.lname || !formData.artistName || !formData.email || !formData.password || !formData.genre || !formData.DoB) {
+            setError('Please fill in all fields');
+            return;
+        }
 
         try {
             const response = await axios.post('https://frontend-synth-3tzp.onrender.com/createAccount/artist', formData);
@@ -37,7 +41,7 @@ const CreateAccountArtist = () => {
             navigate('/login-artist'); // Navigate to /login-artist after successful form submission
         } catch (error) {
             console.error('Error creating account: ', error);
-            setError('An error occured while creating the account. Please try again later.');
+            setError('An error occurred while creating the account. Please try again later.');
         }
     };
 
