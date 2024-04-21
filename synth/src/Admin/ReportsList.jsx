@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { formatDate } from "../DateFormat.js";
 
@@ -50,6 +50,7 @@ const ReportsList = () => {
 
   return (
     <div>
+      <div className='content-container2'>
       {songInfo.map((song, index) => (
               <li key={index}>
                 <h1>Reported Song:</h1>
@@ -61,13 +62,14 @@ const ReportsList = () => {
                   <audio controls src={song.filePath}></audio>
               </li>
           ))}
-<select value={selected} onChange={(e)=>handleChange(e)}>
+          </div>
+<select value={selected} onChange={(e)=>handleChange(e)} className="custom-select">
                     <option>Select a Table to View</option>
                     <option>Report Reason, Details of Reporting User, Time Reported</option>
                     <option>Most Reported Reason</option>
                 </select>
                 <div>
-                    {selected === "Report Reason, Details of Reporting User, Time Reported"?<div>
+                    {selected === "Report Reason, Details of Reporting User, Time Reported"?<div className='chart-container'>
                     <h2>Flag Details:</h2>
                     {reports.map((report, index) => (
                     <li key={index}>
@@ -77,7 +79,7 @@ const ReportsList = () => {
                     </li>
                     ))}
                     </div>:""}
-                    {selected === "Most Reported Reason"?<div>
+                    {selected === "Most Reported Reason"?<div className='chart-container'>
                     <h2>Most Flagged Reason:</h2>
                         {mostFlaggedReason ? (
                             <div>

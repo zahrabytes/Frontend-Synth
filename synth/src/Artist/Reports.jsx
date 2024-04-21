@@ -164,16 +164,16 @@ const TestReport = () => {
             ],labels: ageReport.map((data) => data.age_bracket),
       };
 
-      const dataFollowerTimestamp= {
+      const dataFollowerTimestamp = {
         datasets: [
-            {
-                data: followerTimestamp.map((data) => data.followers_gained),
-                borderColor: [
-                    'rgb(227,232,236)',
-                ],
-            },
-            
-        ], labels: followersListeners.map((data) => data.date),
+          {
+            label: 'Followers Gained',
+            data: followerTimestamp.map(data => data.followers_gained),
+            borderColor: "rgba(0, 0, 0)",
+            fill: false,
+          },
+        ],
+        labels: followerTimestamp.map(data => data.date),
       };
 
       const optionsLine = {
@@ -184,7 +184,24 @@ const TestReport = () => {
           },
           title: {
             display: true,
-            text: 'Chart.js Line Chart',
+            text: 'Followers Gained Over Time',
+          },
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Date',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Followers Gained',
+            },
+            ticks: {
+              stepSize: 1,
+            },
           },
         },
       };

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const FlagOptions = () => { 
@@ -55,7 +55,8 @@ const FlagOptions = () => {
   return (
     <div>
       <div>
-        <h1>Submit a Report</h1>
+        <div className='content-container2'>
+        <h2>Submit a Report</h2>
         <ul>
           {songInfo.map((song, index) => (
               <li key={index}>
@@ -69,10 +70,11 @@ const FlagOptions = () => {
               </li>
           ))}
         </ul>
+        </div>
         <form onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="reason">Reason:</label>
-            <select id="reason" name="reason" value={formData.reason} onChange={handleChange} required>
+            <label className="custom-select">Reason:</label>
+            <select id="reason" name="reason" value={formData.reason} onChange={handleChange} required className="custom-select">
               <option value="">Select Reason</option>
               <option value="Abusive Behavior">Abusive Behavior</option>
               <option value="Quality Control">Quality Control</option>
