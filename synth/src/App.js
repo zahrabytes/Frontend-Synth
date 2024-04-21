@@ -8,7 +8,6 @@ import AlbumAdd from './Artist/AlbumAdd.jsx';
 import AlbumUpdate from './Artist/AlbumUpdate.jsx';
 import Albums from './Artist/Albums.jsx';
 import { ArtistHome } from './Artist/ArtistHome.jsx';
-import ArtistReport from './Artist/ArtistReport.jsx';
 import SongAdd from './Artist/SongAdd.jsx';
 import Disclaimer from './Disclaimer.js';
 import Home from './Home.js';
@@ -61,7 +60,6 @@ function App() {
             <Route path="/View-Album/:id/:albumID" element={<ViewAlbum />} />
             <Route path="/View-Artist/:id/:artistID" element={<ViewArtist />} />
             <Route path="/ViewAlbumArtist/:artistID/:albumID" element={<ViewAlbumArtist />} />
-            <Route path="/:artistID/reports" element ={<ArtistReport />} />
           </Routes>
         </div>
       </div>

@@ -43,13 +43,13 @@ function ViewAlbumArtist() {
     };
 
     return (
-        <div className="adminContainer">
+        <div className="listener-container">
             <ArtistLeft />
-        <div className="container-album">
+        <div className="container-album-new">
             <ul>
                 {albumResults.map((album, index) => (
                     
-                    <li key={index} className="album-info">
+                    <li key={index}>
                         <div><img className="album-cover" src={album.cover} alt={album.cover} /></div>
                         <div>
                             <h1>{album.albumName}</h1>
@@ -60,7 +60,7 @@ function ViewAlbumArtist() {
                 ))}
             </ul>
 
-            <ul className='plain-scrollbar'>
+            <ul className='plain-scrollbar-new'>
                 {songs && songs.map((song, index) => (
                     <li key={index} className="song-item">
                         <audio controls src={song.filePath}></audio>

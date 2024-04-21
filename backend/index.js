@@ -566,13 +566,6 @@ app.post('/:id/:artistID/follow-artist', async (req, res) =>{
     const artistID_value = req.params.artistID;
     
     try {
-        const queryIncrementCount = `
-            UPDATE artist
-            SET num_followers = num_followers + 1
-            WHERE artistID = ?
-        `;
-        await db.promise().query(queryIncrementCount, [artistID_value]);
-
         const query =`
         INSERT INTO artist_follower (artistID, listenerID) 
         VALUES (?, ?)
@@ -1116,84 +1109,53 @@ app.post('/:songID/stream-song', async (req, res) =>{
 });
 
 
-app.get("/artist-gender-report", (req, res) => {
-    //const artistID = req.params.artistID;
+app.get("/artist-gender-report/:artistID", (req, res) => {
+    const artistID = req.params.artistID;
     const query = `
-    SELECT 
-    gender,
-    gender_count,
+    SELECT gender, gender_count,
             ROUND((gender_count / total_count) * 100, 2) AS percentage
         FROM (SELECT 
                 listener.gender,
                 COUNT(*) AS gender_count,
-                (SELECT COUNT(*) FROM artist_follower WHERE artistID = 56) AS total_count
+                (SELECT COUNT(*) FROM artist_follower WHERE artistID = ?) AS total_count
             FROM 
                 artist_follower
             JOIN 
                 listener ON listener.listenerID = artist_follower.listenerID
             WHERE 
-                artistID = 56
+                artistID = ?
             GROUP BY 
                 listener.gender
         ) AS gender_counts
-    `;
-    db.query(query, /*[artistID],*/ (err, data) => {
-        if (err) {
-            return res.json({ error: err.message });
-        }
-        return res.json(data);
-        res.status(200).send('gender report successful');
-    });
-});
-
-app.get("/artist-gender-list", (req, res) => {
-    //const artistID = req.params.artistID;
-    const query = `
-    SELECT L.fname, L.lname, L.username, L.gender
-    FROM artist_follower, listener AS L
-    WHERE artist_follower.artistID = 56 AND artist_follower.listenerID = L.listenerID
-    ORDER BY L.gender
-    `;
-    db.query(query, /*[artistID],*/ (err, data) => {
-        if (err) {
-            return res.json({ error: err.message });
-        }
-        return res.json(data);
-        res.status(200).send('gender report successful');
-    });
-});
-
-app.get("/artist-songlike-gender-report", (req, res) => {
-    // const artistID = req.params.artistID;
-    const query = `
-        SELECT 
-            listener.gender,
-            COUNT(*) AS gender_count,
-            (SELECT COUNT(*) FROM song_like WHERE artistID = 51) AS total_count
-        FROM 
-            song_like
-        JOIN 
-            listener ON listener.listenerID = song_like.listenerID
-        WHERE 
-            song_like.artistID = 51
-        GROUP BY 
-            listener.gender
     `;
     db.query(query, [artistID, artistID], (err, data) => {
         if (err) {
             return res.json({ error: err.message });
         }
-        const genderReport = data.map(item => ({
-            gender: item.gender,
-            count: item.gender_count,
-            percentage: ((item.gender_count / data.total_count) * 100).toFixed(2)
-        }));
-        return res.json(genderReport);
+        return res.json(data);
+        res.status(200).send('gender report successful');
     });
 });
 
+app.get("/artist-gender-list/:artistID", (req, res) => {
+    const artistID = req.params.artistID;
+    const query = `
+    SELECT L.fname, L.lname, L.username, L.gender
+    FROM artist_follower, listener AS L
+    WHERE artist_follower.artistID = ? AND artist_follower.listenerID = L.listenerID
+    ORDER BY L.gender
+    `;
+    db.query(query, [artistID], (err, data) => {
+        if (err) {
+            return res.json({ error: err.message });
+        }
+        return res.json(data);
+        res.status(200).send('gender report successful');
+    });
+});
 
-app.get("/artist-age-report", (req, res) => {
+app.get("/artist-age-report/:artistID", (req, res) => {
+    const artistID = req.params.artistID;
     const query = `
         SELECT 
             CASE
@@ -1215,14 +1177,14 @@ app.get("/artist-age-report", (req, res) => {
         JOIN 
             listener ON listener.listenerID = artist_follower.listenerID
         WHERE 
-            artistID = 56 
+            artistID = ?
         GROUP BY 
             age_bracket
         ORDER BY 
             age_bracket
     `;
     
-    db.query(query, (err, data) => {
+    db.query(query, [artistID], (err, data) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -1235,15 +1197,15 @@ app.get("/artist-age-report", (req, res) => {
     });
 });
 
-app.get("/artist-age-list", (req, res) => {
-    //const artistID = req.params.artistID;
+app.get("/artist-age-list/:artistID", (req, res) => {
+    const artistID = req.params.artistID;
     const query = `
     SELECT L.fname, L.lname, L.username, L.age
     FROM artist_follower, listener AS L
-    WHERE artist_follower.artistID = 56 AND artist_follower.listenerID = L.listenerID
+    WHERE artist_follower.artistID = ? AND artist_follower.listenerID = L.listenerID
     ORDER BY L.age
     `;
-    db.query(query, /*[artistID],*/ (err, data) => {
+    db.query(query, [artistID], (err, data) => {
         if (err) {
             return res.json({ error: err.message });
         }
@@ -1253,43 +1215,52 @@ app.get("/artist-age-list", (req, res) => {
 });
 
 //follower count versus listener count
-app.get("/artist-follower-listener", (req, res) => {
+app.get("/artist-follower-listener/:artistID", (req, res) => {
+    const artistID = req.params.artistID;
     const query = `
-    SELECT 
-        (COUNT(CASE WHEN artistID = 56 THEN 1 END) / NULLIF((SELECT COUNT(*) FROM listener), 0)) * 100 AS percent_artist_followers,
-        (COUNT(CASE WHEN artistID <> 56 THEN 1 END) / NULLIF((SELECT COUNT(*) FROM listener), 0)) * 100 AS percent_non_artist_followers
-    FROM 
-        artist_follower
+      SELECT
+        a.num_followers,
+        (SELECT COUNT(*) FROM listener) AS total_listeners
+      FROM
+        artist a
+      WHERE
+        a.artistID = ?
     `;
-    db.query(query, (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
+  
+    db.query(query, [artistID], (err, data) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+  
+      const formattedData = [];
+  
+      if (data && data.length > 0) {
+        const { num_followers, total_listeners } = data[0];
+  
+        if (num_followers !== null && total_listeners !== null) {
+          const percent_artist_followers = ((num_followers / total_listeners) * 100).toFixed(2);
+          const percent_non_artist_followers = (100 - parseFloat(percent_artist_followers)).toFixed(2);
+  
+          formattedData.push({
+            label: "% of All Synth Listeners Following you",
+            percent: percent_artist_followers
+          });
+  
+          formattedData.push({
+            label: "% of All Synth Listeners Not Following You",
+            percent: percent_non_artist_followers
+          });
         }
-        
-        // Create an array to store the formatted data
-        const formattedData = [];
-
-        // Check if the percentage values are not null and push them to the formatted array
-        if (data && data.length > 0) {
-            // Push the first element with label "% of All Synth Listeners Who Follow You"
-            if (data[0].percent_artist_followers !== null) {
-                formattedData.push({ label: "% of All Synth Listeners Who Follow You", percent: parseFloat(data[0].percent_artist_followers).toFixed(2) });
-            }
-            // Push the second element with label "% of All Synth Listeners Who Do Not Follow You"
-            if (data[0].percent_non_artist_followers !== null) {
-                formattedData.push({ label: "% of All Synth Listeners Who Do Not Follow You", percent: parseFloat(data[0].percent_non_artist_followers).toFixed(2) });
-            }
-        }
-
-        // Send the formatted data as JSON response
-        res.json(formattedData);
+      }
+  
+      res.json(formattedData);
     });
-});
+  });
 
 
 
-
-app.get("/artist-timestamp", (req, res) => {
+app.get("/artist-timestamp/:artistID", (req, res) => {
+    const artistID = req.params.artistID;
     const query = `
     SELECT 
     DATE_FORMAT(timestamp, '%m/%d/%Y') AS date,
@@ -1297,13 +1268,44 @@ app.get("/artist-timestamp", (req, res) => {
     FROM 
         artist_follower
     WHERE 
-        artistID = 56
+        artistID = ?
+        AND timestamp BETWEEN '2024-04-14' AND '2024-04-20'
     GROUP BY 
         DATE(timestamp)
     ORDER BY 
         DATE(timestamp) ASC
     `;
-    db.query(query, (err, data) => {
+    db.query(query, [artistID], (err, data)  => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        // Send the filtered data as JSON response
+        res.json(data);
+    });
+});
+
+
+app.get("/artist-timestamp-list/:artistID", (req, res) => {
+    const artistID = req.params.artistID;
+    const query = `
+    SELECT 
+    DATE_FORMAT(af.timestamp, '%m/%d/%Y') AS date,
+    l.fname,
+    l.lname,
+    l.username
+    FROM 
+        artist_follower af
+    JOIN
+        listener l ON af.listenerID = l.listenerID
+    WHERE 
+        af.artistID = ?
+        AND af.timestamp BETWEEN '2024-04-14' AND '2024-04-20'
+    GROUP BY 
+        DATE(af.timestamp), af.listenerID
+    ORDER BY 
+        DATE(af.timestamp) ASC
+    `;
+    db.query(query, [artistID], (err, data)  => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -1360,6 +1362,45 @@ app.get('/:songID/song-info', async (req, res) =>{
         res.json(results);
     });
 });
+
+app.get('/get-flag-details/:songID', async (req, res) => {
+    const songID = req.params.songID;
+    try {
+      const query = `
+        SELECT f.reason, l.fname, l.lname, l.username, f.timestamp
+        FROM flag f
+        JOIN listener l ON f.listenerID = l.listenerID
+        WHERE f.songID = ?
+        ORDER BY f.timestamp DESC
+      `;
+      const [reports] = await db.promise().query(query, [songID]);
+      res.status(200).json(reports);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).send('Internal server error');
+    }
+  });
+
+  // Reason why it was flagged the most
+  app.get('/get-flag-details/:songID/most-flagged-reason', async (req, res) => {
+    const songID = req.params.songID;
+
+    try {
+      const query = `
+        SELECT f.reason, COUNT(*) AS count
+        FROM flag f
+        WHERE f.songID = ?
+        GROUP BY f.reason
+        ORDER BY count DESC
+        LIMIT 1
+      `;
+      const [mostCommonReason] = await db.promise().query(query, [songID]);
+      res.status(200).json(mostCommonReason[0]);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).send('Internal server error');
+    }
+  });
 
 
 

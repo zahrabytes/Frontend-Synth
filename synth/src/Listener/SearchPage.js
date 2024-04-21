@@ -36,9 +36,8 @@ function SearchPage({ onSongSelect }) {
   };
 
   return (
-    <div className="listener-container">
-      <LeftMenu />
-      <div className="content-container">
+
+      <div>
       <input 
         type="text" 
         value={searchTerm} 
@@ -87,7 +86,6 @@ function SearchPage({ onSongSelect }) {
         </div>
       </div>      
     </div>
-  </div>
 );
 };
 

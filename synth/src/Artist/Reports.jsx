@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import "../index.css";
 import { formatDate } from "../DateFormat.js";
+import { ArtistLeft } from './LeftMenu';
+import { TbDiscountCheckFilled } from "react-icons/tb";
+import '../index.css';
 
 import {
     ArcElement,
@@ -28,8 +31,11 @@ const TestReport = () => {
     const [followersListeners, setFollowersListeners] = useState([]);
     const [selectedDoughnut,setSelectedDoughnut]=useState('');
     const [selectFirstTable,setSelectFirstTable]=useState('');
-    const [selectBar,setSelectBar]=useState('');
-    const [selectLine,setSelectLine]=useState('');
+    const [selectBar,setSelectBar]=useState('Graph of Your Followers in Each Age Bracket');
+    const [selectLine,setSelectLine]=useState('Graph of Your Followers Over Time');
+    const {artistID} = useParams();
+
+    const [followerTimestampList, setFollowerTimestampList] = useState([]);
 
     const handleChange=(e)=>{
         console.log(e.target.value);
@@ -57,22 +63,25 @@ const TestReport = () => {
     useEffect(() => {
         const fetchReport = async () => {
             try {
-                const gender = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-gender-report`);
+                const gender = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-gender-report/${artistID}`);
                 setGenderReport(gender.data);
 
-                const gList = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-gender-list`);
+                const gList = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-gender-list/${artistID}`);
                 setGenderList(gList.data);
 
-                const age = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-age-report`);
+                const age = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-age-report/${artistID}`);
                 setAgeReport(age.data);
 
-                const aList = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-age-list`)
+                const aList = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-age-list/${artistID}`)
                 setAgeList(aList.data);
 
-                const timestamp = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-timestamp`);
+                const timestamp = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-timestamp/${artistID}`);
                 setFollowerTimestamp(timestamp.data);
 
-                const follow = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-follower-listener`);
+                const timestamplist = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-timestamp-list/${artistID}`);
+                setFollowerTimestampList(timestamplist.data);
+
+                const follow = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-follower-listener/${artistID}`);
                 setFollowersListeners(follow.data);
                 
             } catch (err) {
@@ -80,7 +89,7 @@ const TestReport = () => {
             }
         };
         fetchReport();
-    }, []);
+    }, [artistID]);
 
     const dataGenderFollower = {
         datasets: [
@@ -211,18 +220,21 @@ const TestReport = () => {
 
     //   dataTimestamp
     return (
-        <div>
-            <artistName>Artist Dashboard</artistName>
+        <div className="adminContainer">
+        <ArtistLeft />
+        
+        <div className="left-section">
             <h1>Listener Demographics</h1>
             <h2>Get to know your listeners through statistical reports.</h2>
             <div>
+            <div className='chart-boxes'>
             <div className='option-doughnut-container'>
                 <select value={selectedDoughnut} onChange={(e)=>handleChange(e)}>
-                    <option>Select Option</option>
+                    <option>Pie Charts</option>
                     <option>Gender of Your Followers as Percentages</option>
                     <option>Percent of Synth Listeners Who Follow You</option>
                 </select>
-                <div className='chart-container'>
+                <div  className='doughnut-content-container '>
                     {selectedDoughnut === "Gender of Your Followers as Percentages"?<div>
                         <Doughnut options={optionsGender} data={dataGenderFollower} /></div>:""}
                     {selectedDoughnut === "Percent of Synth Listeners Who Follow You"?<div>
@@ -231,14 +243,59 @@ const TestReport = () => {
             </div> 
             <div className='option-doughnut-container'>
                 <select value={selectFirstTable} onChange={(e)=>handleFirstTableChange(e)}>
-                    <option>Select Option</option>
+                    <option>Tables</option>
+                    <option>Count of Your Followers Gained 4/14-4/20</option>
+                    <option>List of Your Followers Gained 4/14-4/20</option>
                     <option>Your Followers And Their Gender</option>
                     <option>Your Followers Compared to All Listeners</option>
+                    <option>Count of Your Followers in Each Age Bracket</option>
+                    <option>Your Followers And Their Ages</option>
                 </select>
-                <div className='chart-container'>
+                
+                <div className='doughnut-content-container '>
+                {selectFirstTable === "Count of Your Followers Gained 4/14-4/20"?<div>
+                    <h2>Your Followers Gained 4/14-4/20</h2>
+                            <table  id ="customers">
+                                    <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Followers Gained</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {followerTimestamp.map((follower, index) => (
+                                        <tr key={index}>
+                                        <td>{follower.date}</td>
+                                        <td>{follower.followers_gained}</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table></div>:""}
+                    {selectFirstTable === "List of Your Followers Gained 4/14-4/20"?<div>
+                    <h2>Your Followers Gained 4/14-4/20</h2>
+                            <table  id ="customers">
+                                    <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {followerTimestampList.map((follower, index) => (
+                                        <tr key={index}>
+                                        <td>{follower.date}</td>
+                                        <td>{follower.fname}</td>
+                                        <td>{follower.lname}</td>
+                                        <td>{follower.username}</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table></div>:""}
                     {selectFirstTable === "Your Followers And Their Gender"?<div>
-                            <table className='scrollbar-table'>
-                                <h2>Your Followers And Their Genders:</h2>
+                    <h2>Your Followers And Their Genders:</h2>
+                            <table  id ="customers">
                                     <thead>
                                     <tr>
                                         <th>First Name</th>
@@ -259,11 +316,10 @@ const TestReport = () => {
                                     </tbody>
                                 </table></div>:""}
                     {selectFirstTable === "Your Followers Compared to All Listeners"?
-                    <div>
-                            <table>
-                                <h2>Your Followers
-                                    Compared to All Listeners:</h2>
-                                    <tbody className='scrollbar-table'>
+                    <div className='doughnut-content-container '>
+                            <table  id ="customers">
+                                <h2>Your Followers VS All Listeners:</h2>
+                                    <tbody>
                                     {followersListeners.map((follower, index) => (
                                         <tr key={index}>
                                         <td>{follower.label}: </td>
@@ -273,22 +329,11 @@ const TestReport = () => {
                                     </tbody>
                                 </table></div>:"" }
                 </div>
-            </div> 
-            </div>
-            <div >
-                <select value={selectBar} onChange={(e)=>handleBarChange(e)}>
-                    <option>Select Option</option>
-                    <option>Graph of Your Followers in Each Age Bracket</option>
-                    <option>Count of Your Followers in Each Age Bracket</option>
-                    <option>Your Followers And Their Ages</option>
-                </select>
-                <div className='bar-chart-container'>
-                    {selectBar === "Graph of Your Followers in Each Age Bracket"?<div>
-                        <Bar options={optionsBar} data={dataAgeReport}/></div>:""}
-                    {selectBar === "Count of Your Followers in Each Age Bracket"?<div>
-                    <table className='scrollbar-table'>
-                                <h2>Count of Your Followers in Each Age Bracket:</h2>
-                                    <thead>
+                {selectFirstTable === "Count of Your Followers in Each Age Bracket"?
+                <div className='doughnut-list-content-container '>
+                    <h2>Count of Your Followers in Each Age Bracket:</h2>
+                    <table id ="customers">
+                                <thead>
                                     <tr>
                                         <th>Bracket</th>
                                         <th>Follower Count</th>
@@ -303,9 +348,8 @@ const TestReport = () => {
                                     ))}
                                     </tbody>
                                 </table></div>:"" }
-                    {selectBar === "Your Followers And Their Ages"?<div>
-                    <table className='scrollbar-table'>
-                        <h2>Your Followers And Their Ages:</h2>
+                    {selectFirstTable === "Your Followers And Their Ages"?<div className='doughnut-content-container'>
+                    <table id ="customers">
                             <thead>
                             <tr>
                                 <th>First Name</th>
@@ -326,10 +370,33 @@ const TestReport = () => {
                                 </tbody>
                     </table>
                     </div>:"" }
+            </div> 
+            </div></div>
+            <div>
+            <div>
+                <select value={selectBar} onChange={(e)=>handleBarChange(e)}>
+                    <option>Select Option</option>
+                    <option>Graph of Your Followers in Each Age Bracket</option>
+                </select>
+                <div className='doughnut-bar-content-container '>
+                    {selectBar === "Graph of Your Followers in Each Age Bracket"?<div>
+                        <Bar className='bar-chart-container' options={optionsBar} data={dataAgeReport}/></div>:""}
                 </div>
         </div> 
-        <div className='bar-chart-container'>
-        <Line options={optionsLineTimestamp} data={dataFollowerTimestamp} /></div>
+        <div>
+        <div>
+        <select value={selectLine} onChange={(e)=>handleLineChange(e)}>
+                    <option>Select Option</option>
+                    <option>Graph of Your Followers Over Time</option>
+                </select>
+                <div className='doughnut-bar-content-container'>
+                    {selectLine === "Graph of Your Followers Over Time"?<div>
+                        <Line className='bar-chart-container' options={optionsLineTimestamp} data={dataFollowerTimestamp} />
+                        </div>:""}
+                </div>
+        </div> 
+        </div></div>
+    </div>
     </div>
     );
 };

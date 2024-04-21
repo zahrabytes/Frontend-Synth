@@ -5,45 +5,50 @@ import { useNavigate } from 'react-router-dom'; // Import useHistory for navigat
 const ListenerLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleClick = async (e) => {
         e.preventDefault();
+        if (!email || !password) {
+            setError('Please fill in all fields');
+            return;
+        }
         try {
             const response = await axios.post('https://frontend-synth-3tzp.onrender.com/listener-login', { email, password });
             console.log(response.data);
             const id = response.data.user.listenerID;
             navigate(`/${id}/user-home`);
-
         } catch (error) {
             console.error('Error during login:', error);
-            // Handle error response from the server
+            setError('Invalid email or password');
         }
     }
 
     return (
         <div className='form'>
             <h1>Listener Login</h1>
-                <div>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <div>
                 <label htmlFor="fname">Email</label>
-                    <input
-                        type="text"
-                        placeholder=" Email"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div>
+                <input
+                    type="text"
+                    placeholder="Email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+            </div>
+            <div>
                 <label htmlFor="fname">Password</label>
-                    <input
-                        type="password"
-                        placeholder=" Password"
-                        name="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
+                <input
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
             <button type="submit" className="custom-button custom-button-primary" onClick={handleClick}>Login</button>
         </div>
     )

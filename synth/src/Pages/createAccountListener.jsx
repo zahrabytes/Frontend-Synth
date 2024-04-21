@@ -30,6 +30,10 @@ const CreateAccountListener = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.fname || !formData.lname || !formData.email || !formData.username || !formData.password || !formData.gender || !formData.DoB) {
+            setError('Please fill in all fields');
+            return;
+        }
 
         try {
             const response = await axios.post('https://frontend-synth-3tzp.onrender.com/createAccount/listener', formData);

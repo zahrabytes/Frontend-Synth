@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { formatDate } from "../DateFormat.js";
+import "./LeftMenu.css";
 
 const ReportsList = () => {
   const { songID } = useParams();
@@ -17,7 +18,7 @@ const ReportsList = () => {
         const response = await axios.get(`https://frontend-synth-3tzp.onrender.com/get-flag-details/${songID}`);
         setReports(response.data);
 
-        const mostFlag = await axios.get(`https://frontend-synth-3tzp.onrender.com/get-flag-details/${songID}/most-flagged-reason`);
+        const mostFlag = await axios.get(`https://frontend-synth-3tzp.onrender.com/${songID}/most-flagged-reason`);
         setMostFlaggedReason(mostFlag.data);
 
       } catch (error) {
@@ -49,49 +50,73 @@ const ReportsList = () => {
 }
 
   return (
-    <div>
-      <div className='content-container2'>
+    <div><h1>Reported Song Info:</h1>
+    <div className='flex-container'>
+      
+      <div className='left-align-container'>
       {songInfo.map((song, index) => (
               <li key={index}>
-                <h1>Reported Song:</h1>
-                  <h2>Song Artist: {song.artistName}</h2>
-                  <img className='img-pfp-display-after' src={song.profilePic}></img>
-                  <h2>Song Album: {song.albumName}</h2>
-                  <img className='img-display-after' src={song.Cover}></img>
-                  <h2>Song: {song.songTitle}</h2>
+                <div>
+                <div>
+                <h2>Song: {song.songTitle}</h2>
                   <audio controls src={song.filePath}></audio>
+                  <h2>Song Artist: {song.artistName}</h2>
+                  <img className='img-artist-report-pfp-display-after' src={song.profilePic}></img></div>
+                  <div>
+                  <h2>Song Album: {song.albumName}</h2></div>
+                  <div>
+                  <img className='img-display-after' src={song.Cover}></img>
+                  </div>
+                  </div>
               </li>
-          ))}
-          </div>
-<select value={selected} onChange={(e)=>handleChange(e)} className="custom-select">
+          ))}</div>
+        <div className='right-align-container'>
+        <select value={selected} onChange={(e)=>handleChange(e)}>
                     <option>Select a Table to View</option>
                     <option>Report Reason, Details of Reporting User, Time Reported</option>
                     <option>Most Reported Reason</option>
                 </select>
                 <div>
-                    {selected === "Report Reason, Details of Reporting User, Time Reported"?<div className='chart-container'>
-                    <h2>Flag Details:</h2>
-                    {reports.map((report, index) => (
-                    <li key={index}>
-                        <p>Reason: {report.reason}</p>
-                        <p>Reported by: {report.fname} {report.lname} ({report.username})</p>
-                        <p>Timestamp: {formatDate(report.timestamp)}</p>
-                    </li>
-                    ))}
-                    </div>:""}
-                    {selected === "Most Reported Reason"?<div className='chart-container'>
+                    {selected === "Report Reason, Details of Reporting User, Time Reported"?<div>
+        <h2>Flag Details:</h2>
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th>Reason</th>
+                    <th>Reported by</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {reports.map((report, index) => (
+                    <tr key={index}>
+                        <td>{report.reason}</td>
+                        <td>{report.fname} {report.lname} ({report.username})</td>
+                        <td>{formatDate(report.timestamp)}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>:""}
+                    {selected === "Most Reported Reason"?<div>
                     <h2>Most Flagged Reason:</h2>
                         {mostFlaggedReason ? (
-                            <div>
-                            <p>Most Reported Reason: {mostFlaggedReason.reason}</p>
-                            <p>Count: {mostFlaggedReason.count}</p>
-                            </div>
+                            <table id="customers">
+                            <thead>
+                                <tr>
+                                    <th>Most Reported Reason:</th>
+                                    <th>Count:</th>
+                                </tr>
+                            </thead>
+                            <td>{mostFlaggedReason.reason}</td>
+                            <td>{mostFlaggedReason.count}</td>
+                            </table>
                         ) : (
                             <p>No data available</p>
                         )}
                     </div>:"" }
-                </div>
-    </div>
+                </div></div>
+    </div></div>
   );
 };
 
