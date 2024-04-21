@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const CreateAccountListener = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate(); // Initialize navigate
     const [formData, setFormData] = useState({
         fname: '',
@@ -30,8 +31,10 @@ const CreateAccountListener = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         if (!formData.fname || !formData.lname || !formData.email || !formData.username || !formData.password || !formData.gender || !formData.DoB) {
             setError('Please fill in all fields');
+            setIsLoading(false);
             return;
         }
 
@@ -41,14 +44,17 @@ const CreateAccountListener = () => {
             navigate('/login-listener'); // Navigate to /login-listener after successful form submission
         } catch (error) {
             console.error('Error creating account: ', error);
+            setIsLoading(false);
             setError('An error occurred while creating the account. Please try again later.'); // Set error message
+        }finally {
+            setIsLoading(false); // Set loading state to false after API call
         }
     };
 
     return (
         <div className='form'>
             <h1>Listener Registration</h1>
-            {error && <div className="error">{error}</div>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="fname">First Name</label>
@@ -134,12 +140,19 @@ const CreateAccountListener = () => {
                     <input
                         type="text"
                         id="profilePic"
-                        name="profilePich"
+                        name="profilePic"
                         value={formData.profilePic}
                         onChange={handleChange}
                     />
                 </div>
-                <button className="custom-button custom-button-primary">Submit</button>
+                <button
+                    type="submit"
+                    className="custom-button custom-button-primary"
+                    onClick={handleSubmit}
+                    disabled={isLoading}
+                    >
+                    {isLoading ? <div className="loader"></div> : 'Register'}
+                </button>
             </form>
         </div>
     );

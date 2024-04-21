@@ -5,10 +5,12 @@ import { useNavigate } from 'react-router-dom';
 const LoginAdmin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleClick = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
             const response = await axios.post('https://frontend-synth-3tzp.onrender.com/admin-login', { email, password });
             console.log(response.data); // Handle response from the server
@@ -16,7 +18,10 @@ const LoginAdmin = () => {
             navigate('/1/Admin-Home');
         } catch (error) {
             console.error('Error during login:', error);
+            setIsLoading(false);
             // Handle error response from the server
+        }finally {
+            setIsLoading(false); // Set loading state to false after API call
         }
     }
 
@@ -43,7 +48,14 @@ const LoginAdmin = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <button type="submit" className="custom-button custom-button-primary" onClick={handleClick}>Login</button>
+                <button
+                    type="submit"
+                    className="custom-button custom-button-primary"
+                    onClick={handleClick}
+                    disabled={isLoading}
+                    >
+                    {isLoading ? <div className="loader"></div> : 'Login'}
+                </button>
         </div>
     )
 }

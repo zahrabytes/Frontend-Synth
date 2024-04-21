@@ -418,7 +418,32 @@ li {
 height: 200px;
 width: 200px;
 border-radius: 10px;
+cursor: pointer;
 }
+
+/* HTML: <div class="loader"></div> */
+/* HTML: <div class="loader"></div> */
+.loader {
+  font-weight: bold;
+  font-family: monospace;
+  display: inline-grid;
+  overflow: hidden;
+}
+.loader:before,
+.loader:after {
+  content: "Loading...";
+  grid-area: 1/1;
+  clip-path: inset(0 -200% 50%);
+  text-shadow: -10ch 0 0;
+  animation: l13 2s infinite;
+}
+.loader:after {
+  clip-path: inset(50% -200% 0%);
+  text-shadow: 10ch 0 0;
+  --s:-1;
+  animation-delay: 1s;
+}
+@keyframes l13 {25%,100%{transform: translateX(calc(var(--s,1)*100%));}}
 
 .img-album-display-after {
   height: 150px;
@@ -542,6 +567,18 @@ artistName {
   display: flex;
   color: black;
   font-size: 100px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  font-weight: bold;
+  align-items: center;
+  position: relative;
+}
+
+artistName-new-new {
+  display: flex;
+  color: black;
+  font-size: 70px;
   margin-top: 20px;
   margin-bottom: 20px;
   padding-left: 20px;

@@ -6,12 +6,15 @@ const ListenerLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleClick = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         if (!email || !password) {
             setError('Please fill in all fields');
+            setIsLoading(false);
             return;
         }
         try {
@@ -22,12 +25,17 @@ const ListenerLogin = () => {
         } catch (error) {
             console.error('Error during login:', error);
             setError('Invalid email or password');
+            setIsLoading(false);
+        } finally {
+            setIsLoading(false); // Set loading state to false after API call
         }
     }
 
     return (
+        <div>
         <div className='form'>
             <h1>Listener Login</h1>
+           
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <div>
                 <label htmlFor="fname">Email</label>
@@ -49,7 +57,15 @@ const ListenerLogin = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <button type="submit" className="custom-button custom-button-primary" onClick={handleClick}>Login</button>
+            <button
+                type="submit"
+                className="custom-button custom-button-primary"
+                onClick={handleClick}
+                disabled={isLoading}
+                >
+                {isLoading ? <div className="loader"></div> : 'Login'}
+            </button>
+        </div>
         </div>
     )
 }

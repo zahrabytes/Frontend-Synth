@@ -127,6 +127,7 @@ function ViewAlbum() {
         <div className="listener-container">
             <LeftMenu />
         <div className="container-album-new">
+            <ul>
             {albumResults.map((album, index) => (
                 <li key={index}>
                     <div>
@@ -134,12 +135,16 @@ function ViewAlbum() {
                     <div className="like-button" onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
                         {albumLike ? <PiHeartFill /> : <PiHeartLight />}
                     </div></div>
+                    <div></div>
+                    <div>
                         <h1>{album.albumName}</h1>
                         <p>{formatDate(album.releaseDate)}</p>
                         <p>{album.genre}</p>
-                    
+                    </div>
                 </li>
+                
             ))}
+            </ul>           
 
             <ul className="plain-scrollbar-new">
                 {songResults.map((song, index) => (

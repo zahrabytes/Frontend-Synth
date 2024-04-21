@@ -59,7 +59,7 @@ function ListenerLikes() {
           {listenerInfo.map((item, index) => (
             <div key={index} className="listener-info-inner">
               <img className='img-pfp-display-after-new' src={item.profilePic} alt={item.profilePic} />
-              <h1>{item.fname}'s Liked Library</h1>
+              <h1>{item.fname}'s Library</h1>
             </div>
           ))}
         </div>

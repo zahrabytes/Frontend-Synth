@@ -103,7 +103,7 @@ function ViewArtist() {
                 <div class="rectangle-backdrop">
                     {artistResult.map((item, index) => (
                         <div key={index}>
-                            <artistName>
+                            <artistName-new-new>
                                 <img className='img-pfp-display-after' src={item.profilePic} alt={item.artistPic} />
                                 {item.artistName}
                                 <div className="flex row">{item.verified ? <TbDiscountCheckFilled /> : null}</div>
@@ -111,7 +111,7 @@ function ViewArtist() {
                                     {isFollower ? <PiHeartFill /> : <PiHeartLight />}
                                 </div>
                                 <div className='followers-text2'>{item.num_followers} Followers</div>
-                            </artistName>
+                            </artistName-new-new>
                         </div>
                     ))}
                 </div>

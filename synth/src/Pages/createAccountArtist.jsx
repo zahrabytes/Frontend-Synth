@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const CreateAccountArtist = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate(); // Initialize navigate
     const [formData, setFormData] = useState({
         fname: '',
@@ -30,8 +31,10 @@ const CreateAccountArtist = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         if (!formData.fname || !formData.lname || !formData.artistName || !formData.email || !formData.password || !formData.genre || !formData.DoB) {
             setError('Please fill in all fields');
+            setIsLoading(false);
             return;
         }
 
@@ -41,14 +44,18 @@ const CreateAccountArtist = () => {
             navigate('/login-artist'); // Navigate to /login-artist after successful form submission
         } catch (error) {
             console.error('Error creating account: ', error);
+            setIsLoading(false);
             setError('An error occurred while creating the account. Please try again later.');
+        }
+        finally {
+            setIsLoading(false); // Set loading state to false after API call
         }
     };
 
     return (
         <div className='form'>
             <h1>Artist Registration</h1>
-            {error && <div className="error">{error}</div>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="fname">First Name</label>
@@ -142,7 +149,14 @@ const CreateAccountArtist = () => {
                         onChange={handleChange}
                     />
                 </div>
-                <button type="submit">Submit</button>
+                <button
+                    type="submit"
+                    className="custom-button custom-button-primary"
+                    onClick={handleSubmit}
+                    disabled={isLoading}
+                    >
+                    {isLoading ? <div className="loader"></div> : 'Register'}
+                </button>
             </form>
         </div>
     );

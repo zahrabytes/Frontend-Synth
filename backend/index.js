@@ -241,8 +241,11 @@ app.post('/createAccount/:userType', async (req, res) => {
 app.post('/listener-login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        let query = `SELECT * FROM listener WHERE email = ? AND BINARY password = ?`;
-        db.query(query, [email, password], (error, results, fields) => {
+        let query = `
+            SELECT listenerID
+            FROM listener 
+            WHERE email = ? AND BINARY password = ?`;
+        db.query(query, [email, password], (error, results) => {
             if (error) {
                 console.error('Error retrieving listener data:', error);
                 return res.status(500).json({ error: 'Internal server error' });
@@ -265,8 +268,10 @@ app.post('/listener-login', async (req, res) => {
 app.post('/artist-login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        let query = `SELECT * FROM artist WHERE email = ? AND BINARY password = ?`;
-        db.query(query, [email, password], (error, results, fields) => {
+        let query = `
+        SELECT artistID
+        FROM artist WHERE email = ? AND BINARY password = ?`;
+        db.query(query, [email, password], (error, results) => {
             if (error) {
                 console.error('Error retrieving listener data:', error);
                 return res.status(500).json({ error: 'Internal server error' });
