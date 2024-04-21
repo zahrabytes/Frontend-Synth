@@ -57,22 +57,22 @@ const TestReport = () => {
     useEffect(() => {
         const fetchReport = async () => {
             try {
-                const gender = await axios.get(`http://localhost:8000/artist-gender-report`);
+                const gender = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-gender-report`);
                 setGenderReport(gender.data);
 
-                const gList = await axios.get(`http://localhost:8000/artist-gender-list`);
+                const gList = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-gender-list`);
                 setGenderList(gList.data);
 
-                const age = await axios.get(`http://localhost:8000/artist-age-report`);
+                const age = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-age-report`);
                 setAgeReport(age.data);
 
-                const aList = await axios.get(`http://localhost:8000/artist-age-list`)
+                const aList = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-age-list`)
                 setAgeList(aList.data);
 
-                const timestamp = await axios.get(`http://localhost:8000/artist-timestamp`);
+                const timestamp = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-timestamp`);
                 setFollowerTimestamp(timestamp.data);
 
-                const follow = await axios.get(`http://localhost:8000/artist-follower-listener`);
+                const follow = await axios.get(`https://frontend-synth-3tzp.onrender.com/artist-follower-listener`);
                 setFollowersListeners(follow.data);
                 
             } catch (err) {
