@@ -69,7 +69,7 @@ const ReportsList = () => {
                     <option>Most Reported Reason</option>
                 </select>
                 <div>
-                    {selected === "Report Reason, Details of Reporting User, Time Reported"?<div className='report-container'>
+                    {selected === "Report Reason, Details of Reporting User, Time Reported"?<div className='chart-container'>
                     <h2>Flag Details:</h2>
                     {reports.map((report, index) => (
                     <li key={index}>
@@ -79,7 +79,7 @@ const ReportsList = () => {
                     </li>
                     ))}
                     </div>:""}
-                    {selected === "Most Reported Reason"?<div className='report-container'>
+                    {selected === "Most Reported Reason"?<div className='chart-container'>
                     <h2>Most Flagged Reason:</h2>
                         {mostFlaggedReason ? (
                             <div>
