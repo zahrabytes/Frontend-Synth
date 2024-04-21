@@ -53,6 +53,7 @@
   .artist-container {
     display: flex;
     flex-direction: column;
+    margin-bottom: 10px;
     align-items: flex-start; /* Align items to the left */
   }
   
@@ -81,7 +82,7 @@
   
   .verified-text {
     display: none;
-    font: 10px;
+    font-size: 16px;
     position: absolute;
     top: -30px; /* Adjust positioning as needed */
     left: 50%;

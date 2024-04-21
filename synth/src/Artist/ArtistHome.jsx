@@ -37,7 +37,7 @@ function ArtistHome() {
                 <artistName className="name-and-verified">
                   <span className="artist-name">{item.artistName}</span>
                   <div className="verified-indicator">
-                  <span className="verified-text">You Are Verified!</span>{item.verified && <TbDiscountCheckFilled size={32} color="green" />}</div>
+                  <span className="verified-text">You Are Verified!</span>{item.verified ? <TbDiscountCheckFilled size={32} color="green" /> : null}</div>
                 </artistName>
               </div>
               <div className="followers-text">{item.num_followers} Followers</div>
