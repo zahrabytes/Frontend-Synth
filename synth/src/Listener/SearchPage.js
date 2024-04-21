@@ -14,13 +14,13 @@ function SearchPage({ onSongSelect }) {
 
   const handleSearch = async () => {
     try {
-      const artist = await axios.get(`http://localhost:8000/search-artist?searchTerm=${searchTerm}`);
+      const artist = await axios.get(`https://frontend-synth-3tzp.onrender.com/search-artist?searchTerm=${searchTerm}`);
       setArtistResults(artist.data);
 
-      const album = await axios.get(`http://localhost:8000/search-album?searchTerm=${searchTerm}`);
+      const album = await axios.get(`https://frontend-synth-3tzp.onrender.com/search-album?searchTerm=${searchTerm}`);
       setAlbumResults(album.data);
 
-      const song = await axios.get(`http://localhost:8000/search-song?searchTerm=${searchTerm}`);
+      const song = await axios.get(`https://frontend-synth-3tzp.onrender.com/search-song?searchTerm=${searchTerm}`);
       setSongResults(song.data);
     } catch (error) {
       console.error('Error searching:', error);

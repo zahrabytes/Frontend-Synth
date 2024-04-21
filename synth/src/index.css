@@ -597,6 +597,7 @@ artistName {
 
 .container-album {
   max-width: 1000px;
+  bottom: 0;
   margin: 50px auto 0;
   background: rgba(255, 255, 255, 0.4); /* Adjust the opacity to make it more milky white */
   backdrop-filter: blur(20px); /* Increase blur for a softer effect */
@@ -606,6 +607,7 @@ artistName {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   padding: 15px;
   flex: 1;
+  position: relative;
 }
 
 .album-info {
@@ -889,4 +891,9 @@ artistName {
 
 .listener-info-inner h1 {
   margin-left: 20px; /* Add margin to the left of the fname */
+}
+
+.plain-scrollbar {
+  bottom: 0;
+  overflow: auto;
 }

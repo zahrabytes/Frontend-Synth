@@ -15,7 +15,7 @@ const FlagOptions = () => {
   useEffect(() => {
     const loadPage = async () => {
         try {
-          const song = await axios.get(`http://localhost:8000/${songID}/song-info`);
+          const song = await axios.get(`https://frontend-synth-3tzp.onrender.com/${songID}/song-info`);
           setSongInfo(song.data);
 
           if (song.data.length > 0) {
@@ -39,7 +39,7 @@ const FlagOptions = () => {
 
     try {
       // Make a POST request to backend endpoint
-      const response = await axios.post(`http://localhost:8000/report/${songID}/${id}`,  { reason: formData.reason });
+      const response = await axios.post(`https://frontend-synth-3tzp.onrender.com/report/${songID}/${id}`,  { reason: formData.reason });
       console.log(response.data);
       navigate(`/View-Album/${id}/${albumID}`);
       // Optionally, you can display a success message or redirect the user
