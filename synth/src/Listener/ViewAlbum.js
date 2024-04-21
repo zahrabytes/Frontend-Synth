@@ -128,17 +128,17 @@ function ViewAlbum() {
             <LeftMenu />
         <div className="container-album">
             {albumResults.map((album, index) => (
-                <div key={index} className="album-info">
+                <li key={index} className="album-info">
+                    <div>
                     <img className="album-cover" src={album.cover} alt={album.cover} />
-                    <div className="album-details">
+                    <div className="like-button" onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
+                        {albumLike ? <PiHeartFill /> : <PiHeartLight />}
+                    </div></div>
                         <h1>{album.albumName}</h1>
                         <p>{formatDate(album.releaseDate)}</p>
                         <p>{album.genre}</p>
-                    </div>
-                    <div className="like-button" onClick={() => albumLike ? handleUnlikeAlbum() : handleLikeAlbum()}>
-                        {albumLike ? <PiHeartFill /> : <PiHeartLight />}
-                    </div>
-                </div>
+                    
+                </li>
             ))}
 
             <ul className="song-list">

@@ -1291,12 +1291,17 @@ app.get("/artist-follower-listener", (req, res) => {
 
 app.get("/artist-timestamp", (req, res) => {
     const query = `
-    SELECT DATE(timestamp) AS date,
+    SELECT 
+    DATE_FORMAT(timestamp, '%m/%d/%Y') AS date,
     COUNT(*) AS followers_gained
-    FROM artist_follower
-    WHERE artistID = 56
-    GROUP BY DATE(timestamp)
-    ORDER BY DATE(timestamp) ASC
+    FROM 
+        artist_follower
+    WHERE 
+        artistID = 56
+    GROUP BY 
+        DATE(timestamp)
+    ORDER BY 
+        DATE(timestamp) ASC
     `;
     db.query(query, (err, data) => {
         if (err) {
